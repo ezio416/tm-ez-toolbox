@@ -4,22 +4,50 @@ m 2023-06-05
 */
 
 namespace OnlineChecker {
+    bool online = false;
+    bool running = false;
     string title = "\\$9F4" + Icons::InternetExplorer + "\\$Z " + Globals::title + " - OnlineChecker";
 
     bool Get() {
-        return false;
+        return online;
     }
 
-    void Render() {
-        if (!OC_show) return;
-        if (OC_hideWithGame && !WhereAmI::_GameUI()) return;
-        if (OC_hideWithOP && !WhereAmI::_PlanetUI()) return;
+    void Run() {
+        if (running) return;
+        running = true;
 
-        int flags = UI::WindowFlags::AlwaysAutoResize;
+        NadeoServices::AddAudience("NadeoLiveServices");
+        while (!NadeoServices::IsAuthenticated("NadeoLiveServices")) yield();
 
-        UI::Begin(title, OC_show, flags);
-            UI::Text(Get() ? "\\$0F0online" : "\\$F00offline");
-            UI::Text("Surely something else can go here...");
-        UI::End();
+        while (true) {
+            if (!OC_warn) {
+                running = false;
+                return;
+            }
+
+            try {
+                auto req = NadeoServices::Get(
+                    "NadeoLiveServices",
+                    NadeoServices::BaseURL() + "/api/token/campaign/official?length=1&offset=999"
+                );
+                req.Start();
+                while (!req.Finished()) yield();
+                online = (req.String() != "");
+            } catch { online = false; }
+
+            online = (
+                online &&
+                Globals::Network !is null &&
+                Globals::ServerInfo.IsOnline
+            );
+
+            if (!online)
+                UI::ShowNotification(
+                    Globals::title + " - OnlineChecker",
+                    "It looks like you're offline! Records probably won't save.",
+                    UI::HSV(0.02, 0.8, 0.9)
+                );
+            sleep(OC_freq * 1000);
+        }
     }
 }

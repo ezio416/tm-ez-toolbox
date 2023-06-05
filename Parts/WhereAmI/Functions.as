@@ -1,6 +1,6 @@
 /*
 c 2023-06-03
-m 2023-06-04
+m 2023-06-05
 */
 
 namespace WhereAmI {
@@ -51,7 +51,7 @@ namespace WhereAmI {
             if (playing) return "online - playing";
             if (finish)  return "online - finish";
             if (podium)  return "online - podium";
-            return "online";
+            return "online - loading";
         }
 
         if (_Editor()) {

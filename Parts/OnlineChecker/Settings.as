@@ -4,12 +4,9 @@ m 2023-06-05
 */
 
 namespace OnlineChecker {
-    [Setting category="OnlineChecker" name="Show window"]
-    bool OC_show = true;  // false for release
+    [Setting category="OnlineChecker" name="Check frequency (seconds)" min=10 max=600]
+    uint OC_freq = 60;
 
-    [Setting category="OnlineChecker" name="Hide with game UI"]
-    bool OC_hideWithGame = true;
-
-    [Setting category="OnlineChecker" name="Hide with Openplanet UI"]
-    bool OC_hideWithOP = false;  // true for release
+    [Setting category="OnlineChecker" name="Show offline warnings"]
+    bool OC_warn = true;
 }

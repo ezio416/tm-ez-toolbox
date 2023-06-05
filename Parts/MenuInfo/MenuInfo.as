@@ -23,7 +23,7 @@ namespace MenuInfo {
         }
 
         if (MI_OnlineChecker) {
-            text += spacing + (OnlineChecker::Get() ? "online" : "offline");
+            text += spacing + (OnlineChecker::Get() ? "online" : "OFFLINE");
         }
 
         if (MI_COTD) {
@@ -34,10 +34,12 @@ namespace MenuInfo {
             int hourOfCotn = cest ? 1 : 2;
             int hourOfCotm = cest ? 9 : 10;
 
-            bool first30m = now.Minute < 30;
-            if      (first30m && now.Hour == hourOfCotd) text += "COTD in progress";
-            else if (first30m && now.Hour == hourOfCotn) text += "COTN in progress";
-            else if (first30m && now.Hour == hourOfCotm) text += "COTM in progress";
+            text += spacing;
+
+            bool first45m = now.Minute < 45;
+            if      (first45m && now.Hour == hourOfCotd) text += "COTD in progress";
+            else if (first45m && now.Hour == hourOfCotn) text += "COTN in progress";
+            else if (first45m && now.Hour == hourOfCotm) text += "COTM in progress";
             else {
                 uint hoursToCotd = hourOfCotd - now.Hour - 1;
                 uint hoursToCotm = hourOfCotm - now.Hour - 1;
@@ -50,14 +52,14 @@ namespace MenuInfo {
                     hoursToCotm++;
                 }
                 if (now.Hour < hourOfCotn || now.Hour >= hourOfCotd) {
-                    if (hoursToCotn > 0) text += spacing + hoursToCotn + "h ";
+                    if (hoursToCotn > 0) text += hoursToCotn + "h ";
                     text += minutes + "m until COTN";
                 } else if (now.Hour < hourOfCotm) {
-                    if (hoursToCotm > 0) text += spacing + hoursToCotm + "h ";
+                    if (hoursToCotm > 0) text += hoursToCotm + "h ";
                     text += minutes + "m until COTM";
                 } else {
-                    if (hoursToCotd > 0) text += spacing + hoursToCotd + "h ";
-                    text += spacing + minutes + "m until COTD";
+                    if (hoursToCotd > 0) text += hoursToCotd + "h ";
+                    text += minutes + "m until COTD";
                 }
             }
         }

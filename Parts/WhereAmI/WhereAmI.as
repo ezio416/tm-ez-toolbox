@@ -36,7 +36,7 @@ namespace WhereAmI {
             UI::Text((InPlayableMap() ? green : red) + "playground");
             UI::SameLine();
             UI::Text((_Script() ? green : red) + "script");
-            UI::Text((_GameUI() ? green : red) + "game UI             ");
+            UI::Text((_GameUI() ? green : red) + "game UI");
             UI::SameLine();
             UI::Text((_PlanetUI() ? green : red) + "Openplanet UI");
             UI::Text("gamemode " + (gamemode != "none" ? green : red) + gamemode);
