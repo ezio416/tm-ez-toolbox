@@ -1,6 +1,6 @@
 /*
 c 2023-06-04
-m 2023-06-04
+m 2023-06-05
 */
 
 namespace OnlineChecker {
@@ -11,10 +11,15 @@ namespace OnlineChecker {
     }
 
     void Render() {
-        if (!Settings::showOnlineChecker) return;
+        if (!OC_show) return;
+        if (OC_hideWithGame && !WhereAmI::_GameUI()) return;
+        if (OC_hideWithOP && !WhereAmI::_PlanetUI()) return;
 
-        UI::Begin(title, Settings::showOnlineChecker);
+        int flags = UI::WindowFlags::AlwaysAutoResize;
+
+        UI::Begin(title, OC_show, flags);
             UI::Text(Get() ? "\\$0F0online" : "\\$F00offline");
+            UI::Text("Surely something else can go here...");
         UI::End();
     }
 }

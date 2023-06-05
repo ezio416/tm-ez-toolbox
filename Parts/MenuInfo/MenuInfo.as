@@ -1,28 +1,29 @@
 /*
 c 2023-06-04
-m 2023-06-04
+m 2023-06-05
 */
 
 namespace MenuInfo {
     void Render() {
-        if (!Settings::showMenuInfo) return;
+        if (!MI_show) return;
+        if (MI_hideWithGame && !WhereAmI::_GameUI()) return;
 
         string text = "\\$" + MI_colorCode;
 
         string spacing;
         for (uint i = 0; i < MI_spacingCount; i++) spacing += " ";
 
-        if (MI_OnlineChecker) {
-            text += spacing + (OnlineChecker::Get() ? "online" : "offline");
+        if (MI_ping) {
+            if (Globals::ServerInfo.JoinLink != "")
+                text += spacing + int(Globals::Network.LatestGamePing) + "ms";
         }
 
         if (MI_WhereAmI) {
             text += spacing + WhereAmI::CurrentStr();
         }
 
-        if (MI_ping) {
-            if (Globals::ServerInfo.JoinLink != "")
-                text += spacing + int(Globals::Network.LatestGamePing) + "ms";
+        if (MI_OnlineChecker) {
+            text += spacing + (OnlineChecker::Get() ? "online" : "offline");
         }
 
         if (MI_COTD) {

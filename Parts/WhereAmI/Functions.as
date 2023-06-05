@@ -84,6 +84,10 @@ namespace WhereAmI {
         return Globals::App.Editor !is null;
     }
 
+    bool _GameUI() {
+        return InPlayableMap() && UI::IsGameUIVisible();
+    }
+
     bool InCOTD() {
         string gamemode = GameMode;
         return gamemode == "TM_COTDQualifications_Online" ||
@@ -115,6 +119,10 @@ namespace WhereAmI {
 
     bool _Map() {
         return Globals::App.RootMap !is null;
+    }
+
+    bool _PlanetUI() {
+        return UI::IsOverlayShown();
     }
 
     bool PlayingLocal() {
