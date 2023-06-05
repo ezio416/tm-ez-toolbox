@@ -19,6 +19,9 @@ namespace MenuInfo {
     [Setting category="MenuInfo" name="Spacing" min=1 max=100]
     uint MI_spacingCount = 5;
 
+    [Setting category="MenuInfo" name="Show icons"]
+    bool MI_icons = true;
+
     [Setting category="MenuInfo" name="WhereAmI"]
     bool MI_WhereAmI = true;  // false for release
 

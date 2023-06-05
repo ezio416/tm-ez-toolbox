@@ -14,16 +14,23 @@ namespace MenuInfo {
         for (uint i = 0; i < MI_spacingCount; i++) spacing += " ";
 
         if (MI_ping) {
-            if (Globals::ServerInfo.JoinLink != "")
-                text += spacing + Icons::Kenney::Network + " " + int(Globals::Network.LatestGamePing) + "ms";
+            if (Globals::ServerInfo.JoinLink != "") {
+                text += spacing;
+                if (MI_icons) text += Icons::Kenney::Network + " ";
+                text += int(Globals::Network.LatestGamePing) + "ms";
+            }
         }
 
         if (MI_WhereAmI) {
-            text += spacing + Icons::MapMarker + " " + WhereAmI::CurrentStr();
+            text += spacing;
+            if (MI_icons) text += Icons::MapMarker + " ";
+            text += WhereAmI::CurrentStr();
         }
 
         if (MI_OnlineChecker) {
-            text += spacing + Icons::InternetExplorer + " " + (OnlineChecker::Get() ? "online" : "OFFLINE");
+            text += spacing;
+            if (MI_icons) text += Icons::InternetExplorer + " ";
+            text += (OnlineChecker::Get() ? "online" : "OFFLINE");
         }
 
         if (MI_COTD) {
@@ -34,7 +41,8 @@ namespace MenuInfo {
             int hourOfCotn = cest ? 1 : 2;
             int hourOfCotm = cest ? 9 : 10;
 
-            text += spacing + Icons::Trophy + " ";
+            text += spacing;
+            if (MI_icons) text += Icons::Trophy + " ";
 
             bool first45m = now.Minute < 45;
             if      (first45m && now.Hour == hourOfCotd) text += "COTD in progress";
@@ -66,12 +74,16 @@ namespace MenuInfo {
 
         if (MI_FPS) {
             auto fps = Globals::App.Viewport.AverageFps;
-            text += spacing + Icons::VideoCamera + " " + int(fps) + " FPS";
+            text += spacing;
+            if (MI_icons) text += Icons::VideoCamera + " ";
+            text += int(fps) + " FPS";
         }
 
         if (MI_clock) {
             auto time = Time::FormatString("%X");
-            text += spacing + Icons::ClockO + " " + time;
+            text += spacing;
+            if (MI_icons) text += Icons::ClockO + " ";
+            text += time;
         }
 
         auto pos = UI::GetCursorPos();
