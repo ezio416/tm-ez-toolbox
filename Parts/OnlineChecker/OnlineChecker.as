@@ -47,6 +47,7 @@ namespace OnlineChecker {
                     "It looks like you're offline! Records probably won't save.",
                     UI::HSV(0.02, 0.8, 0.9)
                 );
+
             sleep(OC_freq * 1000);
         }
     }
