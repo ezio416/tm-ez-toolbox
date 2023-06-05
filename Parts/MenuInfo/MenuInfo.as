@@ -15,15 +15,15 @@ namespace MenuInfo {
 
         if (MI_ping) {
             if (Globals::ServerInfo.JoinLink != "")
-                text += spacing + int(Globals::Network.LatestGamePing) + "ms";
+                text += spacing + Icons::Kenney::Network + " " + int(Globals::Network.LatestGamePing) + "ms";
         }
 
         if (MI_WhereAmI) {
-            text += spacing + WhereAmI::CurrentStr();
+            text += spacing + Icons::MapMarker + " " + WhereAmI::CurrentStr();
         }
 
         if (MI_OnlineChecker) {
-            text += spacing + (OnlineChecker::Get() ? "online" : "OFFLINE");
+            text += spacing + Icons::InternetExplorer + " " + (OnlineChecker::Get() ? "online" : "OFFLINE");
         }
 
         if (MI_COTD) {
@@ -34,7 +34,7 @@ namespace MenuInfo {
             int hourOfCotn = cest ? 1 : 2;
             int hourOfCotm = cest ? 9 : 10;
 
-            text += spacing;
+            text += spacing + Icons::Trophy + " ";
 
             bool first45m = now.Minute < 45;
             if      (first45m && now.Hour == hourOfCotd) text += "COTD in progress";
@@ -66,12 +66,12 @@ namespace MenuInfo {
 
         if (MI_FPS) {
             auto fps = Globals::App.Viewport.AverageFps;
-            text += spacing + int(fps) + " FPS";
+            text += spacing + Icons::VideoCamera + " " + int(fps) + " FPS";
         }
 
         if (MI_clock) {
             auto time = Time::FormatString("%X");
-            text += spacing + time;
+            text += spacing + Icons::ClockO + " " + time;
         }
 
         auto pos = UI::GetCursorPos();
