@@ -4,8 +4,26 @@ m 2023-06-04
 */
 
 namespace Globals {
-    auto App = cast<CTrackMania@>(GetApp());
-    auto Network = cast<CTrackManiaNetwork@>(App.Network);
+    CTrackMania@ App {
+        get {
+            try   { return cast<CTrackMania@>(GetApp()); }
+            catch { return null; }
+        }
+    }
+
+    CTrackManiaNetwork@ Network {
+        get {
+            try   { return cast<CTrackManiaNetwork@>(App.Network); }
+            catch { return null; }
+        }
+    }
+
+    CTrackManiaNetworkServerInfo@ ServerInfo {
+        get {
+            try   { return cast<CTrackManiaNetworkServerInfo>(Network.ServerInfo); }
+            catch { return null; }
+        }
+    }
 
     CSmArenaClient@ Playground {
         get {
@@ -21,16 +39,10 @@ namespace Globals {
         }
     }
 
-    CTrackManiaNetworkServerInfo@ ServerInfo {
-        get {
-            try   { return cast<CTrackManiaNetworkServerInfo>(Network.ServerInfo); }
-            catch { return null; }
-        }
-    }
-
     CSmArenaRulesMode@ PlaygroundScript {
         get {
-            return cast<CSmArenaRulesMode@>(App.PlaygroundScript);
+            try   { return cast<CSmArenaRulesMode@>(App.PlaygroundScript); }
+            catch { return null; }
         }
     }
 }
