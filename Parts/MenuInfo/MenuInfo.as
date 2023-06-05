@@ -7,19 +7,21 @@ namespace MenuInfo {
     void Render() {
         if (!Settings::showMenuInfo) return;
 
-        string text = "\\$" + MenuInfo::colorCode;
-        auto App = cast<CTrackMania@>(GetApp());
+        string text = "\\$" + colorCode;
 
         string spacing;
-        for (uint i = 0; i < MenuInfo::spacing; i++) spacing += " ";
+        for (uint i = 0; i < spacingCount; i++) spacing += " ";
 
-        if (MenuInfo::showPing) {
-            auto server = cast<CGameCtnNetServerInfo@>(App.Network.ServerInfo);
-            if (server.JoinLink != "")
-                text += spacing + int(App.Network.LatestGamePing) + "ms";
+        if (showWhereAmI) {
+            text += spacing + WhereAmI::CurrentStr();
         }
 
-        if (MenuInfo::showCOTD) {
+        if (showPing) {
+            if (Globals::ServerInfo.JoinLink != "")
+                text += spacing + int(Globals::Network.LatestGamePing) + "ms";
+        }
+
+        if (showCOTD) {
             auto now = Time::ParseUTC(Time::get_Stamp());
             bool cest = Util::Cest(now);
 
@@ -55,19 +57,19 @@ namespace MenuInfo {
             }
         }
 
-        if (MenuInfo::showFPS) {
-            auto fps = App.Viewport.AverageFps;
+        if (showFPS) {
+            auto fps = Globals::App.Viewport.AverageFps;
             text += spacing + int(fps) + " FPS";
         }
 
-        if (MenuInfo::showClock) {
+        if (showClock) {
             auto time = Time::FormatString("%X");
             text += spacing + time;
         }
 
         auto pos = UI::GetCursorPos();
         UI::SetCursorPos(vec2(
-            UI::GetWindowSize().x - Draw::MeasureString(text).x - MenuInfo::textPosition,
+            UI::GetWindowSize().x - Draw::MeasureString(text).x - textPosition,
             pos.y
         ));
         UI::Text(text);

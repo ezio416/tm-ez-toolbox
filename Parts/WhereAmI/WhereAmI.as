@@ -4,6 +4,8 @@ m 2023-06-04
 */
 
 namespace WhereAmI {
+    string title = "\\$F44" + Icons::QuestionCircle + "\\$Z " + Globals::title + " - WhereAmI";
+
     string GameMode {
         get {
             try {
@@ -12,8 +14,6 @@ namespace WhereAmI {
             } catch { return "none"; }
         }
     }
-
-    string title = "\\$F44" + Icons::QuestionCircle + "\\$Z WhereAmI";
 
     void Render() {
         if (!Settings::showWhereAmI) return;

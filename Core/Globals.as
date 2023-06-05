@@ -4,6 +4,8 @@ m 2023-06-04
 */
 
 namespace Globals {
+    string title = "EzToolbox";
+
     CTrackMania@ App {
         get {
             try   { return cast<CTrackMania@>(GetApp()); }

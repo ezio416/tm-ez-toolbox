@@ -11,7 +11,10 @@ namespace MenuInfo {
     uint textPosition = 10;
 
     [Setting category="MenuInfo" name="Spacing" min=1 max=100]
-    uint spacing = 5;
+    uint spacingCount = 5;
+
+    [Setting category="MenuInfo" name="WhereAmI"]
+    bool showWhereAmI = true;  // false for release
 
     [Setting category="MenuInfo" name="Server ping" description="only shown when on a server, duh"]
     bool showPing = true;
