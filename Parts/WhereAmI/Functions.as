@@ -4,9 +4,7 @@ m 2023-06-04
 */
 
 namespace WhereAmI {
-    string CurrentStr() {
-        // untested: non-COTD cup, ranked, royal
-
+    string CurrentStr() {  // untested: non-COTD cup, ranked, royal
         string gamemode = GameMode;
         string sequence = SequenceStr();
 

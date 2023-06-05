@@ -4,7 +4,6 @@ m 2023-06-04
 */
 
 namespace Util {
-
     bool Cest(Time::Info now) {
         uint m;
         switch (now.Month) {

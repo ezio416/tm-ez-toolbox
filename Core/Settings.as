@@ -4,9 +4,9 @@ m 2023-06-04
 */
 
 namespace Settings {
-    [Setting category="EZToolbox" name="Show MenuInfo"]
+    [Setting category="EzToolbox" name="Show MenuInfo"]
     bool showMenuInfo = true;
 
-    [Setting category="EZToolbox" name="Show WhereAmI"]
+    [Setting category="EzToolbox" name="Show WhereAmI"]
     bool showWhereAmI = true;  // false for release
 }
