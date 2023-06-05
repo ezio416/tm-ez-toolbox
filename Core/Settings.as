@@ -8,5 +8,5 @@ namespace Settings {
     bool showMenuInfo = true;
 
     [Setting category="EZToolbox" name="Show WhereAmI"]
-    bool showWhereAmI = true;
+    bool showWhereAmI = true;  // false for release
 }
