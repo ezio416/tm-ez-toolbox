@@ -7,21 +7,25 @@ namespace MenuInfo {
     void Render() {
         if (!Settings::showMenuInfo) return;
 
-        string text = "\\$" + colorCode;
+        string text = "\\$" + MI_colorCode;
 
         string spacing;
-        for (uint i = 0; i < spacingCount; i++) spacing += " ";
+        for (uint i = 0; i < MI_spacingCount; i++) spacing += " ";
 
-        if (showWhereAmI) {
+        if (MI_OnlineChecker) {
+            text += spacing + (OnlineChecker::Get() ? "online" : "offline");
+        }
+
+        if (MI_WhereAmI) {
             text += spacing + WhereAmI::CurrentStr();
         }
 
-        if (showPing) {
+        if (MI_ping) {
             if (Globals::ServerInfo.JoinLink != "")
                 text += spacing + int(Globals::Network.LatestGamePing) + "ms";
         }
 
-        if (showCOTD) {
+        if (MI_COTD) {
             auto now = Time::ParseUTC(Time::get_Stamp());
             bool cest = Util::Cest(now);
 
@@ -57,19 +61,19 @@ namespace MenuInfo {
             }
         }
 
-        if (showFPS) {
+        if (MI_FPS) {
             auto fps = Globals::App.Viewport.AverageFps;
             text += spacing + int(fps) + " FPS";
         }
 
-        if (showClock) {
+        if (MI_clock) {
             auto time = Time::FormatString("%X");
             text += spacing + time;
         }
 
         auto pos = UI::GetCursorPos();
         UI::SetCursorPos(vec2(
-            UI::GetWindowSize().x - Draw::MeasureString(text).x - textPosition,
+            UI::GetWindowSize().x - Draw::MeasureString(text).x - MI_textPosition,
             pos.y
         ));
         UI::Text(text);

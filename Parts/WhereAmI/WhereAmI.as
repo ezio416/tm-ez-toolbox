@@ -4,7 +4,7 @@ m 2023-06-04
 */
 
 namespace WhereAmI {
-    string title = "\\$F44" + Icons::QuestionCircle + "\\$Z " + Globals::title + " - WhereAmI";
+    string title = "\\$F84" + Icons::MapMarker + "\\$Z " + Globals::title + " - WhereAmI";
 
     string GameMode {
         get {

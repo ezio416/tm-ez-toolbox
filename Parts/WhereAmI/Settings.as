@@ -5,5 +5,5 @@ m 2023-06-04
 
 namespace WhereAmI {
     [Setting category="WhereAmI" name="dummy"]
-    bool dummy = true;
+    bool WAI_dummy = true;
 }
