@@ -30,6 +30,7 @@ namespace WhereAmI {
             if (finish)   return "COTD - finish";
             if (interact) return "COTD - between rounds";
             if (podium)   return "COTD - podium";
+            return "COTD - loading";
         }
 
         if (InSkinEditor())
