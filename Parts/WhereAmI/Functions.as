@@ -5,6 +5,8 @@ m 2023-06-05
 
 namespace WhereAmI {
     string CurrentStr() {  // untested: non-COTD cup, ranked, royal
+        if (!WAI_enabled) return "disabled";
+
         string gamemode = GameMode;
         string sequence = SequenceStr();
 
@@ -81,32 +83,40 @@ namespace WhereAmI {
     }
 
     bool _Editor() {
+        if (!WAI_enabled) return false;
         return Globals::App.Editor !is null;
     }
 
     bool _GameUI() {
+        if (!WAI_enabled) return false;
         return InPlayableMap() && UI::IsGameUIVisible();
     }
 
     bool InCOTD() {
+        if (!WAI_enabled) return false;
+
         string gamemode = GameMode;
         return gamemode == "TM_COTDQualifications_Online" ||
             gamemode == "TM_KnockoutDaily_Online";
     }
 
     bool InHotSeat() {
+        if (!WAI_enabled) return false;
         return GameMode == "TM_HotSeat_Local";
     }
 
     bool InMapEditor() {
+        if (!WAI_enabled) return false;
         return (_Editor() && _Script());
     }
 
     bool InPlayableMap() {
+        if (!WAI_enabled) return false;
         return Globals::Playground !is null;
     }
 
     bool InReplayEditor() {
+        if (!WAI_enabled) return false;
         return (
             (_Editor() && !_Script()) ||
             (_Map() && !InPlayableMap())
@@ -114,30 +124,38 @@ namespace WhereAmI {
     }
 
     bool InSkinEditor() {
+        if (!WAI_enabled) return false;
         return _Editor() && !_Map();
     }
 
     bool _Map() {
+        if (!WAI_enabled) return false;
         return Globals::App.RootMap !is null;
     }
 
     bool _PlanetUI() {
+        if (!WAI_enabled) return false;
         return UI::IsOverlayShown();
     }
 
     bool PlayingLocal() {
+        if (!WAI_enabled) return false;
         return GameMode.Contains("_Local");
     }
 
     bool PlayingOnline() {
+        if (!WAI_enabled) return false;
         return GameMode.Contains("_Online");
     }
 
     bool _Script() {
+        if (!WAI_enabled) return false;
         return Globals::PlaygroundScript !is null;
     }
 
     string SequenceStr() {
+        if (!WAI_enabled) return "disabled";
+
         switch (Globals::Sequence) {
             case (CGamePlaygroundUIConfig::EUISequence::None):
                 return "none";

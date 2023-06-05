@@ -4,6 +4,9 @@ m 2023-06-05
 */
 
 namespace WhereAmI {
+    [Setting category="WhereAmI" name="Enabled"]
+    bool WAI_enabled = true;
+
     [Setting category="WhereAmI" name="Show window"]
     bool WAI_show = true;  // false for release
 

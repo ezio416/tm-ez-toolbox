@@ -23,7 +23,7 @@ namespace MenuInfo {
     bool MI_WhereAmI = true;  // false for release
 
     [Setting category="MenuInfo" name="OnlineChecker"]
-    bool MI_OnlineChecker = true;
+    bool MI_OnlineChecker = true;  // false for release
 
     [Setting category="MenuInfo" name="Server ping" description="only shown when on a server, duh"]
     bool MI_ping = true;

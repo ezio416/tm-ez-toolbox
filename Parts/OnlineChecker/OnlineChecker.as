@@ -13,6 +13,10 @@ namespace OnlineChecker {
     }
 
     void Run() {
+        if (!OC_enabled) {
+            online = false;
+            return;
+        }
         if (running) return;
         running = true;
 

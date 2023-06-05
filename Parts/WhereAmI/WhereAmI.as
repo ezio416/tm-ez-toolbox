@@ -16,7 +16,7 @@ namespace WhereAmI {
     }
 
     void Render() {
-        if (!WAI_show) return;
+        if (!WAI_enabled || !WAI_show) return;
         if (WAI_hideWithGame && !_GameUI()) return;
         if (WAI_hideWithOP && !_PlanetUI()) return;
 
