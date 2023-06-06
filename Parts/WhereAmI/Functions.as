@@ -1,6 +1,6 @@
 /*
 c 2023-06-03
-m 2023-06-05
+m 2023-06-06
 */
 
 namespace WhereAmI {
@@ -33,6 +33,15 @@ namespace WhereAmI {
             if (interact) return "COTD - between rounds";
             if (podium)   return "COTD - podium";
             return "COTD - loading";
+        }
+
+        if (gamemode == "TM_Teams_Matchmaking_Online") {
+            if (intro)    return "ranked - intro";
+            if (playing)  return "ranked - playing";
+            if (finish)   return "ranked - finish";
+            if (endRound) return "ranked - between rounds";
+            if (podium)   return "ranked - podium";
+            return "ranked - loading";
         }
 
         if (InSkinEditor())

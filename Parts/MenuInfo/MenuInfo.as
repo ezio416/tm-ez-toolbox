@@ -1,6 +1,6 @@
 /*
 c 2023-06-04
-m 2023-06-05
+m 2023-06-06
 */
 
 namespace MenuInfo {
@@ -80,10 +80,9 @@ namespace MenuInfo {
         }
 
         if (MI_clock) {
-            auto time = Time::FormatString("%X");
             text += spacing;
             if (MI_icons) text += Icons::ClockO + " ";
-            text += time;
+            text += Time::FormatString("%X");
         }
 
         auto pos = UI::GetCursorPos();
