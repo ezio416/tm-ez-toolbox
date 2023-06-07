@@ -1,10 +1,10 @@
 /*
 c 2023-06-03
-m 2023-06-06
+m 2023-06-07
 */
 
 namespace WhereAmI {
-    string CurrentStr() {  // untested: non-COTD cup, ranked, royal
+    string CurrentStr() {  // untested: non-COTD cup, super royal
         if (!WAI_enabled) return "disabled";
 
         string gamemode = GameMode;
@@ -42,6 +42,15 @@ namespace WhereAmI {
             if (endRound) return "ranked - between rounds";
             if (podium)   return "ranked - podium";
             return "ranked - loading";
+        }
+
+        if (gamemode == "TM_Royal_Online") {
+            if (intro)    return "royal - intro";
+            if (playing)  return "royal - playing";
+            if (finish)   return "royal - finish";
+            if (interact) return "royal - between rounds";
+            if (podium)   return "royal - podium";
+            return "royal - loading";
         }
 
         if (InSkinEditor())
