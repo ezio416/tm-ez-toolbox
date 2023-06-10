@@ -2,7 +2,7 @@
 name = "EzToolbox"
 author = "Ezio414"
 category = "Utilities"
-version = "0.1"
+version = "0.1.0"
 
 [script]
 dependencies = [ "NadeoServices" ]
