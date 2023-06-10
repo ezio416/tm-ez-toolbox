@@ -44,6 +44,7 @@ namespace WhereAmI {
             return "ranked - loading";
         }
 
+        // includes Super Royal, can't yet distinguish
         if (gamemode == "TM_Royal_Online") {
             if (intro)    return "royal - intro";
             if (playing)  return "royal - playing";
