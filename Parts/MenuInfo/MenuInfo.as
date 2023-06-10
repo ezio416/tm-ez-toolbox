@@ -1,6 +1,6 @@
 /*
 c 2023-06-04
-m 2023-06-06
+m 2023-06-09
 */
 
 namespace MenuInfo {
@@ -10,25 +10,25 @@ namespace MenuInfo {
 
         string text = "\\$" + MI_colorCode;
 
-        string spacing;
-        for (uint i = 0; i < MI_spacingCount; i++) spacing += " ";
+        string padding;
+        for (uint i = 0; i < MI_padCount; i++) padding += " ";
 
         if (MI_ping) {
             if (Globals::ServerInfo.JoinLink != "") {
-                text += spacing;
+                text += padding;
                 if (MI_icons) text += Icons::Kenney::Network + " ";
                 text += int(Globals::Network.LatestGamePing) + "ms";
             }
         }
 
         if (MI_WhereAmI) {
-            text += spacing;
+            text += padding;
             if (MI_icons) text += Icons::MapMarker + " ";
             text += WhereAmI::CurrentStr();
         }
 
         if (MI_OnlineChecker) {
-            text += spacing;
+            text += padding;
             if (MI_icons) text += Icons::InternetExplorer + " ";
             text += (OnlineChecker::Get() ? "online" : "OFFLINE");
         }
@@ -41,7 +41,7 @@ namespace MenuInfo {
             int hourOfCotn = cest ? 1 : 2;
             int hourOfCotm = cest ? 9 : 10;
 
-            text += spacing;
+            text += padding;
             if (MI_icons) text += Icons::Trophy + " ";
 
             bool first45m = now.Minute < 45;
@@ -74,20 +74,20 @@ namespace MenuInfo {
 
         if (MI_FPS) {
             auto fps = Globals::App.Viewport.AverageFps;
-            text += spacing;
+            text += padding;
             if (MI_icons) text += Icons::VideoCamera + " ";
             text += int(fps) + " FPS";
         }
 
         if (MI_clock) {
-            text += spacing;
+            text += padding;
             if (MI_icons) text += Icons::ClockO + " ";
             text += Time::FormatString("%X");
         }
 
         auto pos = UI::GetCursorPos();
         UI::SetCursorPos(vec2(
-            UI::GetWindowSize().x - Draw::MeasureString(text).x - MI_textPosition,
+            UI::GetWindowSize().x - Draw::MeasureString(text).x - 10,
             pos.y
         ));
         UI::Text(text);

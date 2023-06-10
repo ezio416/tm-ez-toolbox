@@ -1,34 +1,31 @@
 /*
 c 2023-06-04
-m 2023-06-05
+m 2023-06-09
 */
 
 namespace MenuInfo {
     [Setting category="MenuInfo" name="Enabled"]
     bool MI_show = true;
 
-    [Setting category="MenuInfo" name="Hide with game UI"]
+    [Setting category="MenuInfo" name="Hide with game UI" description="also at main menu"]
     bool MI_hideWithGame = false;
-
-    [Setting category="MenuInfo" name="Text color" description="3-character hex code" max=3]
-    string MI_colorCode = "FFF";
-
-    [Setting category="MenuInfo" name="Text position" min=10 max=3840]
-    uint MI_textPosition = 10;
-
-    [Setting category="MenuInfo" name="Spacing" min=1 max=100]
-    uint MI_spacingCount = 5;
 
     [Setting category="MenuInfo" name="Show icons"]
     bool MI_icons = true;
 
-    [Setting category="MenuInfo" name="WhereAmI"]
-    bool MI_WhereAmI = true;  // false for release
+    [Setting category="MenuInfo" name="Padding" min=1 max=100]
+    uint MI_padCount = 5;
 
-    [Setting category="MenuInfo" name="OnlineChecker"]
-    bool MI_OnlineChecker = true;  // false for release
+    [Setting category="MenuInfo" name="Text color" description="3-character hex code" max=3]
+    string MI_colorCode = "FFF";
 
-    [Setting category="MenuInfo" name="Server ping" description="only shown when on a server, duh"]
+    [Setting category="MenuInfo" name="WhereAmI" description="must be enabled in other tab"]
+    bool MI_WhereAmI = false;
+
+    [Setting category="MenuInfo" name="OnlineChecker" description="must be enabled in other tab"]
+    bool MI_OnlineChecker = false;
+
+    [Setting category="MenuInfo" name="Ping" description="only shown when on a server"]
     bool MI_ping = true;
 
     [Setting category="MenuInfo" name="COTD countdown"]
