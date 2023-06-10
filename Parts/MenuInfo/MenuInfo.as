@@ -36,7 +36,6 @@ namespace MenuInfo {
 
     void Render() {
         if (!MI_show) return;
-        if (MI_hideWithGame && !WhereAmI::_GameUI()) return;
 
         string text = "\\$" + MI_colorCode;
 
