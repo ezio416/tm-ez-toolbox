@@ -1,10 +1,10 @@
 /*
 c 2023-06-03
-m 2023-06-08
+m 2023-06-09
 */
 
 namespace WhereAmI {
-    string CurrentStr() {  // untested: non-COTD cup
+    string CurrentStr() {
         if (!WAI_enabled) return "disabled";
 
         string gamemode = GameMode;
