@@ -1,6 +1,6 @@
 /*
 c 2023-06-03
-m 2023-06-09
+m 2023-07-04
 */
 
 namespace WhereAmI {
@@ -62,7 +62,7 @@ namespace WhereAmI {
             if (intro)    return "local - intro";
             if (playing)  return "local - playing";
             if (finish)   return "local - finish";
-            if (endRound) return "local - watching replay";
+            if (interact) return "local - watching replay";
             return "local";
         }
 
