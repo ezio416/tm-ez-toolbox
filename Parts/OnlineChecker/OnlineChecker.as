@@ -1,6 +1,6 @@
 /*
 c 2023-06-04
-m 2023-06-05
+m 2023-09-19
 */
 
 namespace OnlineChecker {
@@ -32,12 +32,15 @@ namespace OnlineChecker {
             try {
                 auto req = NadeoServices::Get(
                     "NadeoLiveServices",
-                    NadeoServices::BaseURL() + "/api/token/campaign/official?length=1&offset=999"
+                    NadeoServices::BaseURLLive() + "/api/token/campaign/official?length=1&offset=999"
                 );
                 req.Start();
                 while (!req.Finished()) yield();
-                online = (req.String() != "");
-            } catch { online = false; }
+
+                online = req.String() != "";
+            } catch {
+                online = false;
+            }
 
             online = (
                 online &&
