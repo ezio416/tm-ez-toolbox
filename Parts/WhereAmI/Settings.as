@@ -1,8 +1,9 @@
 /*
 c 2023-06-03
-m 2023-06-09
+m 2023-10-18
 */
 
+#if TMNEXT
 namespace WhereAmI {
     [Setting category="WhereAmI" name="Enabled"]
     bool WAI_enabled = true;
@@ -16,3 +17,4 @@ namespace WhereAmI {
     [Setting category="WhereAmI" name="Hide with Openplanet UI"]
     bool WAI_hideWithOP = true;
 }
+#endif

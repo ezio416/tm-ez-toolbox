@@ -1,6 +1,6 @@
 /*
 c 2023-06-04
-m 2023-06-09
+m 2023-10-18
 */
 
 namespace MenuInfo {
@@ -22,15 +22,19 @@ namespace MenuInfo {
     [Setting category="MenuInfo" name="FPS counter"]
     bool MI_FPS = true;
 
+#if TMNEXT
     [Setting category="MenuInfo" name="COTD countdown"]
     bool MI_COTD = true;
+#endif
 
     [Setting category="MenuInfo" name="Ping" description="only shown when on a server"]
     bool MI_ping = true;
 
+#if TMNEXT
     [Setting category="MenuInfo" name="OnlineChecker" description="must be enabled in other tab"]
     bool MI_OnlineChecker = false;
 
     [Setting category="MenuInfo" name="WhereAmI" description="must be enabled in other tab"]
     bool MI_WhereAmI = false;
+#endif
 }

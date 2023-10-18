@@ -1,6 +1,6 @@
 /*
 c 2023-06-04
-m 2023-06-09
+m 2023-10-18
 */
 
 namespace MenuInfo {
@@ -50,6 +50,7 @@ namespace MenuInfo {
             }
         }
 
+#if TMNEXT
         if (MI_WhereAmI) {
             text += padding;
             if (MI_icons) text += Icons::MapMarker + " ";
@@ -100,6 +101,7 @@ namespace MenuInfo {
                 }
             }
         }
+#endif
 
         if (MI_FPS) {
             auto fps = Globals::App.Viewport.AverageFps;

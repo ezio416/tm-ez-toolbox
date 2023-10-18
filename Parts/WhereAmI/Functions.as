@@ -1,8 +1,9 @@
 /*
 c 2023-06-03
-m 2023-10-13
+m 2023-10-18
 */
 
+#if TMNEXT
 namespace WhereAmI {
     string CurrentStr() {
         if (!WAI_enabled) return "disabled";
@@ -205,3 +206,4 @@ namespace WhereAmI {
         }
     }
 }
+#endif

@@ -1,8 +1,9 @@
 /*
 c 2023-06-04
-m 2023-06-05
+m 2023-10-18
 */
 
+#if TMNEXT
 namespace WhereAmI {
     string title = "\\$F84" + Icons::MapMarker + "\\$Z " + Globals::title + " - WhereAmI";
 
@@ -44,3 +45,4 @@ namespace WhereAmI {
         UI::End();
     }
 }
+#endif
