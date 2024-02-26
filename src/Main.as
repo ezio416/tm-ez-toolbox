@@ -1,7 +1,5 @@
-/*
-c 2023-06-04
-m 2023-10-18
-*/
+// c 2023-06-04
+// m 2023-10-18
 
 void Main() {
 #if DEPENDENCY_NADEOSERVICES
