@@ -44,5 +44,5 @@ void RenderMenuMain() {
 }
 
 void RenderWindow() {
-    ;
+    UI::Text(EzGame::App.OSLocalTime);
 }

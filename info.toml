@@ -7,4 +7,4 @@ siteid = 396
 
 [script]
 optional_dependencies = [ "NadeoServices" ]
-shared_exports = [ "src/Http.as" ]
+shared_exports = [ "src/Game.as", "src/Http.as" ]

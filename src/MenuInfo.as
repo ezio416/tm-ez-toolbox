@@ -67,10 +67,10 @@ namespace MenuInfo {
         for (uint i = 0; i < MI_padCount; i++) padding += " ";
 
         if (MI_ping) {
-            if (Globals::ServerInfo.JoinLink != "") {
+            if (EzGame::ServerInfo.JoinLink != "") {
                 text += padding;
                 if (MI_icons) text += Icons::Kenney::Network + " ";
-                text += int(Globals::Network.LatestGamePing) + "ms";
+                text += int(EzGame::Network.LatestGamePing) + "ms";
             }
         }
 
@@ -116,7 +116,7 @@ namespace MenuInfo {
 #endif
 
         if (MI_FPS) {
-            auto fps = Globals::App.Viewport.AverageFps;
+            auto fps = EzGame::App.Viewport.AverageFps;
             text += padding;
             if (MI_icons) text += Icons::VideoCamera + " ";
             text += int(fps) + " FPS";
