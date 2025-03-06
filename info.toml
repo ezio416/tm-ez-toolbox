@@ -6,5 +6,5 @@ version = "1.0.0"
 siteid = 396
 
 [script]
-optional_dependencies = [ "NadeoServices" ]
+optional_dependencies = [ "NadeoServices", "MLHook" ]
 shared_exports = [ "src/Game.as", "src/Http.as" ]
