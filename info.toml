@@ -2,8 +2,9 @@
 name = "EzToolbox"
 author = "Ezio"
 category = "Utilities"
-version = "0.2.0"
+version = "1.0.0"
 siteid = 396
 
 [script]
 optional_dependencies = [ "NadeoServices" ]
+shared_exports = [ "src/Http.as" ]
