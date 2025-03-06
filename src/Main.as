@@ -16,9 +16,11 @@ bool S_HideWithGame = true;
 bool S_HideWithOP = false;
 
 void Main() {
+#if TMNEXT
     if (!Permissions::PlayLocalMap()) {
         warn("Starter Access detected, functionality is limited");
     }
+#endif
 }
 
 void Render() {
@@ -29,8 +31,8 @@ void Render() {
     )
         return;
 
-    if (UI::Begin(pluginTitle, S_Enabled, UI::WindowFlags::None))
-        RenderWindow();
+    if (UI::Begin(pluginTitle + " (Debug)", S_Enabled, UI::WindowFlags::None))
+        RenderDebug();
     UI::End();
 }
 
@@ -41,8 +43,4 @@ void RenderMenu() {
 
 void RenderMenuMain() {
     MenuInfo::Render();
-}
-
-void RenderWindow() {
-    UI::Text(EzGame::App.OSLocalTime);
 }

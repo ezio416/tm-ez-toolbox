@@ -116,7 +116,7 @@ namespace MenuInfo {
 #endif
 
         if (MI_FPS) {
-            auto fps = EzGame::App.Viewport.AverageFps;
+            auto fps = EzGame::Viewport.AverageFps;
             text += padding;
             if (MI_icons) text += Icons::VideoCamera + " ";
             text += int(fps) + " FPS";
