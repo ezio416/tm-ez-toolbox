@@ -74,7 +74,7 @@ namespace EzJson {
     /*
     Gets an unsigned 32-bit integer.
     */
-    int GetUint(Json::Value@ json, const string &in key) {
+    uint GetUint(Json::Value@ json, const string &in key) {
         return GetUint32(json, key);
     }
 

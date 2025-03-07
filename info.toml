@@ -7,6 +7,7 @@ siteid = 396
 
 [script]
 optional_dependencies = [ "NadeoServices", "MLHook" ]
+export_dependencies = [ "MLHook" ]
 
 module = "EzToolbox"
 exports = [ "src/Export/Export.as" ]
