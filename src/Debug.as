@@ -2,5 +2,5 @@
 // m 2025-03-06
 
 void RenderDebug() {
-    UI::Text(EzGame::App.OSLocalTime);
+    UI::Text(EzGame::ExeVersion);
 }

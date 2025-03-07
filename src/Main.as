@@ -1,23 +1,23 @@
 // c 2023-06-04
 // m 2025-03-06
 
-bool          canPlayLocalMaps = false;
-const string  pluginColor      = "\\$6F6";
-const string  pluginIcon       = Icons::Wrench;
-Meta::Plugin@ pluginMeta       = Meta::ExecutingPlugin();
-const string  pluginTitle      = pluginColor + pluginIcon + "\\$G " + pluginMeta.Name;
+const string  pluginColor = "\\$6F6";
+const string  pluginIcon  = Icons::Wrench;
+Meta::Plugin@ pluginMeta  = Meta::ExecutingPlugin();
+const string  pluginTitle = pluginColor + pluginIcon + "\\$G " + pluginMeta.Name;
 
 void Main() {
+    EzGame::Update();  // need to update this frame to prevent exceptions
+    startnew(EzGame::UpdateAsync);
+
 #if TMNEXT
-    canPlayLocalMaps = Permissions::PlayLocalMap();
-    if (!canPlayLocalMaps)
+    if (!Permissions::PlayLocalMap())
         warn("Starter Access detected, functionality is limited");
-#else
-    canPlayLocalMaps = true;
-#endif
 
 #if !DEPENDENCY_MLHOOK
     warn("MLHook not found, functionality is limited");
+#endif
+
 #endif
 }
 
