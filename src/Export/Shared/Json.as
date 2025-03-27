@@ -1,5 +1,5 @@
 // c 2024-10-21
-// m 2025-03-06
+// m 2025-03-09
 
 /*
 Pure functions for safely interacting with Json data.
@@ -9,11 +9,11 @@ In case of errors:
     - string  types return `""` (empty)
     - handle  types return `null`
 */
-namespace EzJson {
+namespace Ez::EzJson {
     /*
     Checks whether a value is of the specified type.
     */
-    bool CheckType(Json::Value@ json, Json::Type type = Json::Type::Object) {
+    shared bool CheckType(Json::Value@ json, Json::Type type = Json::Type::Object) {
         if (json is null)
             return false;
 
@@ -23,7 +23,7 @@ namespace EzJson {
     /*
     Gets a boolean (true/false).
     */
-    bool GetBool(Json::Value@ json, const string &in key) {
+    shared bool GetBool(Json::Value@ json, const string &in key) {
         try {
             return bool(GetValue(json, key, Json::Type::Boolean));
         } catch {
@@ -34,14 +34,14 @@ namespace EzJson {
     /*
     Gets a signed 32-bit integer.
     */
-    int GetInt(Json::Value@ json, const string &in key) {
+    shared int GetInt(Json::Value@ json, const string &in key) {
         return GetInt32(json, key);
     }
 
     /*
     Gets a signed 32-bit integer.
     */
-    int32 GetInt32(Json::Value@ json, const string &in key) {
+    shared int32 GetInt32(Json::Value@ json, const string &in key) {
         try {
             return int(GetValue(json, key, Json::Type::Number));
         } catch {
@@ -52,7 +52,7 @@ namespace EzJson {
     /*
     Gets a signed 64-bit integer.
     */
-    int64 GetInt64(Json::Value@ json, const string &in key) {
+    shared int64 GetInt64(Json::Value@ json, const string &in key) {
         try {
             return int64(GetValue(json, key, Json::Type::Number));
         } catch {
@@ -63,7 +63,7 @@ namespace EzJson {
     /*
     Gets a string of characters.
     */
-    string GetString(Json::Value@ json, const string &in key) {
+    shared string GetString(Json::Value@ json, const string &in key) {
         try {
             return string(GetValue(json, key, Json::Type::String));
         } catch {
@@ -74,14 +74,14 @@ namespace EzJson {
     /*
     Gets an unsigned 32-bit integer.
     */
-    uint GetUint(Json::Value@ json, const string &in key) {
+    shared uint GetUint(Json::Value@ json, const string &in key) {
         return GetUint32(json, key);
     }
 
     /*
     Gets an unsigned 32-bit integer.
     */
-    uint32 GetUint32(Json::Value@ json, const string &in key) {
+    shared uint32 GetUint32(Json::Value@ json, const string &in key) {
         try {
             return uint32(GetValue(json, key, Json::Type::Number));
         } catch {
@@ -92,7 +92,7 @@ namespace EzJson {
     /*
     Gets an unsigned 64-bit integer.
     */
-    uint64 GetUint64(Json::Value@ json, const string &in key) {
+    shared uint64 GetUint64(Json::Value@ json, const string &in key) {
         try {
             return uint64(GetValue(json, key, Json::Type::Number));
         } catch {
@@ -103,7 +103,7 @@ namespace EzJson {
     /*
     Gets a nested value and ensures it is of the specified type.
     */
-    Json::Value@ GetValue(Json::Value@ json, const string &in key, Json::Type type = Json::Type::Object) {
+    shared Json::Value@ GetValue(Json::Value@ json, const string &in key, Json::Type type = Json::Type::Object) {
         if (json is null || !json.HasKey(key))
             return null;
 

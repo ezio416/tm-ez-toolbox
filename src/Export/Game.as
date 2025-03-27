@@ -1,7 +1,8 @@
 // c 2025-03-06
-// m 2025-03-06
+// m 2025-03-09
 
-namespace EzGame {
+namespace Ez {  // EzGame
+    CTrackMania@                         _App;
     CGameCtnEditorFree@                  _Editor;
     string                               _GameMode;
     CTrackManiaNetwork@                  _Network;
@@ -21,45 +22,68 @@ namespace EzGame {
     CTrackManiaRaceRules@                _PlaygroundScript;
 #endif
 
-    CGameCtnEditorFree@                  get_Editor()           { return _Editor;           }
-    string                               get_ExeVersion()       { return _ExeVersion;       }
-    string                               get_GameMode()         { return _GameMode;         }
-    CTrackManiaNetwork@                  get_Network()          { return _Network;          }
-    CGameCtnChallenge@                   get_RootMap()          { return _RootMap;          }
-    CGamePlaygroundUIConfig::EUISequence get_Sequence()         { return _Sequence;         }
-    CTrackManiaNetworkServerInfo@        get_ServerInfo()       { return _ServerInfo;       }
-    CDx11Viewport@                       get_Viewport()         { return _Viewport;         }
+    CTrackMania@                         get_App()              { CheckEnabled(); return _App;              }
+    CGameCtnEditorFree@                  get_Editor()           { CheckEnabled(); return _Editor;           }
+    string                               get_ExeVersion()       { CheckEnabled(); return _ExeVersion;       }
+    string                               get_GameMode()         { CheckEnabled(); return _GameMode;         }
+    CTrackManiaNetwork@                  get_Network()          { CheckEnabled(); return _Network;          }
+    CGameCtnChallenge@                   get_RootMap()          { CheckEnabled(); return _RootMap;          }
+    CGamePlaygroundUIConfig::EUISequence get_Sequence()         { CheckEnabled(); return _Sequence;         }
+    CTrackManiaNetworkServerInfo@        get_ServerInfo()       { CheckEnabled(); return _ServerInfo;       }
+    CDx11Viewport@                       get_Viewport()         { CheckEnabled(); return _Viewport;         }
 #if TMNEXT
-    CSmArenaClient@                      get_Playground()       { return _Playground;       }
-    CSmArenaRulesMode@                   get_PlaygroundScript() { return _PlaygroundScript; }
+    CSmArenaClient@                      get_Playground()       { CheckEnabled(); return _Playground;       }
+    CSmArenaRulesMode@                   get_PlaygroundScript() { CheckEnabled(); return _PlaygroundScript; }
 #elif MP4
-    CGamePlayground@                     get_Playground()       { return _Playground;       }
-    CTrackManiaRaceRules@                get_PlaygroundScript() { return _PlaygroundScript; }
+    CGamePlayground@                     get_Playground()       { CheckEnabled(); return _Playground;       }
+    CTrackManiaRaceRules@                get_PlaygroundScript() { CheckEnabled(); return _PlaygroundScript; }
 #elif TURBO
-    CGamePlayground@                     get_Playground()       { return _Playground;       }
-    CTrackManiaRaceRules@                get_PlaygroundScript() { return _PlaygroundScript; }
+    CGamePlayground@                     get_Playground()       { CheckEnabled(); return _Playground;       }
+    CTrackManiaRaceRules@                get_PlaygroundScript() { CheckEnabled(); return _PlaygroundScript; }
 #endif
 
     void Update() {
-        CTrackMania@ App = cast<CTrackMania@>(GetApp());
-
-        @_Editor = cast<CGameCtnEditorFree@>(App.Editor);
-        @_Network = cast<CTrackManiaNetwork@>(App.Network);
-        @_ServerInfo = cast<CTrackManiaNetworkServerInfo@>(_Network.ServerInfo);
-        @_Viewport = cast<CDx11Viewport@>(App.Viewport);
+        if (!enabled) {
+            @_App              = null;
+            @_Editor           = null;
+            _GameMode          = "";
+            @_Network          = null;
+            @_RootMap          = null;
+            _Sequence          = CGamePlaygroundUIConfig::EUISequence::None;
+            @_ServerInfo       = null;
+            @_Viewport         = null;
 #if TMNEXT
-        _ExeVersion = App.SystemPlatform.ExeVersion;
-        @_Playground = cast<CSmArenaClient@>(App.CurrentPlayground);
-        @_PlaygroundScript = cast<CSmArenaRulesMode@>(App.PlaygroundScript);
-        @_RootMap = App.RootMap;
+            _ExeVersion        = "";
+            @_Playground       = null;
+            @_PlaygroundScript = null;
 #elif MP4
-        @_Playground = App.CurrentPlayground;
-        @_PlaygroundScript = cast<CTrackManiaRaceRules@>(App.PlaygroundScript);
-        @_RootMap = App.RootMap;
+            @_Playground       = null;
+            @_PlaygroundScript = null;
 #elif TURBO
-        @_Playground = App.CurrentPlayground;
-        @_PlaygroundScript = cast<CTrackManiaRaceRules@>(App.PlaygroundScript);
-        @_RootMap = App.Challenge;
+            @_Playground       = null;
+            @_PlaygroundScript = null;
+#endif
+            return;
+        }
+
+        @_App = cast<CTrackMania@>(GetApp());
+        @_Editor = cast<CGameCtnEditorFree@>(_App.Editor);
+        @_Network = cast<CTrackManiaNetwork@>(_App.Network);
+        @_ServerInfo = cast<CTrackManiaNetworkServerInfo@>(_Network.ServerInfo);
+        @_Viewport = cast<CDx11Viewport@>(_App.Viewport);
+#if TMNEXT
+        _ExeVersion = _App.SystemPlatform.ExeVersion;
+        @_Playground = cast<CSmArenaClient@>(_App.CurrentPlayground);
+        @_PlaygroundScript = cast<CSmArenaRulesMode@>(_App.PlaygroundScript);
+        @_RootMap = _App.RootMap;
+#elif MP4
+        @_Playground = _App.CurrentPlayground;
+        @_PlaygroundScript = cast<CTrackManiaRaceRules@>(_App.PlaygroundScript);
+        @_RootMap = _App.RootMap;
+#elif TURBO
+        @_Playground = _App.CurrentPlayground;
+        @_PlaygroundScript = cast<CTrackManiaRaceRules@>(_App.PlaygroundScript);
+        @_RootMap = _App.Challenge;
 #endif
         _GameMode = _ServerInfo !is null ? string(_ServerInfo.CurGameModeStr) : "";
         _Sequence = _Playground !is null && _Playground.UIConfigs.Length > 0
@@ -69,8 +93,8 @@ namespace EzGame {
 
     void UpdateAsync() {
         while (true) {
-            yield();
             Update();
+            yield();
         }
     }
 

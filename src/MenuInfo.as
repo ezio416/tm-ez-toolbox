@@ -1,5 +1,5 @@
 // c 2023-06-04
-// m 2025-03-06
+// m 2025-03-09
 
 namespace MenuInfo {
     [Setting category="MenuInfo" name="Enabled"]
@@ -66,11 +66,11 @@ namespace MenuInfo {
         string padding;
         for (uint i = 0; i < MI_padCount; i++) padding += " ";
 
-        if (MI_ping) {
-            if (EzGame::ServerInfo.JoinLink != "") {
+        if (MI_ping && enabled) {
+            if (Ez::EzGame::ServerInfo.JoinLink != "") {
                 text += padding;
                 if (MI_icons) text += Icons::Kenney::Network + " ";
-                text += int(EzGame::Network.LatestGamePing) + "ms";
+                text += int(Ez::EzGame::Network.LatestGamePing) + "ms";
             }
         }
 
@@ -115,8 +115,8 @@ namespace MenuInfo {
         }
 #endif
 
-        if (MI_FPS) {
-            auto fps = EzGame::Viewport.AverageFps;
+        if (MI_FPS && enabled) {
+            auto fps = Ez::EzGame::Viewport.AverageFps;
             text += padding;
             if (MI_icons) text += Icons::VideoCamera + " ";
             text += int(fps) + " FPS";

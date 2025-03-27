@@ -7,8 +7,7 @@ siteid = 396
 
 [script]
 optional_dependencies = [ "NadeoServices", "MLHook" ]
-export_dependencies = [ "MLHook" ]
+export_dependencies = [ "NadeoServices", "MLHook" ]
 
-module = "EzToolbox"
-exports = [ "src/Export/Export.as" ]
-shared_exports = [ "src/Export/Shared/Http.as", "src/Export/Shared/Json.as" ]
+module = "Ez"
+shared_exports = [ "src/Export/Shared/Exports.as", "src/Export/Shared/Json.as" ]
