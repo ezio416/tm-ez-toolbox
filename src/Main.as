@@ -53,7 +53,7 @@ could also be thought of as OnCreated to oppose OnDestroyed
 yieldable (is ran as a coroutine by the engine)
 */
 void Main() {
-    trace("new loop");
+    trace("new state loop");
 
     auto App = cast<CTrackMania@>(GetApp());
     auto Network = cast<CTrackManiaNetwork@>(App.Network);
@@ -130,7 +130,7 @@ void Main() {
         yield();
     }
 
-    warn("loop broke!");
+    warn("state loop broke!");
     CleanUp();
     startnew(Main);
 }
