@@ -22,6 +22,12 @@ void RenderDebugContents() {
 
         UI::TableNextRow();
         UI::TableNextColumn();
+        UI::Text("fps");
+        UI::TableNextColumn();
+        UI::Text(Text::Format("%.1f", Ez2::state.fps));
+
+        UI::TableNextRow();
+        UI::TableNextColumn();
         UI::Text("game mode");
         UI::TableNextColumn();
         UI::Text(Ez2::state.gameMode);
@@ -73,22 +79,6 @@ void RenderDebugContents() {
         UI::Text("map uid");
         UI::TableNextColumn();
         UI::Text(Ez2::state.mapUid);
-
-#if DEPENDENCY_CHAMPIONMEDALS
-        UI::TableNextRow();
-        UI::TableNextColumn();
-        UI::Text("champion time");
-        UI::TableNextColumn();
-        UI::Text(Time::Format(Ez2::state.championTime));
-#endif
-
-#if DEPENDENCY_WARRIORMEDALS
-        UI::TableNextRow();
-        UI::TableNextColumn();
-        UI::Text("warrior time");
-        UI::TableNextColumn();
-        UI::Text(Time::Format(Ez2::state.warriorTime));
-#endif
 
         UI::TableNextRow();
         UI::TableNextColumn();
@@ -221,6 +211,12 @@ void RenderDebugContents() {
         UI::Text("bits");
         UI::TableNextColumn();
         UI::Text(tostring(Ez2::state.bits));
+
+        UI::TableNextRow();
+        UI::TableNextColumn();
+        UI::Text("exe version");
+        UI::TableNextColumn();
+        UI::Text(Ez2::state.exeVersion);
 
         UI::TableNextRow();
         UI::TableNextColumn();

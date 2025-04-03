@@ -74,6 +74,8 @@ void Main() {
             && App.LoadProgress.State != NGameLoadProgress::EState::Disabled
         ;
 
+        _state.fps = App.Viewport !is null ? App.Viewport.AverageFps : 0.0f;
+
         if (_state.inMap) {
             _state.mapType    = App.RootMap.MapType;
             _state.mapUid     = App.RootMap.EdChallengeId;
@@ -81,14 +83,6 @@ void Main() {
             _state.bronzeTime = App.RootMap.TMObjective_BronzeTime;
             _state.goldTime   = App.RootMap.TMObjective_GoldTime;
             _state.silverTime = App.RootMap.TMObjective_SilverTime;
-
-#if DEPENDENCY_CHAMPIONMEDALS
-            _state.championTime = ChampionMedals::GetCMTime();
-#endif
-#if DEPENDENCY_WARRIORMEDALS
-            _state.warriorTime = WarriorMedals::GetWMTime();
-#endif
-
         } else {
             _state.mapType    = "";
             _state.mapUid     = "";

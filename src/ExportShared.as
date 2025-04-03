@@ -2,18 +2,12 @@
 // m 2025-04-03
 
 namespace Ez2 {
-    /*
-    Subscription tier of the current player
-    */
     shared enum AccessLevel {
         Starter,
         Standard,
         Club
     }
 
-    /*
-    Which game we're playing
-    */
     shared enum Game {
         United,
         Tm2,
@@ -21,9 +15,6 @@ namespace Ez2 {
         Tm2020
     }
 
-    /*
-    Which operating system we're on
-    */
     shared enum OperatingSystem {
         Windows,
         Wine,
@@ -44,26 +35,26 @@ namespace Ez2 {
         t1.1
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
-        protected uint _authorTime;
+        protected uint _authorTime = 0;
         /*
         the current map's author medal time
         `App.RootMap.TMObjective_AuthorTime`
         */
         uint get_authorTime() final { return _authorTime; }
 
-        protected uint _bronzeTime;
+        protected uint _bronzeTime = 0;
         /*
         the current map's bronze medal time
         `App.RootMap.TMObjective_BronzeTime`
         */
         uint get_bronzeTime() final { return _bronzeTime; }
 
-        protected uint _championTime;
+        protected float _fps = 0.0f;
         /*
-        the current map's champion time (if it exists, otherwise 0)
-        `ChampionMedals::GetCMTime()`
+        the current average framerate
+        `App.Viewport.AverageFps`
         */
-        uint get_championTime() final { return _championTime; }
+        float get_fps() final { return _fps; }
 
         protected string _gameMode;
         /*
@@ -72,7 +63,7 @@ namespace Ez2 {
         */
         string get_gameMode() final { return _gameMode; }
 
-        protected uint _goldTime;
+        protected uint _goldTime = 0;
         /*
         the current map's gold medal time
         `App.RootMap.TMObjective_GoldTime`
@@ -149,7 +140,7 @@ namespace Ez2 {
         */
         bool get_playgroundScript() final { return _playgroundScript; }
 
-        protected uint _silverTime;
+        protected uint _silverTime = 0;
         /*
         the current map's silver medal time
         `App.RootMap.TMObjective_SilverTime`
@@ -170,18 +161,11 @@ namespace Ez2 {
         */
         string get_viewingLogin() final { return _viewingLogin; }
 
-        protected uint _warriorTime;
-        /*
-        the current map's warrior time (if it exists, otherwise 0)
-        `WarriorMedals::GetWMTime()`
-        */
-        uint get_warriorTime() final { return _warriorTime; }
-
         /*/////////////////////////////////////////////////////////////////////////////////////////////////////////////
         logic properties
         derived from base properties
         calculate values once per frame
-        t[ier]funcCallCount.TotalPrivateAccesses
+        t[ier]funcCallCount.totalPrivateAccesses
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
         private bool _driving = false;
@@ -385,6 +369,14 @@ namespace Ez2 {
         uint get_bits() final { return _bits; }
         private void set_bits(uint u) final { };
 
+        private string _exeVersion;
+        /*
+        the game's executable version
+        `App.ManiaPlanetScriptAPI.System.ExeVersion`
+        */
+        string get_exeVersion() final { return _exeVersion; }
+        private void set_exeVersion(const string &in e) final { }
+
 #if UNITED
         private Game _game = Game::United;
 #elif MP3 || MP4
@@ -394,6 +386,7 @@ namespace Ez2 {
 #elif TMNEXT
         private Game _game = Game::Tm2020;
 #endif
+        // the game the player is playing
         Game get_game() final { return _game; }
         private void set_game(Game g) final { }
 
@@ -403,7 +396,7 @@ namespace Ez2 {
         do not use for actual permission checks, only as a reference
         */
         AccessLevel get_localAccessLevel() final { return _localAccessLevel; }
-        private void set_localAccessLevel(AccessLevel a) final { _localAccessLevel = a; }
+        private void set_localAccessLevel(AccessLevel a) final { }
 
         private MwId _localId;
         /*
@@ -411,7 +404,7 @@ namespace Ez2 {
         `App.UserManagerScript.Users[0].Id`
         */
         MwId get_localId() final { return _localId; }
-        private void set_localId(MwId l) final { _localId = l; }
+        private void set_localId(MwId l) final { }
 
         private string _localLogin;
         /*
@@ -419,7 +412,7 @@ namespace Ez2 {
         `App.LocalPlayerInfo.Login`
         */
         string get_localLogin() final { return _localLogin; }
-        private void set_localLogin(const string &in l) final { _localLogin = l; }
+        private void set_localLogin(const string &in l) final { }
 
         private string _localUsername;
         /*
@@ -427,7 +420,7 @@ namespace Ez2 {
         `App.LocalPlayerInfo.Name`
         */
         string get_localUsername() final { return _localUsername; }
-        private void set_localUsername(const string &in l) final { _localUsername = l; }
+        private void set_localUsername(const string &in l) final { }
 
         private string _localWsid;
         /*
@@ -435,7 +428,7 @@ namespace Ez2 {
         `App.LocalPlayerInfo.WebServicesUserId`
         */
         string get_localWsid() final { return _localWsid; }
-        private void set_localWsid(const string &in l) final { _localWsid = l; }
+        private void set_localWsid(const string &in l) final { }
 
 #if WINDOWS
         private OperatingSystem _os = OperatingSystem::Windows;
@@ -444,6 +437,7 @@ namespace Ez2 {
 #elif LINUX
         private OperatingSystem _os = OperatingSystem::Linux;
 #endif
+        // the player's operating system
         OperatingSystem get_os() final { return _os; }
         private void set_os(OperatingSystem o) final { }
 
@@ -458,15 +452,23 @@ namespace Ez2 {
             }
         }
 
-        protected void GetLocalPlayerInfoAsync() final {
+        protected void GetCachedInfoAsync() final {
+            auto App = cast<CTrackMania@>(GetApp());
+
+            _exeVersion = (true
+                && App.ManiaPlanetScriptAPI !is null
+                && App.ManiaPlanetScriptAPI.System !is null
+            )
+                ? App.ManiaPlanetScriptAPI.System.ExeVersion
+                : ""
+            ;
+
             if (Permissions::CreateClub())
                 _localAccessLevel = AccessLevel::Club;
             else if (Permissions::PlayLocalMap())
                 _localAccessLevel = AccessLevel::Standard;
             else
                 _localAccessLevel = AccessLevel::Starter;
-
-            auto App = cast<CTrackMania@>(GetApp());
 
             while (App.LocalPlayerInfo is null)
                 yield();
