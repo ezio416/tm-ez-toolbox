@@ -1,10 +1,10 @@
 // c 2025-03-29
 // m 2025-04-03
 
-const string   pluginColor   = "\\$0A0";
-const string   pluginIcon    = Icons::Wrench;
-Meta::Plugin@  pluginMeta    = Meta::ExecutingPlugin();
-const string   pluginTitle   = pluginColor + pluginIcon + "\\$G " + pluginMeta.Name;
+const string   pluginColor = "\\$0A0";
+const string   pluginIcon  = Icons::Wrench;
+Meta::Plugin@  pluginMeta  = Meta::ExecutingPlugin();
+const string   pluginTitle = pluginColor + pluginIcon + "\\$G " + pluginMeta.Name;
 InternalState@ _state;
 
 /*
