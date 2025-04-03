@@ -58,14 +58,12 @@ namespace Ez2 {
         */
         uint get_bronzeTime() final { return _bronzeTime; }
 
-#if DEPENDENCY_CHAMPIONMEDALS
         protected uint _championTime;
         /*
         the current map's champion time (if it exists, otherwise 0)
         `ChampionMedals::GetCMTime()`
         */
         uint get_championTime() final { return _championTime; }
-#endif
 
         protected string _gameMode;
         /*
@@ -172,14 +170,12 @@ namespace Ez2 {
         */
         string get_viewingLogin() final { return _viewingLogin; }
 
-#if DEPENDENCY_WARRIORMEDALS
         protected uint _warriorTime;
         /*
         the current map's warrior time (if it exists, otherwise 0)
         `WarriorMedals::GetWMTime()`
         */
         uint get_warriorTime() final { return _warriorTime; }
-#endif
 
         /*/////////////////////////////////////////////////////////////////////////////////////////////////////////////
         logic properties

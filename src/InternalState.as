@@ -10,14 +10,9 @@ class InternalState : Ez2::State {
         startnew(CoroutineFunc(GetLocalPlayerInfoAsync));
     }
 
-#if DEPENDENCY_CHAMPIONMEDALS
-    void set_championTime    (uint c)                                 { _championTime = c;     }
-#endif
-#if DEPENDENCY_WARRIORMEDALS
-    void set_warriorTime     (uint w)                                 { _warriorTime = w;      }
-#endif
     void set_authorTime      (uint a)                                 { _authorTime = a;       }
     void set_bronzeTime      (uint b)                                 { _bronzeTime = b;       }
+    void set_championTime    (uint c)                                 { _championTime = c;     }
     void set_gameMode        (const string &in g)                     { _gameMode = g;         }
     void set_goldTime        (uint g)                                 { _goldTime = g;         }
     void set_guiPlayer       (bool g)                                 { _guiPlayer = g;        }
@@ -33,4 +28,5 @@ class InternalState : Ez2::State {
     void set_sequence        (CGamePlaygroundUIConfig::EUISequence s) { _sequence = s;         }
     void set_silverTime      (uint s)                                 { _silverTime = s;       }
     void set_viewingLogin    (const string &in v)                     { _viewingLogin = v;     }
+    void set_warriorTime     (uint w)                                 { _warriorTime = w;      }
 }
