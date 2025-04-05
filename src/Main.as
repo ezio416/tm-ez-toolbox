@@ -55,80 +55,99 @@ yieldable (is ran as a coroutine by the engine)
 void Main() {
     trace("new state loop");
 
-    auto App = cast<CTrackMania@>(GetApp());
-    auto Network = cast<CTrackManiaNetwork@>(App.Network);
-    auto ServerInfo = cast<CTrackManiaNetworkServerInfo@>(Network.ServerInfo);
+    try {
+        auto App = cast<CTrackMania@>(GetApp());
+        auto Network = cast<CTrackManiaNetwork@>(App.Network);
+        auto ServerInfo = cast<CTrackManiaNetworkServerInfo@>(Network.ServerInfo);
 
-    Ez2::state;
+        Ez2::state;
 
-    while (true) {
-        _state.gameMode = string(ServerInfo.CurGameModeStr);
+        while (true) {
+            _state.Increment();
 
-        _state.inEditor = App.Editor !is null;
-        _state.inMap = App.RootMap !is null;
-        _state.inMenu = App.ActiveMenus.Length > 0;
-        _state.inPlayground = App.CurrentPlayground !is null;
+            _state.gameMode = string(ServerInfo.CurGameModeStr);
 
-        _state.loading = true
-            && App.LoadProgress !is null
-            && App.LoadProgress.State != NGameLoadProgress::EState::Disabled
-        ;
+            _state.inEditor = App.Editor !is null;
+            _state.inMap = App.RootMap !is null;
+            _state.inMenu = App.ActiveMenus.Length > 0;
+            _state.inPlayground = App.CurrentPlayground !is null;
 
-        _state.fps = App.Viewport !is null ? App.Viewport.AverageFps : 0.0f;
+            _state.loading = true
+                && App.LoadProgress !is null
+                && App.LoadProgress.State != NGameLoadProgress::EState::Disabled
+            ;
 
-        if (_state.inMap) {
-            _state.mapType    = App.RootMap.MapType;
-            _state.mapUid     = App.RootMap.EdChallengeId;
-            _state.authorTime = App.RootMap.TMObjective_AuthorTime;
-            _state.bronzeTime = App.RootMap.TMObjective_BronzeTime;
-            _state.goldTime   = App.RootMap.TMObjective_GoldTime;
-            _state.silverTime = App.RootMap.TMObjective_SilverTime;
-        } else {
-            _state.mapType    = "";
-            _state.mapUid     = "";
-            _state.authorTime = 0;
-            _state.bronzeTime = 0;
-            _state.goldTime   = 0;
-            _state.silverTime = 0;
+            _state.fps = App.Viewport !is null ? App.Viewport.AverageFps : 0.0f;
+
+            if (_state.inMap) {
+                _state.mapType    = App.RootMap.MapType;
+                _state.mapUid     = App.RootMap.EdChallengeId;
+                _state.authorTime = App.RootMap.TMObjective_AuthorTime;
+                _state.bronzeTime = App.RootMap.TMObjective_BronzeTime;
+                _state.goldTime   = App.RootMap.TMObjective_GoldTime;
+                _state.silverTime = App.RootMap.TMObjective_SilverTime;
+            } else {
+                _state.mapType    = "";
+                _state.mapUid     = "";
+                _state.authorTime = 0;
+                _state.bronzeTime = 0;
+                _state.goldTime   = 0;
+                _state.silverTime = 0;
+            }
+
+            if (true
+                &&_state.inPlayground
+                && App.CurrentPlayground.GameTerminals.Length > 0
+                && App.CurrentPlayground.GameTerminals[0] !is null
+            ) {
+                CSmPlayer@ GUIPlayer = cast<CSmPlayer@>(App.CurrentPlayground.GameTerminals[0].GUIPlayer);
+
+                _state.guiPlayer = GUIPlayer !is null;
+                _state.viewingControlled = true
+                    && _state.guiPlayer
+                    && GUIPlayer is cast<CSmPlayer@>(App.CurrentPlayground.GameTerminals[0].ControlledPlayer)
+                ;
+            } else {
+                _state.guiPlayer = false;
+                _state.viewingControlled = false;
+            }
+
+            // _state.guiPlayer = true
+            //     && _state.inPlayground
+            //     && App.CurrentPlayground.GameTerminals.Length > 0
+            //     && App.CurrentPlayground.GameTerminals[0] !is null
+            //     && cast<CSmPlayer@>(App.CurrentPlayground.GameTerminals[0].GUIPlayer) !is null
+            // ;
+
+            _state.paused = true
+                && App.Network.PlaygroundClientScriptAPI !is null
+                && App.Network.PlaygroundClientScriptAPI.IsInGameMenuDisplayed
+            ;
+
+            _state.playgroundScript = App.PlaygroundScript !is null;
+
+            _state.sequence = (true
+                && _state.inPlayground
+                && App.CurrentPlayground.UIConfigs.Length > 0
+                && App.CurrentPlayground.UIConfigs[0] !is null
+            )
+                ? App.CurrentPlayground.UIConfigs[0].UISequence
+                : CGamePlaygroundUIConfig::EUISequence::None
+            ;
+
+            // CSmPlayer@ ViewingPlayer = VehicleState::GetViewingPlayer();
+
+            // _state.viewingLogin = (true
+            //     && ViewingPlayer !is null
+            //     && ViewingPlayer.ScriptAPI !is null
+            // )
+            //     ? ViewingPlayer.ScriptAPI.Login
+            //     : ""
+            // ;
+
+            yield();
         }
-
-        _state.guiPlayer = true
-            && _state.inPlayground
-            && App.CurrentPlayground.GameTerminals.Length > 0
-            && App.CurrentPlayground.GameTerminals[0] !is null
-            && cast<CSmPlayer@>(App.CurrentPlayground.GameTerminals[0].GUIPlayer) !is null
-        ;
-
-        _state.paused = true
-            && App.Network.PlaygroundClientScriptAPI !is null
-            && App.Network.PlaygroundClientScriptAPI.IsInGameMenuDisplayed
-        ;
-
-        _state.playgroundScript = App.PlaygroundScript !is null;
-
-        _state.sequence = (true
-            && _state.inPlayground
-            && App.CurrentPlayground.UIConfigs.Length > 0
-            && App.CurrentPlayground.UIConfigs[0] !is null
-        )
-            ? App.CurrentPlayground.UIConfigs[0].UISequence
-            : CGamePlaygroundUIConfig::EUISequence::None
-        ;
-
-        CSmPlayer@ ViewingPlayer;
-        if (_state.inPlayground)
-            @ViewingPlayer = VehicleState::GetViewingPlayer();
-
-        _state.viewingLogin = (true
-            && ViewingPlayer !is null
-            && ViewingPlayer.ScriptAPI !is null
-        )
-            ? ViewingPlayer.ScriptAPI.Login
-            : ""
-        ;
-
-        yield();
-    }
+    } catch { }
 
     warn("state loop broke!");
     CleanUp();

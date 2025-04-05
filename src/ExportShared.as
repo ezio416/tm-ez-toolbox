@@ -2,6 +2,8 @@
 // m 2025-04-03
 
 namespace Ez2 {
+    shared funcdef void CallbackFunc();
+
     shared enum AccessLevel {
         Starter,
         Standard,
@@ -25,8 +27,8 @@ namespace Ez2 {
     Use this class to access all available values in the plugin
     You should check its values every frame to ensure they're accurate
     */
-    abstract shared class State {
-        private uint64 _frameCount = 0;
+    shared abstract class State {
+        protected uint64 _frameCount = 0;
         uint64 get_frameCount() final { return _frameCount; }
 
         /*/////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -154,12 +156,16 @@ namespace Ez2 {
         */
         CGamePlaygroundUIConfig::EUISequence get_sequence() final { return _sequence; }
 
-        protected string _viewingLogin;
-        /*
-        the login of the current viewed player
-        `VehicleState::GetViewingPlayer().ScriptAPI.Login`
-        */
-        string get_viewingLogin() final { return _viewingLogin; }
+        protected bool _viewingControlled = false;
+        // whether we're viewing the player
+        bool get_viewingControlled() final { return _viewingControlled; }
+
+        // protected string _viewingLogin;
+        // /*
+        // the login of the current viewed player
+        // `VehicleState::GetViewingPlayer().ScriptAPI.Login`
+        // */
+        // string get_viewingLogin() final { return _viewingLogin; }
 
         /*/////////////////////////////////////////////////////////////////////////////////////////////////////////////
         logic properties
@@ -178,8 +184,9 @@ namespace Ez2 {
                 _driving = true
                     && _inPlayground
                     && _sequence == CGamePlaygroundUIConfig::EUISequence::Playing
-                    && _localLogin.Length > 0
-                    && _localLogin == _viewingLogin
+                    // && _localLogin.Length > 0
+                    // && _localLogin == _viewingLogin
+                    && _viewingControlled
                     && !viewingReplay
                 ;
             }
@@ -190,7 +197,7 @@ namespace Ez2 {
         private bool _inMainMenu = false;
         private uint64 _last_inMainMenu = 0;
         // whether we're at the main menu
-        bool get_inMainMenu() final {  // t1.3
+        bool get_inMainMenu() final {  // t1.4
             if (_last_inMainMenu != _frameCount) {
                 _last_inMainMenu = _frameCount;
 
@@ -198,6 +205,7 @@ namespace Ez2 {
                     && !_inEditor
                     && !_inMap
                     && _inMenu
+                    && !playgroundScript
                 ;
             }
 
@@ -322,16 +330,16 @@ namespace Ez2 {
 
         private bool _spectating = false;
         private uint64 _last_spectating = 0;
-        // whether we're spectating another player
+        // whether we're spectating another player or the environment (not cam 7)
         bool get_spectating() final {  // t4.14
             if (_last_spectating != _frameCount) {
                 _last_spectating = _frameCount;
 
                 _spectating = true
-                    && _inPlayground
-                    && _localLogin.Length > 0
-                    && _localLogin != _viewingLogin
+                    && !_loading
+                    && !_viewingControlled
                     && !playingLocalMap
+                    && playingMap
                     && !viewingReplay
                 ;
             }
@@ -348,6 +356,7 @@ namespace Ez2 {
 
                 _viewingReplay = true
                     && !_guiPlayer
+                    && !_loading
                     && _sequence == CGamePlaygroundUIConfig::EUISequence::Playing
                     && playingLocalMap
                 ;
@@ -366,6 +375,7 @@ namespace Ez2 {
 #elif MANIA64
         private uint _bits = 64;
 #endif
+        // number of bits in the CPU architecture (32 or 64)
         uint get_bits() final { return _bits; }
         private void set_bits(uint u) final { };
 
@@ -444,13 +454,6 @@ namespace Ez2 {
         /*/////////////////////////////////////////////////////////////////////////////////////////////////////////////
         functions
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
-
-        protected void CountAsync() final {
-            while (true) {
-                _frameCount++;
-                yield();
-            }
-        }
 
         protected void GetCachedInfoAsync() final {
             auto App = cast<CTrackMania@>(GetApp());
