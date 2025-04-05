@@ -1,11 +1,10 @@
 // c 2025-03-29
-// m 2025-04-03
+// m 2025-04-05
 
 const string   pluginColor = "\\$0A0";
 const string   pluginIcon  = Icons::Wrench;
 Meta::Plugin@  pluginMeta  = Meta::ExecutingPlugin();
 const string   pluginTitle = pluginColor + pluginIcon + "\\$G " + pluginMeta.Name;
-InternalState@ _state;
 
 /*
 when plugin is unloaded
@@ -13,7 +12,7 @@ stops coroutines and garbage collects everything
 not yieldable
 */
 void OnDestroyed() {
-    CleanUp("destroyed");
+    // CleanUp("destroyed");
 }
 
 /*
@@ -22,7 +21,32 @@ pauses coroutines
 not yieldable
 */
 void OnDisabled() {
-    CleanUp("disabled");
+    // CleanUp("disabled");
+
+    Ez2::_frameCount = 0;
+
+    Ez2::_editor = false;
+    Ez2::_editor_updated = uint(-1);
+
+    Ez2::_fps = 0.0f;
+    Ez2::_fps_updated = uint(-1);
+
+    Ez2::_gameMode = "";
+    Ez2::_gameMode_updated = uint(-1);
+
+    Ez2::_map = false;
+    Ez2::_map_updated = uint(-1);
+
+    Ez2::_playground = false;
+    Ez2::_playground_updated = uint(-1);
+
+    Ez2::_playgroundScript = false;
+    Ez2::_playgroundScript_updated = uint(-1);
+
+    Ez2::_sequence = CGamePlaygroundUIConfig::EUISequence::None;
+    Ez2::_sequence_updated = uint(-1);
+
+    ;
 }
 
 /*
@@ -40,11 +64,19 @@ UI::InputBlocking OnKeyPress(bool down, VirtualKey key) {
     if (!down || (key != VirtualKey::LButton && key != VirtualKey::Return))
         return UI::InputBlocking::DoNothing;
 
-    if (!Ez2::state.playingMap)
-        return UI::InputBlocking::DoNothing;
+    // if (!Ez2::state.playingMap)
+    //     return UI::InputBlocking::DoNothing;
 
     print("key pressed: " + tostring(key));
+    return UI::InputBlocking::DoNothing;
+}
+
+UI::InputBlocking OnMouseButton(bool down, int button, int x, int y) {
+    if (!down)
         return UI::InputBlocking::DoNothing;
+
+    print("mouse blicked: " + tostring(button));
+    return UI::InputBlocking::DoNothing;
 }
 
 /*
@@ -53,105 +85,6 @@ could also be thought of as OnCreated to oppose OnDestroyed
 yieldable (is ran as a coroutine by the engine)
 */
 void Main() {
-    trace("new state loop");
-
-    try {
-        auto App = cast<CTrackMania@>(GetApp());
-        auto Network = cast<CTrackManiaNetwork@>(App.Network);
-        auto ServerInfo = cast<CTrackManiaNetworkServerInfo@>(Network.ServerInfo);
-
-        Ez2::state;
-
-        while (true) {
-            _state.Increment();
-
-            _state.gameMode = string(ServerInfo.CurGameModeStr);
-
-            _state.inEditor = App.Editor !is null;
-            _state.inMap = App.RootMap !is null;
-            _state.inMenu = App.ActiveMenus.Length > 0;
-            _state.inPlayground = App.CurrentPlayground !is null;
-
-            _state.loading = true
-                && App.LoadProgress !is null
-                && App.LoadProgress.State != NGameLoadProgress::EState::Disabled
-            ;
-
-            _state.fps = App.Viewport !is null ? App.Viewport.AverageFps : 0.0f;
-
-            if (_state.inMap) {
-                _state.mapType    = App.RootMap.MapType;
-                _state.mapUid     = App.RootMap.EdChallengeId;
-                _state.authorTime = App.RootMap.TMObjective_AuthorTime;
-                _state.bronzeTime = App.RootMap.TMObjective_BronzeTime;
-                _state.goldTime   = App.RootMap.TMObjective_GoldTime;
-                _state.silverTime = App.RootMap.TMObjective_SilverTime;
-            } else {
-                _state.mapType    = "";
-                _state.mapUid     = "";
-                _state.authorTime = 0;
-                _state.bronzeTime = 0;
-                _state.goldTime   = 0;
-                _state.silverTime = 0;
-            }
-
-            if (true
-                &&_state.inPlayground
-                && App.CurrentPlayground.GameTerminals.Length > 0
-                && App.CurrentPlayground.GameTerminals[0] !is null
-            ) {
-                CSmPlayer@ GUIPlayer = cast<CSmPlayer@>(App.CurrentPlayground.GameTerminals[0].GUIPlayer);
-
-                _state.guiPlayer = GUIPlayer !is null;
-                _state.viewingControlled = true
-                    && _state.guiPlayer
-                    && GUIPlayer is cast<CSmPlayer@>(App.CurrentPlayground.GameTerminals[0].ControlledPlayer)
-                ;
-            } else {
-                _state.guiPlayer = false;
-                _state.viewingControlled = false;
-            }
-
-            // _state.guiPlayer = true
-            //     && _state.inPlayground
-            //     && App.CurrentPlayground.GameTerminals.Length > 0
-            //     && App.CurrentPlayground.GameTerminals[0] !is null
-            //     && cast<CSmPlayer@>(App.CurrentPlayground.GameTerminals[0].GUIPlayer) !is null
-            // ;
-
-            _state.paused = true
-                && App.Network.PlaygroundClientScriptAPI !is null
-                && App.Network.PlaygroundClientScriptAPI.IsInGameMenuDisplayed
-            ;
-
-            _state.playgroundScript = App.PlaygroundScript !is null;
-
-            _state.sequence = (true
-                && _state.inPlayground
-                && App.CurrentPlayground.UIConfigs.Length > 0
-                && App.CurrentPlayground.UIConfigs[0] !is null
-            )
-                ? App.CurrentPlayground.UIConfigs[0].UISequence
-                : CGamePlaygroundUIConfig::EUISequence::None
-            ;
-
-            // CSmPlayer@ ViewingPlayer = VehicleState::GetViewingPlayer();
-
-            // _state.viewingLogin = (true
-            //     && ViewingPlayer !is null
-            //     && ViewingPlayer.ScriptAPI !is null
-            // )
-            //     ? ViewingPlayer.ScriptAPI.Login
-            //     : ""
-            // ;
-
-            yield();
-        }
-    } catch { }
-
-    warn("state loop broke!");
-    CleanUp();
-    startnew(Main);
 }
 
 void Render() {
@@ -175,4 +108,8 @@ void Render() {
 void RenderMenu() {
     if (UI::MenuItem(pluginTitle, "", S_Enabled))
         S_Enabled = !S_Enabled;
+}
+
+void Update(float) {
+    Ez2::_frameCount++;
 }
