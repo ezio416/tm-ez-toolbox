@@ -2,7 +2,7 @@
 // m 2025-04-05
 
 void RenderDebugContents() {
-    UI::Text("frames: " + Ez2::_frameCount);
+    UI::Text("frames: " + Ez2::frameCount);
 
     UI::Separator();
 
@@ -56,41 +56,41 @@ void RenderDebugContents() {
         UI::TableNextColumn();
         UI::Text(ColoredBool(Ez2::State::map));
 
-        UI::TableNextRow();
-        UI::TableNextColumn();
-        UI::Text("  type");
-        UI::TableNextColumn();
-        UI::Text(Ez2::State::mapInfo.type);
+        // UI::TableNextRow();
+        // UI::TableNextColumn();
+        // UI::Text("  type");
+        // UI::TableNextColumn();
+        // UI::Text(Ez2::State::mapInfo.type);
 
-        UI::TableNextRow();
-        UI::TableNextColumn();
-        UI::Text("  uid");
-        UI::TableNextColumn();
-        UI::Text(Ez2::State::mapInfo.uid);
+        // UI::TableNextRow();
+        // UI::TableNextColumn();
+        // UI::Text("  uid");
+        // UI::TableNextColumn();
+        // UI::Text(Ez2::State::mapInfo.uid);
 
-        UI::TableNextRow();
-        UI::TableNextColumn();
-        UI::Text("  author time");
-        UI::TableNextColumn();
-        UI::Text(Ez2::State::mapInfo.authorTimeFormatted);
+        // UI::TableNextRow();
+        // UI::TableNextColumn();
+        // UI::Text("  author time");
+        // UI::TableNextColumn();
+        // UI::Text(Ez2::State::mapInfo.authorTimeFormatted);
 
-        UI::TableNextRow();
-        UI::TableNextColumn();
-        UI::Text("  gold time");
-        UI::TableNextColumn();
-        UI::Text(Ez2::State::mapInfo.goldTimeFormatted);
+        // UI::TableNextRow();
+        // UI::TableNextColumn();
+        // UI::Text("  gold time");
+        // UI::TableNextColumn();
+        // UI::Text(Ez2::State::mapInfo.goldTimeFormatted);
 
-        UI::TableNextRow();
-        UI::TableNextColumn();
-        UI::Text("  silver time");
-        UI::TableNextColumn();
-        UI::Text(Ez2::State::mapInfo.silverTimeFormatted);
+        // UI::TableNextRow();
+        // UI::TableNextColumn();
+        // UI::Text("  silver time");
+        // UI::TableNextColumn();
+        // UI::Text(Ez2::State::mapInfo.silverTimeFormatted);
 
-        UI::TableNextRow();
-        UI::TableNextColumn();
-        UI::Text("  bronze time");
-        UI::TableNextColumn();
-        UI::Text(Ez2::State::mapInfo.bronzeTimeFormatted);
+        // UI::TableNextRow();
+        // UI::TableNextColumn();
+        // UI::Text("  bronze time");
+        // UI::TableNextColumn();
+        // UI::Text(Ez2::State::mapInfo.bronzeTimeFormatted);
 
         UI::TableNextRow();
         UI::TableNextColumn();

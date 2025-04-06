@@ -84,6 +84,15 @@ namespace Ez2::State {
         private string _uid;
         string get_uid() { return _uid; }
 
+        void Reset() {
+            _authorTime = uint(-1);
+            _bronzeTime = uint(-1);
+            _goldTime   = uint(-1);
+            _silverTime = uint(-1);
+            _type       = "";
+            _uid        = "";
+        }
+
         void Update() {
             CGameCtnApp@ App = GetApp();
 
@@ -94,14 +103,9 @@ namespace Ez2::State {
                 _silverTime = App.RootMap.TMObjective_SilverTime;
                 _type       = string(App.RootMap.MapType);
                 _uid        = App.RootMap.EdChallengeId;
-            } else {
-                _authorTime = uint(-1);
-                _bronzeTime = uint(-1);
-                _goldTime   = uint(-1);
-                _silverTime = uint(-1);
-                _type       = "";
-                _uid        = "";
-            }
+
+            } else
+                Reset();
         }
     }
 }

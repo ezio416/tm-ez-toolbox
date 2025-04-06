@@ -9,16 +9,86 @@ Each getter function is structured so that it will only run its logic once
 */
 
 namespace Ez2 {
+    void StateLoopAsync() {
+        while (true) {
+            auto App = cast<CTrackMania@>(GetApp());
+            auto Network = cast<CTrackManiaNetwork@>(App.Network);
+            auto ServerInfo = cast<CTrackManiaNetworkServerInfo@>(Network.ServerInfo);
+
+            _editor = App.Editor !is null;
+
+            _fps = App.Viewport !is null ? App.Viewport.AverageFps : 0.0f;
+
+            _gameMode = string(ServerInfo.CurGameModeStr);
+
+            _playground = cast<CSmArenaClient@>(App.CurrentPlayground) !is null;
+
+            _guiPlayer = true
+                && _playground
+                && App.CurrentPlayground.GameTerminals.Length > 0
+                && App.CurrentPlayground.GameTerminals[0] !is null
+                && App.CurrentPlayground.GameTerminals[0].GUIPlayer !is null
+            ;
+
+            _loading = true
+                && App.LoadProgress !is null
+                && App.LoadProgress.State != NGameLoadProgress::EState::Disabled
+            ;
+
+            _map = App.RootMap !is null;
+
+            _mapInfo.Update();
+
+            _menu = App.ActiveMenus.Length > 0;
+
+            _paused = true
+                && Network.PlaygroundClientScriptAPI !is null
+                && Network.PlaygroundClientScriptAPI.IsInGameMenuDisplayed
+            ;
+
+            _playgroundScript = App.PlaygroundScript !is null;
+
+            _sequence = (true
+                && playground
+                && App.CurrentPlayground.UIConfigs.Length > 0
+                && App.CurrentPlayground.UIConfigs[0] !is null
+            )
+                ? App.CurrentPlayground.UIConfigs[0].UISequence
+                : CGamePlaygroundUIConfig::EUISequence::None
+            ;
+
+            if (_guiPlayer) {
+                auto GUIPlayer = cast<CSmPlayer@>(App.CurrentPlayground.GameTerminals[0].GUIPlayer);
+
+                _viewingControlled = true
+                    && GUIPlayer !is null
+                    && GUIPlayer is App.CurrentPlayground.GameTerminals[0].ControlledPlayer
+                ;
+
+            } else
+                _viewingControlled = false;
+
+            yield();
+        }
+    }
+
     /*
     setting this to 0 and comparing against "updated" vars set to uint64(-1)
     causes values to lag by a frame so we init this to 1 and all others to 0
+    edit: probably not correct since it happens anyway
     */
-    uint64 _frameCount = 1;
+    // uint64 _frameCount = 1;
     /*
     number of frames plugin has been active
     used for caching values
     */
-    uint64 get_frameCount() { return _frameCount; }
+    uint64 get_frameCount() {
+        // return _frameCount;
+        return Dev::GetOffsetUint32(
+            GetApp().Viewport,
+            Reflection::TypeOf(GetApp().Viewport).GetMember("SystemWindow").Offset + 0x14
+        );
+    }
 
     bool _editor = false;
     uint64 _editor_updated = 0;
@@ -27,8 +97,8 @@ namespace Ez2 {
     `App.Editor`
     */
     bool get_editor() {
-        if (_editor_updated != _frameCount) {
-            _editor_updated = _frameCount;
+        if (_editor_updated != frameCount) {
+            _editor_updated = frameCount;
 
             _editor = GetApp().Editor !is null;
         }
@@ -43,8 +113,8 @@ namespace Ez2 {
     `App.Viewport.AverageFps`
     */
     float get_fps() {
-        if (_fps_updated != _frameCount) {
-            _fps_updated = _frameCount;
+        if (_fps_updated != frameCount) {
+            _fps_updated = frameCount;
 
             CGameCtnApp@ App = GetApp();
 
@@ -61,8 +131,8 @@ namespace Ez2 {
     `App.Network.ServerInfo.CurGameModeStr`
     */
     string get_gameMode() {
-        if (_gameMode_updated != _frameCount) {
-            _gameMode_updated = _frameCount;
+        if (_gameMode_updated != frameCount) {
+            _gameMode_updated = frameCount;
 
             _gameMode = string(
                 cast<CTrackManiaNetworkServerInfo@>(
@@ -83,8 +153,8 @@ namespace Ez2 {
     `App.CurrentPlayground.GameTerminals[0].GUIPlayer`
     */
     bool get_guiPlayer() {
-        if (_guiPlayer_updated != _frameCount) {
-            _guiPlayer_updated = _frameCount;
+        if (_guiPlayer_updated != frameCount) {
+            _guiPlayer_updated = frameCount;
 
             CGameCtnApp@ App = GetApp();
 
@@ -106,8 +176,8 @@ namespace Ez2 {
     `App.LoadProgress.State`
     */
     bool get_loading() {
-        if (_loading_updated != _frameCount) {
-            _loading_updated = _frameCount;
+        if (_loading_updated != frameCount) {
+            _loading_updated = frameCount;
 
             CGameCtnApp@ App = GetApp();
 
@@ -127,8 +197,8 @@ namespace Ez2 {
     `App.RootMap`
     */
     bool get_map() {
-        if (_map_updated != _frameCount) {
-            _map_updated = _frameCount;
+        if (_map_updated != frameCount) {
+            _map_updated = frameCount;
 
             _map = GetApp().RootMap !is null;
         }
@@ -136,7 +206,7 @@ namespace Ez2 {
         return _map;
     }
 
-    Ez2::State::MapInfo@ _mapInfo;
+    Ez2::State::MapInfo@ _mapInfo = Ez2::State::MapInfo();
     uint64 _mapInfo_updated = 0;
     /*
     info on the current map
@@ -146,8 +216,8 @@ namespace Ez2 {
         if (_mapInfo is null)
             @_mapInfo = Ez2::State::MapInfo();
 
-        if (_mapInfo_updated != _frameCount) {
-            _mapInfo_updated = _frameCount;
+        if (_mapInfo_updated != frameCount) {
+            _mapInfo_updated = frameCount;
             _mapInfo.Update();
         }
 
@@ -161,8 +231,8 @@ namespace Ez2 {
     `App.ActiveMenus`
     */
     bool get_menu() {
-        if (_menu_updated != _frameCount) {
-            _menu_updated = _frameCount;
+        if (_menu_updated != frameCount) {
+            _menu_updated = frameCount;
 
             _menu = GetApp().ActiveMenus.Length > 0;
         }
@@ -177,8 +247,8 @@ namespace Ez2 {
     `App.Network.PlaygroundClientScriptAPI.IsInGameMenuDisplayed`
     */
     bool get_paused() {
-        if (_paused_updated != _frameCount) {
-            _paused_updated = _frameCount;
+        if (_paused_updated != frameCount) {
+            _paused_updated = frameCount;
 
             auto Network = cast<CTrackManiaNetwork@>(GetApp().Network);
 
@@ -198,8 +268,8 @@ namespace Ez2 {
     `App.CurrentPlayground`
     */
     bool get_playground() {
-        if (_playground_updated != _frameCount) {
-            _playground_updated = _frameCount;
+        if (_playground_updated != frameCount) {
+            _playground_updated = frameCount;
 
             // is a CGamePlaygroundBasic for a few frames on map load so a cast is required
             _playground = cast<CSmArenaClient@>(GetApp().CurrentPlayground) !is null;
@@ -215,8 +285,8 @@ namespace Ez2 {
     `App.PlaygroundScript`
     */
     bool get_playgroundScript() {
-        if (_playgroundScript_updated != _frameCount) {
-            _playgroundScript_updated = _frameCount;
+        if (_playgroundScript_updated != frameCount) {
+            _playgroundScript_updated = frameCount;
 
             _playgroundScript = GetApp().PlaygroundScript !is null;
         }
@@ -231,8 +301,8 @@ namespace Ez2 {
     `App.CurrentPlayground.UIConfigs[0].UISequence`
     */
     CGamePlaygroundUIConfig::EUISequence get_sequence() {
-        if (_sequence_updated != _frameCount) {
-            _sequence_updated = _frameCount;
+        if (_sequence_updated != frameCount) {
+            _sequence_updated = frameCount;
 
             CGameCtnApp@ App = GetApp();
 
@@ -253,8 +323,8 @@ namespace Ez2 {
     uint64 _viewingControlled_updated = 0;
     // whether we're viewing the player
     bool get_viewingControlled() {
-        if (_viewingControlled_updated != _frameCount) {
-            _viewingControlled_updated = _frameCount;
+        if (_viewingControlled_updated != frameCount) {
+            _viewingControlled_updated = frameCount;
 
             CGameCtnApp@ App = GetApp();
 

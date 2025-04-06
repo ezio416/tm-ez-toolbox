@@ -1,5 +1,5 @@
 // c 2025-03-29
-// m 2025-04-05
+// m 2025-04-06
 
 const string   pluginColor = "\\$0A0";
 const string   pluginIcon  = Icons::Wrench;
@@ -20,34 +20,34 @@ when plugin is disabled
 pauses coroutines
 not yieldable
 */
-void OnDisabled() {
-    // CleanUp("disabled");
+// void OnDisabled() {
+//     // CleanUp("disabled");
 
-    Ez2::_frameCount = 0;
+//     Ez2::_frameCount = 0;
 
-    Ez2::_editor = false;
-    Ez2::_editor_updated = uint(-1);
+//     Ez2::_editor = false;
+//     Ez2::_editor_updated = uint(-1);
 
-    Ez2::_fps = 0.0f;
-    Ez2::_fps_updated = uint(-1);
+//     Ez2::_fps = 0.0f;
+//     Ez2::_fps_updated = uint(-1);
 
-    Ez2::_gameMode = "";
-    Ez2::_gameMode_updated = uint(-1);
+//     Ez2::_gameMode = "";
+//     Ez2::_gameMode_updated = uint(-1);
 
-    Ez2::_map = false;
-    Ez2::_map_updated = uint(-1);
+//     Ez2::_map = false;
+//     Ez2::_map_updated = uint(-1);
 
-    Ez2::_playground = false;
-    Ez2::_playground_updated = uint(-1);
+//     Ez2::_playground = false;
+//     Ez2::_playground_updated = uint(-1);
 
-    Ez2::_playgroundScript = false;
-    Ez2::_playgroundScript_updated = uint(-1);
+//     Ez2::_playgroundScript = false;
+//     Ez2::_playgroundScript_updated = uint(-1);
 
-    Ez2::_sequence = CGamePlaygroundUIConfig::EUISequence::None;
-    Ez2::_sequence_updated = uint(-1);
+//     Ez2::_sequence = CGamePlaygroundUIConfig::EUISequence::None;
+//     Ez2::_sequence_updated = uint(-1);
 
-    ;
-}
+//     ;
+// }
 
 /*
 when plugin is enabled, except if it was reloaded while it was disabled
@@ -85,6 +85,20 @@ could also be thought of as OnCreated to oppose OnDestroyed
 yieldable (is ran as a coroutine by the engine)
 */
 void Main() {
+    // print("Viewport at " + Text::FormatPointer(GetPtrForNod(GetApp().Viewport)));
+    // startnew(Ez2::StateLoopAsync).WithRunContext(Meta::RunContext::BeforeScripts);
+    // startnew(IncrementAsync).WithRunContext(Meta::RunContext::BeforeScripts);
+}
+
+uint64 GetPtrForNod(CMwNod@ nod) {
+    if (nod is null)
+        return 0;
+
+    uint64 vtablePtr = Dev::GetOffsetUint64(nod, 0);
+    Dev::SetOffset(nod, 0, nod);
+    uint64 nodPtr = Dev::GetOffsetUint64(nod, 0);
+    Dev::SetOffset(nod, 0, vtablePtr);
+    return nodPtr;
 }
 
 void Render() {
@@ -110,6 +124,13 @@ void RenderMenu() {
         S_Enabled = !S_Enabled;
 }
 
-void Update(float) {
-    Ez2::_frameCount++;
-}
+// void Update(float) {
+//     Ez2::_frameCount++;
+// }
+
+// void IncrementAsync() {
+//     while (true) {
+//         Ez2::_frameCount++;
+//         yield();
+//     }
+// }
