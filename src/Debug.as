@@ -1,7 +1,27 @@
 // c 2025-04-03
-// m 2025-04-05
+// m 2025-04-07
 
 void RenderDebugContents() {
+    // CTrackMania@ App = cast<CTrackMania@>(GetApp());
+
+    // if (UI::BeginTable("##table-debug-viewport", 2, UI::TableFlags::RowBg)) {
+    //     UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(vec3(), 0.5f));
+
+    //     for (uint16 i = 0x468; i < 0x540; i += 0x8) {
+    //         uint value = Dev::GetOffsetUint32(App.Viewport, i);
+    //         UI::TableNextRow();
+    //         UI::TableNextColumn();
+    //         UI::Text("+0x" + Text::Format("%X", i));
+    //         UI::TableNextColumn();
+    //         UI::Text(tostring(value));
+    //     }
+
+    //     UI::PopStyleColor();
+    //     UI::EndTable();
+    // }
+
+    // UI::Separator();
+
     UI::Text("frames: " + Ez2::frameCount);
 
     UI::Separator();

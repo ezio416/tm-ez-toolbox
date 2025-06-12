@@ -1,10 +1,10 @@
 // c 2025-03-29
-// m 2025-04-06
+// m 2025-06-12
 
-const string   pluginColor = "\\$0A0";
-const string   pluginIcon  = Icons::Wrench;
-Meta::Plugin@  pluginMeta  = Meta::ExecutingPlugin();
-const string   pluginTitle = pluginColor + pluginIcon + "\\$G " + pluginMeta.Name;
+const string  pluginColor = "\\$0A0";
+const string  pluginIcon  = Icons::Wrench;
+Meta::Plugin@ pluginMeta  = Meta::ExecutingPlugin();
+const string  pluginTitle = pluginColor + pluginIcon + "\\$G " + pluginMeta.Name;
 
 /*
 when plugin is unloaded
@@ -60,24 +60,24 @@ not yieldable
 //     startnew(Main);
 // }
 
-UI::InputBlocking OnKeyPress(bool down, VirtualKey key) {
-    if (!down || (key != VirtualKey::LButton && key != VirtualKey::Return))
-        return UI::InputBlocking::DoNothing;
+// UI::InputBlocking OnKeyPress(bool down, VirtualKey key) {
+//     if (!down || (key != VirtualKey::LButton && key != VirtualKey::Return))
+//         return UI::InputBlocking::DoNothing;
 
-    // if (!Ez2::state.playingMap)
-    //     return UI::InputBlocking::DoNothing;
+//     // if (!Ez2::state.playingMap)
+//     //     return UI::InputBlocking::DoNothing;
 
-    print("key pressed: " + tostring(key));
-    return UI::InputBlocking::DoNothing;
-}
+//     print("key pressed: " + tostring(key));
+//     return UI::InputBlocking::DoNothing;
+// }
 
-UI::InputBlocking OnMouseButton(bool down, int button, int x, int y) {
-    if (!down)
-        return UI::InputBlocking::DoNothing;
+// UI::InputBlocking OnMouseButton(bool down, int button, int x, int y) {
+//     if (!down)
+//         return UI::InputBlocking::DoNothing;
 
-    print("mouse blicked: " + tostring(button));
-    return UI::InputBlocking::DoNothing;
-}
+//     print("mouse blicked: " + tostring(button));
+//     return UI::InputBlocking::DoNothing;
+// }
 
 /*
 when plugin is loaded
@@ -85,43 +85,34 @@ could also be thought of as OnCreated to oppose OnDestroyed
 yieldable (is ran as a coroutine by the engine)
 */
 void Main() {
-    // print("Viewport at " + Text::FormatPointer(GetPtrForNod(GetApp().Viewport)));
-    // startnew(Ez2::StateLoopAsync).WithRunContext(Meta::RunContext::BeforeScripts);
-    // startnew(IncrementAsync).WithRunContext(Meta::RunContext::BeforeScripts);
-}
-
-uint64 GetPtrForNod(CMwNod@ nod) {
-    if (nod is null)
-        return 0;
-
-    uint64 vtablePtr = Dev::GetOffsetUint64(nod, 0);
-    Dev::SetOffset(nod, 0, nod);
-    uint64 nodPtr = Dev::GetOffsetUint64(nod, 0);
-    Dev::SetOffset(nod, 0, vtablePtr);
-    return nodPtr;
+    // print("\\$F0FViewport at " + Text::FormatPointer(GetPtrForNod(GetApp().Viewport)));
+    Config::Request();
+    FrameCount::Start();
 }
 
 void Render() {
     if (false
-        || !S_Enabled
-        || (S_HideWithGame && !UI::IsGameUIVisible())
-        || (S_HideWithOP && !UI::IsOverlayShown())
-    )
+        or !S_Enabled
+        or (S_HideWithGame && !UI::IsGameUIVisible())
+        or (S_HideWithOP && !UI::IsOverlayShown())
+    ) {
         return;
+    }
 
     if (UI::Begin(
         pluginTitle + "\\$888 (debug)###eztoolbox-debug",
         S_Enabled,
         UI::WindowFlags::AlwaysAutoResize
-    ))
+    )) {
         RenderDebugContents();
-
+    }
     UI::End();
 }
 
 void RenderMenu() {
-    if (UI::MenuItem(pluginTitle, "", S_Enabled))
+    if (UI::MenuItem(pluginTitle, "", S_Enabled)) {
         S_Enabled = !S_Enabled;
+    }
 }
 
 // void Update(float) {

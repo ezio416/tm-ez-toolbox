@@ -1,93 +1,38 @@
 // c 2025-04-04
-// m 2025-04-05
+// m 2025-04-08
 
 /*
-This module is for returning the current state of some things in the game.
-Each getter function is structured so that it will only run its logic once
-  per frame and cache the result so that any future calls from any dependent
-  plugins during that frame will return the cached value.
+This module is for returning the current state of some things in the game. Each getter function is structured so that
+it will only run its logic once per frame and cache the result so that any future calls from any dependent plugins
+during that frame will return the cached value. In the event of a game update, until the plugin author manually
+verifies an offset, this module may run with reduced performance.
 */
 
 namespace Ez2 {
-    void StateLoopAsync() {
-        while (true) {
-            auto App = cast<CTrackMania@>(GetApp());
-            auto Network = cast<CTrackManiaNetwork@>(App.Network);
-            auto ServerInfo = cast<CTrackManiaNetworkServerInfo@>(Network.ServerInfo);
-
-            _editor = App.Editor !is null;
-
-            _fps = App.Viewport !is null ? App.Viewport.AverageFps : 0.0f;
-
-            _gameMode = string(ServerInfo.CurGameModeStr);
-
-            _playground = cast<CSmArenaClient@>(App.CurrentPlayground) !is null;
-
-            _guiPlayer = true
-                && _playground
-                && App.CurrentPlayground.GameTerminals.Length > 0
-                && App.CurrentPlayground.GameTerminals[0] !is null
-                && App.CurrentPlayground.GameTerminals[0].GUIPlayer !is null
-            ;
-
-            _loading = true
-                && App.LoadProgress !is null
-                && App.LoadProgress.State != NGameLoadProgress::EState::Disabled
-            ;
-
-            _map = App.RootMap !is null;
-
-            _mapInfo.Update();
-
-            _menu = App.ActiveMenus.Length > 0;
-
-            _paused = true
-                && Network.PlaygroundClientScriptAPI !is null
-                && Network.PlaygroundClientScriptAPI.IsInGameMenuDisplayed
-            ;
-
-            _playgroundScript = App.PlaygroundScript !is null;
-
-            _sequence = (true
-                && playground
-                && App.CurrentPlayground.UIConfigs.Length > 0
-                && App.CurrentPlayground.UIConfigs[0] !is null
-            )
-                ? App.CurrentPlayground.UIConfigs[0].UISequence
-                : CGamePlaygroundUIConfig::EUISequence::None
-            ;
-
-            if (_guiPlayer) {
-                auto GUIPlayer = cast<CSmPlayer@>(App.CurrentPlayground.GameTerminals[0].GUIPlayer);
-
-                _viewingControlled = true
-                    && GUIPlayer !is null
-                    && GUIPlayer is App.CurrentPlayground.GameTerminals[0].ControlledPlayer
-                ;
-
-            } else
-                _viewingControlled = false;
-
-            yield();
-        }
-    }
-
     /*
-    setting this to 0 and comparing against "updated" vars set to uint64(-1)
-    causes values to lag by a frame so we init this to 1 and all others to 0
-    edit: probably not correct since it happens anyway
-    */
-    // uint64 _frameCount = 1;
-    /*
-    number of frames plugin has been active
+    number of frames the game has rendered
     used for caching values
     */
-    uint64 get_frameCount() {
-        // return _frameCount;
-        return Dev::GetOffsetUint32(
-            GetApp().Viewport,
-            Reflection::TypeOf(GetApp().Viewport).GetMember("SystemWindow").Offset + 0x14
-        );
+    // uint64 get_frameCount() {
+    //     // return _frameCount;
+    //     return Dev::GetOffsetUint32(
+    //         GetApp().Viewport,
+    //         Reflection::TypeOf(GetApp().Viewport).GetMember("SystemWindow").Offset + 0x14
+    //         // Reflection::TypeOf(GetApp().Viewport).GetMember("AverageFps").Offset - 0x4
+    //     );
+    //     // return Time::FrameCount;
+    // }
+    uint64 frameCount {
+        get {
+            // return _frameCount;
+            // return Dev::GetOffsetUint32(
+            //     GetApp().Viewport,
+            //     Reflection::TypeOf(GetApp().Viewport).GetMember("SystemWindow").Offset + 0x14
+            //     // Reflection::TypeOf(GetApp().Viewport).GetMember("AverageFps").Offset - 0x4
+            // );
+            // return Time::FrameCount;
+            return FrameCount::Get();
+        }
     }
 
     bool _editor = false;
