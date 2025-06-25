@@ -46,7 +46,7 @@ namespace Ez2::State {
         uint get_authorTime() final {
             return _authorTime;
         }
-        string get_authorTimeFormatted() {
+        string get_authorTimeFormatted() final {
             return _authorTime != MAX_UINT
                 ? Time::Format(_authorTime)
                 : "-:--.---"
@@ -57,7 +57,7 @@ namespace Ez2::State {
         uint get_bronzeTime() final {
             return _bronzeTime;
         }
-        string get_bronzeTimeFormatted() {
+        string get_bronzeTimeFormatted() final {
             return _bronzeTime != MAX_UINT
                 ? Time::Format(_bronzeTime)
                 : "-:--.---"
@@ -68,7 +68,7 @@ namespace Ez2::State {
         uint get_goldTime() final {
             return _goldTime;
         }
-        string get_goldTimeFormatted() {
+        string get_goldTimeFormatted() final {
             return _goldTime != MAX_UINT
                 ? Time::Format(_goldTime)
                 : "-:--.---"
@@ -79,7 +79,7 @@ namespace Ez2::State {
         uint get_silverTime() final {
             return _silverTime;
         }
-        string get_silverTimeFormatted() {
+        string get_silverTimeFormatted() final {
             return _silverTime != MAX_UINT
                 ? Time::Format(_silverTime)
                 : "-:--.---"
