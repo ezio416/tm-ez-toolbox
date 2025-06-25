@@ -6,10 +6,18 @@ const string  pluginIcon  = Icons::Wrench;
 Meta::Plugin@ pluginMeta  = Meta::ExecutingPlugin();
 const string  pluginTitle = pluginColor + pluginIcon + "\\$G " + pluginMeta.Name;
 
+void OnDestroyed() {
+    Ez::callbacks.DeleteAll();
+    Ez::ResetState();
+}
+
 void Main() {
     Config::Request();
     FrameCount::Start();
     Ez::InitStatic();
+
+    Ez::VerifyCallbacks();
+    Ez::WatchForMapChange();
 }
 
 void Render() {

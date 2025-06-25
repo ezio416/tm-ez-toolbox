@@ -2,11 +2,11 @@
 // m 2025-06-25
 
 namespace Ez {
-    void EditMap(const string &in url) {
+    void EditMap(const string&in url) {
         startnew(EditMapAsync, url);
     }
 
-    void EditMapAsync(const string &in url) {
+    void EditMapAsync(const string&in url) {
         if (!Permissions::OpenAdvancedMapEditor()) {
             warn("can't edit map: player doesn't have permission");
             return;
@@ -22,11 +22,11 @@ namespace Ez {
         ;
     }
 
-    void PlayMap(const string &in url) {
+    void PlayMap(const string&in url) {
         startnew(PlayMapAsync, url);
     }
 
-    void PlayMapAsync(const string &in url) {
+    void PlayMapAsync(const string&in url) {
         if (!Permissions::PlayLocalMap()) {
             warn("can't play map: player doesn't have permission");
             return;

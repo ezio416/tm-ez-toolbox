@@ -595,4 +595,62 @@ namespace Ez {
             return _viewingReplay;
         }
     }
+
+    void ResetState() {
+        _frameCount = MAX_UINT64;
+
+        _editor = false;
+        _editor_updated = 0;
+        _fps = 0.0f;
+        _fps_updated = 0;
+        _gameMode;
+        _gameMode_updated = 0;
+        _guiPlayer = false;
+        _guiPlayer_updated = 0;
+        _loading = false;
+        _loading_updated = 0;
+        _map = false;
+        _map_updated = 0;
+        _mapInfo.Reset();
+        _mapInfo_updated = 0;
+        _menu = false;
+        _menu_updated = 0;
+        _paused = false;
+        _paused_updated = 0;
+        _ping = 0;
+        _ping_updated = 0;
+        _playground = false;
+        _playground_updated = 0;
+        _playgroundScript = false;
+        _playgroundScript_updated = 0;
+        _sequence = CGamePlaygroundUIConfig::EUISequence::None;
+        _sequence_updated = 0;
+        _viewingControlled = false;
+        _viewingControlled_updated = 0;
+
+        _driving = false;
+        _driving_updated = 0;
+        _mainMenu = false;
+        _mainMenu_updated = 0;
+        _mapEditor = false;
+        _mapEditor_updated = 0;
+        _mapEditorTesting = false;
+        _mapEditorTesting_updated = 0;
+        _playingMap = false;
+        _playingMap_updated = 0;
+        _playingMapLocal = false;
+        _playingMapLocal_updated = 0;
+        _playingMapOnline = false;
+        _playingMapOnline_updated = 0;
+        _replayEditorEditing = false;
+        _replayEditorEditing_updated = 0;
+        _replayEditorViewing = false;
+        _replayEditorViewing_updated = 0;
+        _skinEditor = false;
+        _skinEditor_updated = 0;
+        _spectating = false;
+        _spectating_updated = 0;
+        _viewingReplay = false;
+        _viewingReplay_updated = 0;
+    }
 }

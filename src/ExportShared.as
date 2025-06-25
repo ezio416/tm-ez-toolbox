@@ -4,41 +4,76 @@
 const uint   MAX_UINT   = uint(-1);
 const uint64 MAX_UINT64 = uint64(-1);
 
-namespace Ez {
-    shared funcdef void CallbackFunc();
+/*
+Allows plugins to register callback functions that will be called under certain conditions.
+*/
+namespace Ez::Callback {
+    /*
+    class containing callback functions a plugin desires to use
+    instructions:
+    - inherit this class
+    - override any .On\<MethodName>() methods
+    - in the constructor, call super() and set the respective .on\<MethodName> bools true for any overridden methods
+    - pass an instance of your class to Ez::Callback::Register()
+    async methods are marked as such - all others are not yieldable
+    */
+    shared abstract class CallbackClass {
+        private Meta::Plugin@ _parent;
+        Meta::Plugin@ get_parent() const final {
+            return _parent;
+        }
+        private void set_parent(Meta::Plugin@ p) { }
+
+        protected bool onEnteredMap      = false;
+        protected bool onEnteredMapAsync = false;
+        protected bool onExitedMap       = false;
+        protected bool onExitedMapAsync  = false;
+
+        CallbackClass() {
+            @_parent = Meta::ExecutingPlugin();
+        }
+
+        void OnEnteredMap() { }
+        void OnEnteredMapAsync() { }
+        void _OnEnteredMap() final {
+            if (parent !is null) {
+                if (onEnteredMap) {
+                    trace("OnEnteredMap: plugin '" + parent.ID + "'");
+                    this.OnEnteredMap();
+                }
+
+                if (onEnteredMapAsync) {
+                    trace("OnEnteredMapAsync: plugin '" + parent.ID + "'");
+                    startnew(CoroutineFunc(this.OnEnteredMapAsync));
+                }
+            }
+        }
+
+        void OnExitedMap() { }
+        void OnExitedMapAsync() { }
+        void _OnExitedMap() final {
+            if (parent !is null) {
+                if (onExitedMap) {
+                    trace("OnExitedMap: plugin '" + parent.ID + "'");
+                    this.OnExitedMap();
+                }
+
+                if (onExitedMapAsync) {
+                    trace("OnExitedMapAsync: plugin '" + parent.ID + "'");
+                    startnew(CoroutineFunc(this.OnExitedMapAsync));
+                }
+            }
+        }
+    }
+
+    import void Deregister() from "Ez";
+    import void Register(CallbackClass@) from "Ez";
 }
 
+/*
+Stores information about the game that changes. Very efficient.
+*/
 namespace Ez::State {
-    import uint64                               get_frameCount()          from "Ez";
-
-    import bool                                 get_editor()              from "Ez";
-    import float                                get_fps()                 from "Ez";
-    import string                               get_gameMode()            from "Ez";
-    import bool                                 get_guiPlayer()           from "Ez";
-    import bool                                 get_map()                 from "Ez";
-    import MapInfo@                             get_mapInfo()             from "Ez";
-    import bool                                 get_menu()                from "Ez";
-    import bool                                 get_loading()             from "Ez";
-    import bool                                 get_paused()              from "Ez";
-    import int                                  get_ping()                from "Ez";
-    import bool                                 get_playground()          from "Ez";
-    import bool                                 get_playgroundScript()    from "Ez";
-    import CGamePlaygroundUIConfig::EUISequence get_sequence()            from "Ez";
-    import bool                                 get_viewingControlled()   from "Ez";
-
-    import bool                                 get_driving()             from "Ez";
-    import bool                                 get_mainMenu()            from "Ez";
-    import bool                                 get_mapEditor()           from "Ez";
-    import bool                                 get_mapEditorTesting()    from "Ez";
-    import bool                                 get_playingMap()          from "Ez";
-    import bool                                 get_playingMapLocal()     from "Ez";
-    import bool                                 get_playingMapOnline()    from "Ez";
-    import bool                                 get_replayEditorEditing() from "Ez";
-    import bool                                 get_replayEditorViewing() from "Ez";
-    import bool                                 get_skinEditor()          from "Ez";
-    import bool                                 get_spectating()          from "Ez";
-    import bool                                 get_viewingReplay()       from "Ez";
-
     /*
     stores information on the current map
     if you keep a handle to this around, call `.Update()` every frame
@@ -123,8 +158,41 @@ namespace Ez::State {
             }
         }
     }
+
+    import uint64                               get_frameCount()          from "Ez";
+
+    import bool                                 get_editor()              from "Ez";
+    import float                                get_fps()                 from "Ez";
+    import string                               get_gameMode()            from "Ez";
+    import bool                                 get_guiPlayer()           from "Ez";
+    import bool                                 get_map()                 from "Ez";
+    import MapInfo@                             get_mapInfo()             from "Ez";
+    import bool                                 get_menu()                from "Ez";
+    import bool                                 get_loading()             from "Ez";
+    import bool                                 get_paused()              from "Ez";
+    import int                                  get_ping()                from "Ez";
+    import bool                                 get_playground()          from "Ez";
+    import bool                                 get_playgroundScript()    from "Ez";
+    import CGamePlaygroundUIConfig::EUISequence get_sequence()            from "Ez";
+    import bool                                 get_viewingControlled()   from "Ez";
+
+    import bool                                 get_driving()             from "Ez";
+    import bool                                 get_mainMenu()            from "Ez";
+    import bool                                 get_mapEditor()           from "Ez";
+    import bool                                 get_mapEditorTesting()    from "Ez";
+    import bool                                 get_playingMap()          from "Ez";
+    import bool                                 get_playingMapLocal()     from "Ez";
+    import bool                                 get_playingMapOnline()    from "Ez";
+    import bool                                 get_replayEditorEditing() from "Ez";
+    import bool                                 get_replayEditorViewing() from "Ez";
+    import bool                                 get_skinEditor()          from "Ez";
+    import bool                                 get_spectating()          from "Ez";
+    import bool                                 get_viewingReplay()       from "Ez";
 }
 
+/*
+Stores information about things that do not change.
+*/
 namespace Ez::Static {
     shared enum AccessLevel {
         Starter,

@@ -1,5 +1,5 @@
 // c 2025-04-07
-// m 2025-06-12
+// m 2025-06-25
 
 /*
 This module is for getting and ensuring an offset value is valid. The State module relies on an active counter of how
@@ -18,12 +18,15 @@ reason.
 
 namespace FrameCount {
     const uint8  checks = 3;
+    uint16       o_FrameCount = 0x0;
     uint16       o_FrameCountFromSystemWindow = 0x14;  // valid 2024-12-12_15_15
     const uint16 o_SystemWindow = Reflection::GetType("CDx11Viewport").GetMember("SystemWindow").Offset;
     bool         valid = false;
 
     void CheckOffsetAsync() {
         trace("checking frame count offset");
+
+        o_FrameCount = o_SystemWindow + o_FrameCountFromSystemWindow;
 
         uint last;
         uint new = Get();
@@ -47,10 +50,7 @@ namespace FrameCount {
     }
 
     uint Get() {
-        return Dev::GetOffsetUint32(
-            GetApp().Viewport,
-            o_SystemWindow + o_FrameCountFromSystemWindow
-        );
+        return Dev::GetOffsetUint32(GetApp().Viewport, o_FrameCount);
     }
 
     void Start() {
