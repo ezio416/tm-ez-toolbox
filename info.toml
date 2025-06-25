@@ -1,9 +1,14 @@
 [meta]
-name = "EzToolbox"
+name = "EzToolbox2"
 author = "Ezio"
 category = "Utilities"
-version = "0.2.0"
-siteid = 396
+version = "0.1.0"
 
 [script]
-optional_dependencies = [ "NadeoServices" ]
+
+dependencies = [ "VehicleState" ]
+optional_dependencies = [ "NadeoServices", "MLHook" ]
+export_dependencies = [ "NadeoServices", "VehicleState", "MLHook" ]
+
+module = "Ez2"
+shared_exports = [ "src/ExportShared.as" ]
