@@ -3,8 +3,8 @@
 - Frame counter is at:
     - Tm2020
         - `App.Viewport.(SystemWindow +0x14)` (`+0x5b4`)
-        - another one `+0x4` (`+0x5b8`) from offset above for some reason
-        - valid for `2024-12-12_15_15`
+        - more at `+0x5b8`, `+0xac8`, `+0x2130`
+        - these are valid for `2024-12-12_15_15`
     - TmTurbo
         - unknown
     - Tm2

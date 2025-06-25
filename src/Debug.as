@@ -11,7 +11,11 @@ namespace Debug {
             return;
         }
 
-        if (UI::Begin(pluginTitle + "\\$888 (debug)###eztoolbox-debug", S_Debug)) {
+        if (UI::Begin(
+            pluginTitle + "\\$888 (debug)###eztoolbox-debug",
+            S_Debug,
+            UI::WindowFlags::None
+        )) {
             RenderContents();
         }
         UI::End();
