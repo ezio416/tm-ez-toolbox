@@ -16,8 +16,6 @@ void Render() {
     Debug::Render();
 }
 
-void RenderMenu() {
-    if (UI::MenuItem(pluginTitle, "", S_Enabled)) {
-        S_Enabled = !S_Enabled;
-    }
+void RenderMenuMain() {
+    MenuInfo::Render();
 }
