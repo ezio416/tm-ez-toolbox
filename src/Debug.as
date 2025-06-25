@@ -21,7 +21,7 @@ namespace Debug {
         UI::BeginTabBar("#tabbar-debug");
 
         if (UI::BeginTabItem("Debug")) {
-            UI::Text("frames: " + Ez2::frameCount);
+            UI::Text("frames: " + Ez::frameCount);
             UI::SameLine();
             UI::Text("valid: " + ColoredBool(FrameCount::valid));
 
@@ -45,115 +45,115 @@ namespace Debug {
                 UI::TableNextColumn();
                 UI::Text("editor");
                 UI::TableNextColumn();
-                UI::Text(ColoredBool(Ez2::State::editor));
+                UI::Text(ColoredBool(Ez::State::editor));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("fps");
                 UI::TableNextColumn();
-                UI::Text(Text::Format("%.1f", Ez2::State::fps));
+                UI::Text(Text::Format("%.1f", Ez::State::fps));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("game mode");
                 UI::TableNextColumn();
-                UI::Text(Ez2::State::gameMode);
+                UI::Text(Ez::State::gameMode);
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("gui player");
                 UI::TableNextColumn();
-                UI::Text(ColoredBool(Ez2::State::guiPlayer));
+                UI::Text(ColoredBool(Ez::State::guiPlayer));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("loading");
                 UI::TableNextColumn();
-                UI::Text(ColoredBool(Ez2::State::loading));
+                UI::Text(ColoredBool(Ez::State::loading));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("map");
                 UI::TableNextColumn();
-                UI::Text(ColoredBool(Ez2::State::map));
+                UI::Text(ColoredBool(Ez::State::map));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("  type");
                 UI::TableNextColumn();
-                UI::Text(Ez2::State::mapInfo.type);
+                UI::Text(Ez::State::mapInfo.type);
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("  uid");
                 UI::TableNextColumn();
-                UI::Text(Ez2::State::mapInfo.uid);
+                UI::Text(Ez::State::mapInfo.uid);
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("  author time");
                 UI::TableNextColumn();
-                UI::Text(Ez2::State::mapInfo.authorTimeFormatted);
+                UI::Text(Ez::State::mapInfo.authorTimeFormatted);
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("  gold time");
                 UI::TableNextColumn();
-                UI::Text(Ez2::State::mapInfo.goldTimeFormatted);
+                UI::Text(Ez::State::mapInfo.goldTimeFormatted);
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("  silver time");
                 UI::TableNextColumn();
-                UI::Text(Ez2::State::mapInfo.silverTimeFormatted);
+                UI::Text(Ez::State::mapInfo.silverTimeFormatted);
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("  bronze time");
                 UI::TableNextColumn();
-                UI::Text(Ez2::State::mapInfo.bronzeTimeFormatted);
+                UI::Text(Ez::State::mapInfo.bronzeTimeFormatted);
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("menu");
                 UI::TableNextColumn();
-                UI::Text(ColoredBool(Ez2::State::menu));
+                UI::Text(ColoredBool(Ez::State::menu));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("paused");
                 UI::TableNextColumn();
-                UI::Text(ColoredBool(Ez2::State::paused));
+                UI::Text(ColoredBool(Ez::State::paused));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("ping");
                 UI::TableNextColumn();
-                UI::Text(tostring(Ez2::State::ping));
+                UI::Text(tostring(Ez::State::ping));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("playground");
                 UI::TableNextColumn();
-                UI::Text(ColoredBool(Ez2::State::playground));
+                UI::Text(ColoredBool(Ez::State::playground));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("playground script");
                 UI::TableNextColumn();
-                UI::Text(ColoredBool(Ez2::State::playgroundScript));
+                UI::Text(ColoredBool(Ez::State::playgroundScript));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("sequence");
                 UI::TableNextColumn();
-                UI::Text(tostring(Ez2::State::sequence));
+                UI::Text(tostring(Ez::State::sequence));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("viewing controlled");
                 UI::TableNextColumn();
-                UI::Text(ColoredBool(Ez2::State::viewingControlled));
+                UI::Text(ColoredBool(Ez::State::viewingControlled));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
@@ -165,73 +165,73 @@ namespace Debug {
                 UI::TableNextColumn();
                 UI::Text("driving");
                 UI::TableNextColumn();
-                UI::Text(ColoredBool(Ez2::State::driving));
+                UI::Text(ColoredBool(Ez::State::driving));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("in main menu");
                 UI::TableNextColumn();
-                UI::Text(ColoredBool(Ez2::State::mainMenu));
+                UI::Text(ColoredBool(Ez::State::mainMenu));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("editing map");
                 UI::TableNextColumn();
-                UI::Text(ColoredBool(Ez2::State::mapEditor));
+                UI::Text(ColoredBool(Ez::State::mapEditor));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("testing map");
                 UI::TableNextColumn();
-                UI::Text(ColoredBool(Ez2::State::mapEditorTesting));
+                UI::Text(ColoredBool(Ez::State::mapEditorTesting));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("editing local replay");
                 UI::TableNextColumn();
-                UI::Text(ColoredBool(Ez2::State::replayEditorEditing));
+                UI::Text(ColoredBool(Ez::State::replayEditorEditing));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("viewing local replay");
                 UI::TableNextColumn();
-                UI::Text(ColoredBool(Ez2::State::replayEditorViewing));
+                UI::Text(ColoredBool(Ez::State::replayEditorViewing));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("editing skin");
                 UI::TableNextColumn();
-                UI::Text(ColoredBool(Ez2::State::skinEditor));
+                UI::Text(ColoredBool(Ez::State::skinEditor));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("playing map");
                 UI::TableNextColumn();
-                UI::Text(ColoredBool(Ez2::State::playingMap));
+                UI::Text(ColoredBool(Ez::State::playingMap));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("playing map locally");
                 UI::TableNextColumn();
-                UI::Text(ColoredBool(Ez2::State::playingMapLocal));
+                UI::Text(ColoredBool(Ez::State::playingMapLocal));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("playing map online");
                 UI::TableNextColumn();
-                UI::Text(ColoredBool(Ez2::State::playingMapOnline));
+                UI::Text(ColoredBool(Ez::State::playingMapOnline));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("spectating");
                 UI::TableNextColumn();
-                UI::Text(ColoredBool(Ez2::State::spectating));
+                UI::Text(ColoredBool(Ez::State::spectating));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("viewing replay");
                 UI::TableNextColumn();
-                UI::Text(ColoredBool(Ez2::State::viewingReplay));
+                UI::Text(ColoredBool(Ez::State::viewingReplay));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
@@ -243,55 +243,55 @@ namespace Debug {
                 UI::TableNextColumn();
                 UI::Text("access level");
                 UI::TableNextColumn();
-                UI::Text(tostring(Ez2::Static::accessLevel));
+                UI::Text(tostring(Ez::Static::accessLevel));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("bits");
                 UI::TableNextColumn();
-                UI::Text(tostring(Ez2::Static::bits));
+                UI::Text(tostring(Ez::Static::bits));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("exe version");
                 UI::TableNextColumn();
-                UI::Text(Ez2::Static::exeVersion);
+                UI::Text(Ez::Static::exeVersion);
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("game type");
                 UI::TableNextColumn();
-                UI::Text(tostring(Ez2::Static::gameType));
+                UI::Text(tostring(Ez::Static::gameType));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("operating system");
                 UI::TableNextColumn();
-                UI::Text(tostring(Ez2::Static::os));
+                UI::Text(tostring(Ez::Static::os));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("player id");
                 UI::TableNextColumn();
-                UI::Text(tostring(Ez2::Static::playerId.Value) + " (" + Ez2::Static::playerId.GetName() + ")");
+                UI::Text(tostring(Ez::Static::playerId.Value) + " (" + Ez::Static::playerId.GetName() + ")");
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("player login");
                 UI::TableNextColumn();
-                UI::Text(Ez2::Static::playerLogin);
+                UI::Text(Ez::Static::playerLogin);
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("player username");
                 UI::TableNextColumn();
-                UI::Text(Ez2::Static::playerUsername);
+                UI::Text(Ez::Static::playerUsername);
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("player wsid");
                 UI::TableNextColumn();
-                UI::Text(Ez2::Static::playerWsid);
+                UI::Text(Ez::Static::playerWsid);
 
                 UI::PopStyleColor();
                 UI::EndTable();

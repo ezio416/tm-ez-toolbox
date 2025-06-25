@@ -1,5 +1,5 @@
 // c 2025-06-24
-// m 2025-06-24
+// m 2025-06-25
 
 /*
 This module is a legacy feature from v0. It shows various information in the top-right of Openplanet's main menu bar.
@@ -23,7 +23,7 @@ namespace MenuInfo {
             if (S_MenuInfo_Icons) {
                 text += Icons::VideoCamera + " ";
             }
-            text += int(Math::Round(Ez2::State::fps)) + " FPS";
+            text += int(Math::Round(Ez::State::fps)) + " FPS";
         }
 
         if (S_MenuInfo_Clock) {

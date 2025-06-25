@@ -1,5 +1,5 @@
 // c 2025-04-04
-// m 2025-06-24
+// m 2025-06-25
 
 /*
 This module provides the current state of some things in the game. Each getter function is structured so that
@@ -8,7 +8,7 @@ during that frame will return the cached value. In the event of a game update, u
 verifies an offset, this module may run with reduced performance.
 */
 
-namespace Ez2 {
+namespace Ez {
     uint64 _frameCount = MAX_UINT64;
     /*
     number of frames the game has rendered
@@ -155,16 +155,16 @@ namespace Ez2 {
         }
     }
 
-    Ez2::State::MapInfo@ _mapInfo = Ez2::State::MapInfo();
+    State::MapInfo@ _mapInfo = State::MapInfo();
     uint64 _mapInfo_updated = 0;
     /*
     info on the current map
     `App.RootMap`
     */
-    Ez2::State::MapInfo@ mapInfo {
+    State::MapInfo@ mapInfo {
         get {
             if (_mapInfo is null) {
-                @_mapInfo = Ez2::State::MapInfo();
+                @_mapInfo = State::MapInfo();
             }
 
             if (_mapInfo_updated != frameCount) {

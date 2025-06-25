@@ -1,11 +1,11 @@
 // c 2025-06-23
-// m 2025-06-24
+// m 2025-06-25
 
 /*
 This module provides information about the player/game/Openplanet/plugin etc. that does not change.
 */
 
-namespace Ez2 {
+namespace Ez {
     Static::AccessLevel _accessLevel;
     /*
     the player's subscription tier
