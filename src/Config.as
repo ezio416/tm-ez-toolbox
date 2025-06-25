@@ -1,5 +1,5 @@
 // c 2025-04-08
-// m 2025-06-12
+// m 2025-06-24
 
 /*
 This module is for getting the current configuration file. This is helpful because
@@ -28,12 +28,13 @@ namespace Config {
             try {
                 @config = req.Json();
 
-                if (config.GetType() == Json::Type::Object && !config.HasKey("error")) {
+                if (config.GetType() == Json::Type::Object and !config.HasKey("error")) {
                     trace("got config after " + (Time::Now - start) + "ms: " + Json::Write(config));
                     return;
                 }
 
                 @config = null;
+
             } catch { }
 
             warn("failed to get config from openplanet.dev after " + (Time::Now - start) + "ms");

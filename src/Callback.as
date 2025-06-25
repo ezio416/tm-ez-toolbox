@@ -1,5 +1,5 @@
 // c 2025-04-03
-// m 2025-04-03
+// m 2025-06-24
 
 namespace Ez2 {
     dictionary@ callbacks_OnEnteredMap = dictionary();
@@ -24,7 +24,7 @@ namespace Ez2 {
 
             try {
                 trace("OnEnteredMap: '" + pluginName + "'");
-                cast<CallbackFunc@>(callbacks_OnEnteredMap[pluginName])();
+                cast<CallbackFunc>(callbacks_OnEnteredMap[pluginName])();
             } catch {
                 error("error in OnEnteredMap for '" + pluginName + "': " + getExceptionInfo());
             }

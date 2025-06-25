@@ -1,8 +1,8 @@
 // c 2025-04-03
-// m 2025-04-07
+// m 2025-06-24
 
 void RenderDebugContents() {
-    // CTrackMania@ App = cast<CTrackMania@>(GetApp());
+    // CTrackMania@ App = cast<CTrackMania>(GetApp());
 
     // if (UI::BeginTable("##table-debug-viewport", 2, UI::TableFlags::RowBg)) {
     //     UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(vec3(), 0.5f));
@@ -23,6 +23,8 @@ void RenderDebugContents() {
     // UI::Separator();
 
     UI::Text("frames: " + Ez2::frameCount);
+    UI::SameLine();
+    UI::Text("valid: " + ColoredBool(FrameCount::valid));
 
     UI::Separator();
 
@@ -76,41 +78,41 @@ void RenderDebugContents() {
         UI::TableNextColumn();
         UI::Text(ColoredBool(Ez2::State::map));
 
-        // UI::TableNextRow();
-        // UI::TableNextColumn();
-        // UI::Text("  type");
-        // UI::TableNextColumn();
-        // UI::Text(Ez2::State::mapInfo.type);
+        UI::TableNextRow();
+        UI::TableNextColumn();
+        UI::Text("  type");
+        UI::TableNextColumn();
+        UI::Text(Ez2::State::mapInfo.type);
 
-        // UI::TableNextRow();
-        // UI::TableNextColumn();
-        // UI::Text("  uid");
-        // UI::TableNextColumn();
-        // UI::Text(Ez2::State::mapInfo.uid);
+        UI::TableNextRow();
+        UI::TableNextColumn();
+        UI::Text("  uid");
+        UI::TableNextColumn();
+        UI::Text(Ez2::State::mapInfo.uid);
 
-        // UI::TableNextRow();
-        // UI::TableNextColumn();
-        // UI::Text("  author time");
-        // UI::TableNextColumn();
-        // UI::Text(Ez2::State::mapInfo.authorTimeFormatted);
+        UI::TableNextRow();
+        UI::TableNextColumn();
+        UI::Text("  author time");
+        UI::TableNextColumn();
+        UI::Text(Ez2::State::mapInfo.authorTimeFormatted);
 
-        // UI::TableNextRow();
-        // UI::TableNextColumn();
-        // UI::Text("  gold time");
-        // UI::TableNextColumn();
-        // UI::Text(Ez2::State::mapInfo.goldTimeFormatted);
+        UI::TableNextRow();
+        UI::TableNextColumn();
+        UI::Text("  gold time");
+        UI::TableNextColumn();
+        UI::Text(Ez2::State::mapInfo.goldTimeFormatted);
 
-        // UI::TableNextRow();
-        // UI::TableNextColumn();
-        // UI::Text("  silver time");
-        // UI::TableNextColumn();
-        // UI::Text(Ez2::State::mapInfo.silverTimeFormatted);
+        UI::TableNextRow();
+        UI::TableNextColumn();
+        UI::Text("  silver time");
+        UI::TableNextColumn();
+        UI::Text(Ez2::State::mapInfo.silverTimeFormatted);
 
-        // UI::TableNextRow();
-        // UI::TableNextColumn();
-        // UI::Text("  bronze time");
-        // UI::TableNextColumn();
-        // UI::Text(Ez2::State::mapInfo.bronzeTimeFormatted);
+        UI::TableNextRow();
+        UI::TableNextColumn();
+        UI::Text("  bronze time");
+        UI::TableNextColumn();
+        UI::Text(Ez2::State::mapInfo.bronzeTimeFormatted);
 
         UI::TableNextRow();
         UI::TableNextColumn();
@@ -154,131 +156,131 @@ void RenderDebugContents() {
         UI::TableNextColumn();
         UI::Text("\\$0CF===================================");
 
-        // UI::TableNextRow();
-        // UI::TableNextColumn();
-        // UI::Text("driving");
-        // UI::TableNextColumn();
-        // UI::Text(ColoredBool(_state.driving));
-
-        // UI::TableNextRow();
-        // UI::TableNextColumn();
-        // UI::Text("in main menu");
-        // UI::TableNextColumn();
-        // UI::Text(ColoredBool(_state.inMainMenu));
-
-        // UI::TableNextRow();
-        // UI::TableNextColumn();
-        // UI::Text("editing map");
-        // UI::TableNextColumn();
-        // UI::Text(ColoredBool(_state.inMapEditor));
-
-        // UI::TableNextRow();
-        // UI::TableNextColumn();
-        // UI::Text("testing map");
-        // UI::TableNextColumn();
-        // UI::Text(ColoredBool(_state.inMapEditorTesting));
-
-        // UI::TableNextRow();
-        // UI::TableNextColumn();
-        // UI::Text("editing local replay");
-        // UI::TableNextColumn();
-        // UI::Text(ColoredBool(_state.inReplayEditorEditing));
-
-        // UI::TableNextRow();
-        // UI::TableNextColumn();
-        // UI::Text("viewing local replay");
-        // UI::TableNextColumn();
-        // UI::Text(ColoredBool(_state.inReplayEditorViewing));
-
-        // UI::TableNextRow();
-        // UI::TableNextColumn();
-        // UI::Text("editing skin");
-        // UI::TableNextColumn();
-        // UI::Text(ColoredBool(_state.inSkinEditor));
-
-        // UI::TableNextRow();
-        // UI::TableNextColumn();
-        // UI::Text("playing local map");
-        // UI::TableNextColumn();
-        // UI::Text(ColoredBool(_state.playingLocalMap));
-
-        // UI::TableNextRow();
-        // UI::TableNextColumn();
-        // UI::Text("playing map");
-        // UI::TableNextColumn();
-        // UI::Text(ColoredBool(_state.playingMap));
-
-        // UI::TableNextRow();
-        // UI::TableNextColumn();
-        // UI::Text("spectating");
-        // UI::TableNextColumn();
-        // UI::Text(ColoredBool(_state.spectating));
-
-        // UI::TableNextRow();
-        // UI::TableNextColumn();
-        // UI::Text("viewing replay");
-        // UI::TableNextColumn();
-        // UI::Text(ColoredBool(_state.viewingReplay));
+        UI::TableNextRow();
+        UI::TableNextColumn();
+        UI::Text("driving");
+        UI::TableNextColumn();
+        UI::Text(ColoredBool(Ez2::State::driving));
 
         UI::TableNextRow();
         UI::TableNextColumn();
-        UI::Text("\\$0CFcached");
+        UI::Text("in main menu");
+        UI::TableNextColumn();
+        UI::Text(ColoredBool(Ez2::State::mainMenu));
+
+        UI::TableNextRow();
+        UI::TableNextColumn();
+        UI::Text("editing map");
+        UI::TableNextColumn();
+        UI::Text(ColoredBool(Ez2::State::mapEditor));
+
+        UI::TableNextRow();
+        UI::TableNextColumn();
+        UI::Text("testing map");
+        UI::TableNextColumn();
+        UI::Text(ColoredBool(Ez2::State::mapEditorTesting));
+
+        UI::TableNextRow();
+        UI::TableNextColumn();
+        UI::Text("editing local replay");
+        UI::TableNextColumn();
+        UI::Text(ColoredBool(Ez2::State::replayEditorEditing));
+
+        UI::TableNextRow();
+        UI::TableNextColumn();
+        UI::Text("viewing local replay");
+        UI::TableNextColumn();
+        UI::Text(ColoredBool(Ez2::State::replayEditorViewing));
+
+        UI::TableNextRow();
+        UI::TableNextColumn();
+        UI::Text("editing skin");
+        UI::TableNextColumn();
+        UI::Text(ColoredBool(Ez2::State::skinEditor));
+
+        UI::TableNextRow();
+        UI::TableNextColumn();
+        UI::Text("playing local map");
+        UI::TableNextColumn();
+        UI::Text(ColoredBool(Ez2::State::playingMapLocal));
+
+        UI::TableNextRow();
+        UI::TableNextColumn();
+        UI::Text("playing map");
+        UI::TableNextColumn();
+        UI::Text(ColoredBool(Ez2::State::playingMap));
+
+        UI::TableNextRow();
+        UI::TableNextColumn();
+        UI::Text("spectating");
+        UI::TableNextColumn();
+        UI::Text(ColoredBool(Ez2::State::spectating));
+
+        UI::TableNextRow();
+        UI::TableNextColumn();
+        UI::Text("viewing replay");
+        UI::TableNextColumn();
+        UI::Text(ColoredBool(Ez2::State::viewingReplay));
+
+        UI::TableNextRow();
+        UI::TableNextColumn();
+        UI::Text("\\$0CFstatic");
         UI::TableNextColumn();
         UI::Text("\\$0CF===================================");
 
-        // UI::TableNextRow();
-        // UI::TableNextColumn();
-        // UI::Text("bits");
-        // UI::TableNextColumn();
-        // UI::Text(tostring(_state.bits));
+        UI::TableNextRow();
+        UI::TableNextColumn();
+        UI::Text("access level");
+        UI::TableNextColumn();
+        UI::Text(tostring(Ez2::Static::accessLevel));
 
-        // UI::TableNextRow();
-        // UI::TableNextColumn();
-        // UI::Text("exe version");
-        // UI::TableNextColumn();
-        // UI::Text(_state.exeVersion);
+        UI::TableNextRow();
+        UI::TableNextColumn();
+        UI::Text("bits");
+        UI::TableNextColumn();
+        UI::Text(tostring(Ez2::Static::bits));
 
-        // UI::TableNextRow();
-        // UI::TableNextColumn();
-        // UI::Text("game");
-        // UI::TableNextColumn();
-        // UI::Text(tostring(_state.game));
+        UI::TableNextRow();
+        UI::TableNextColumn();
+        UI::Text("exe version");
+        UI::TableNextColumn();
+        UI::Text(Ez2::Static::exeVersion);
 
-        // UI::TableNextRow();
-        // UI::TableNextColumn();
-        // UI::Text("local access level");
-        // UI::TableNextColumn();
-        // UI::Text(tostring(_state.localAccessLevel));
+        UI::TableNextRow();
+        UI::TableNextColumn();
+        UI::Text("game type");
+        UI::TableNextColumn();
+        UI::Text(tostring(Ez2::Static::gameType));
 
-        // UI::TableNextRow();
-        // UI::TableNextColumn();
-        // UI::Text("local id");
-        // UI::TableNextColumn();
-        // UI::Text(tostring(_state.localId.Value) + " (" + _state.localId.GetName() + ")");
+        UI::TableNextRow();
+        UI::TableNextColumn();
+        UI::Text("operating system");
+        UI::TableNextColumn();
+        UI::Text(tostring(Ez2::Static::os));
 
-        // UI::TableNextRow();
-        // UI::TableNextColumn();
-        // UI::Text("local login");
-        // UI::TableNextColumn();
-        // UI::Text(_state.localLogin);
+        UI::TableNextRow();
+        UI::TableNextColumn();
+        UI::Text("player id");
+        UI::TableNextColumn();
+        UI::Text(tostring(Ez2::Static::playerId.Value) + " (" + Ez2::Static::playerId.GetName() + ")");
 
-        // UI::TableNextRow();
-        // UI::TableNextColumn();
-        // UI::Text("local username");
-        // UI::TableNextColumn();
-        // UI::Text(_state.localUsername);
+        UI::TableNextRow();
+        UI::TableNextColumn();
+        UI::Text("player login");
+        UI::TableNextColumn();
+        UI::Text(Ez2::Static::playerLogin);
 
-        // UI::TableNextRow();
-        // UI::TableNextColumn();
-        // UI::Text("local wsid");
-        // UI::TableNextColumn();
-        // UI::Text(_state.localWsid);
+        UI::TableNextRow();
+        UI::TableNextColumn();
+        UI::Text("player username");
+        UI::TableNextColumn();
+        UI::Text(Ez2::Static::playerUsername);
 
-        // UI::TableNextRow();
-        // UI::TableNextColumn();
-        // UI::Text("operating system");
-        // UI::TableNextColumn();
-        // UI::Text(tostring(_state.os));
+        UI::TableNextRow();
+        UI::TableNextColumn();
+        UI::Text("player wsid");
+        UI::TableNextColumn();
+        UI::Text(Ez2::Static::playerWsid);
 
         UI::PopStyleColor();
         UI::EndTable();
