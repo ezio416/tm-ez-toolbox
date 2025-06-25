@@ -13,22 +13,7 @@ void Main() {
 }
 
 void Render() {
-    if (false
-        or !S_Enabled
-        or (S_HideWithGame and !UI::IsGameUIVisible())
-        or (S_HideWithOP and !UI::IsOverlayShown())
-    ) {
-        return;
-    }
-
-    if (UI::Begin(
-        pluginTitle + "\\$888 (debug)###eztoolbox-debug",
-        S_Enabled,
-        UI::WindowFlags::AlwaysAutoResize
-    )) {
-        RenderDebugContents();
-    }
-    UI::End();
+    Debug::Render();
 }
 
 void RenderMenu() {

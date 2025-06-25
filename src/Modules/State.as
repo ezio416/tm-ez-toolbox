@@ -217,6 +217,30 @@ namespace Ez2 {
         }
     }
 
+    int _ping = 0;
+    uint64 _ping_updated = 0;
+    /*
+    the ping (in ms) if we're connected to a server
+    `App.Network.LatestGamePing`
+    */
+    int ping {
+        get {
+            if (_ping_updated != frameCount) {
+                _ping_updated = FrameCount::valid ? _frameCount : 0;
+
+                _ping = (true
+                    and playingMap
+                    and !playingMapLocal
+                )
+                    ? GetApp().Network.LatestGamePing
+                    : 0
+                ;
+            }
+
+            return _ping;
+        }
+    }
+
     bool _playground = false;
     uint64 _playground_updated = 0;
     /*
@@ -442,6 +466,26 @@ namespace Ez2 {
             }
 
             return _playingMapLocal;
+        }
+    }
+
+    bool _playingMapOnline = false;
+    uint64 _playingMapOnline_updated = 0;
+    /*
+    whether we're playing a map online (server)
+    */
+    bool playingMapOnline {
+        get {
+            if (_playingMapOnline_updated != frameCount) {
+                _playingMapOnline_updated = FrameCount::valid ? _frameCount : 0;
+
+                _playingMapOnline = true
+                    and !playgroundScript
+                    and playingMap
+                ;
+            }
+
+            return _playingMapOnline;
         }
     }
 

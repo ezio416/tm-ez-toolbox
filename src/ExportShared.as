@@ -20,6 +20,7 @@ namespace Ez2::State {
     import bool                                 get_menu()                from "Ez2";
     import bool                                 get_loading()             from "Ez2";
     import bool                                 get_paused()              from "Ez2";
+    import int                                  get_ping()                from "Ez2";
     import bool                                 get_playground()          from "Ez2";
     import bool                                 get_playgroundScript()    from "Ez2";
     import CGamePlaygroundUIConfig::EUISequence get_sequence()            from "Ez2";
@@ -31,6 +32,7 @@ namespace Ez2::State {
     import bool                                 get_mapEditorTesting()    from "Ez2";
     import bool                                 get_playingMap()          from "Ez2";
     import bool                                 get_playingMapLocal()     from "Ez2";
+    import bool                                 get_playingMapOnline()    from "Ez2";
     import bool                                 get_replayEditorEditing() from "Ez2";
     import bool                                 get_replayEditorViewing() from "Ez2";
     import bool                                 get_skinEditor()          from "Ez2";
