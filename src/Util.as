@@ -4,3 +4,9 @@
 string ColoredBool(const bool b) {
     return (b ? "\\$0F0" : "\\$F00") + b + "\\$G";
 }
+
+void VerifyEnabled() {
+    if (!pluginMeta.Enabled) {
+        throw("toolbox is closed");
+    }
+}

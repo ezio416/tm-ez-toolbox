@@ -13,6 +13,8 @@ namespace Ez {
     */
     Static::AccessLevel accessLevel {
         get {
+            VerifyEnabled();
+
             return _accessLevel;
         }
     }
@@ -22,6 +24,8 @@ namespace Ez {
     */
     uint8 bits {
         get {
+            VerifyEnabled();
+
 #if MANIA32
             return 32;
 #elif MANIA64
@@ -37,6 +41,8 @@ namespace Ez {
     */
     string exeVersion {
         get {
+            VerifyEnabled();
+
             return _exeVersion;
         }
     }
@@ -46,6 +52,8 @@ namespace Ez {
     */
     Static::GameType gameType {
         get {
+            VerifyEnabled();
+
 #if UNITED
             return Static::GameType::TmForever;
 #elif MP3 || MP4
@@ -63,6 +71,8 @@ namespace Ez {
     */
     Static::OperatingSystem os {
         get {
+            VerifyEnabled();
+
 #if WINDOWS
             return Static::OperatingSystem::Windows;
 #elif WINDOWS_WINE
@@ -80,6 +90,8 @@ namespace Ez {
     */
     MwId playerId {
         get {
+            VerifyEnabled();
+
             return _playerId;
         }
     }
@@ -91,6 +103,8 @@ namespace Ez {
     */
     string playerLogin {
         get {
+            VerifyEnabled();
+
             return _playerLogin;
         }
     }
@@ -102,6 +116,8 @@ namespace Ez {
     */
     string playerUsername {
         get {
+            VerifyEnabled();
+
             return _playerUsername;
         }
     }
@@ -113,6 +129,8 @@ namespace Ez {
     */
     string playerWsid {
         get {
+            VerifyEnabled();
+
             return _playerWsid;
         }
     }

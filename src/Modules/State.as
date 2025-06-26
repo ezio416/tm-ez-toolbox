@@ -16,6 +16,8 @@ namespace Ez {
     */
     uint64 frameCount {
         get {
+            VerifyEnabled();
+
             return FrameCount::valid
                 ? (_frameCount = FrameCount::Get())
                 : (_frameCount = MAX_UINT64)
@@ -35,6 +37,8 @@ namespace Ez {
     */
     bool editor {
         get {
+            VerifyEnabled();
+
             if (_editor_updated != frameCount) {
                 _editor_updated = FrameCount::valid ? _frameCount : 0;
 
@@ -53,6 +57,8 @@ namespace Ez {
     */
     float fps {
         get {
+            VerifyEnabled();
+
             if (_fps_updated != frameCount) {
                 _fps_updated = FrameCount::valid ? _frameCount : 0;
 
@@ -73,6 +79,8 @@ namespace Ez {
     */
     string gameMode {
         get {
+            VerifyEnabled();
+
             if (_gameMode_updated != frameCount) {
                 _gameMode_updated = FrameCount::valid ? _frameCount : 0;
 
@@ -97,6 +105,8 @@ namespace Ez {
     */
     bool guiPlayer {
         get {
+            VerifyEnabled();
+
             if (_guiPlayer_updated != frameCount) {
                 _guiPlayer_updated = FrameCount::valid ? _frameCount : 0;
 
@@ -122,6 +132,8 @@ namespace Ez {
     */
     bool loading {
         get {
+            VerifyEnabled();
+
             if (_loading_updated != frameCount) {
                 _loading_updated = FrameCount::valid ? _frameCount : 0;
 
@@ -145,6 +157,8 @@ namespace Ez {
     */
     bool map {
         get {
+            VerifyEnabled();
+
             if (_map_updated != frameCount) {
                 _map_updated = FrameCount::valid ? _frameCount : 0;
 
@@ -163,6 +177,8 @@ namespace Ez {
     */
     State::MapInfo@ mapInfo {
         get {
+            VerifyEnabled();
+
             if (_mapInfo is null) {
                 @_mapInfo = State::MapInfo();
             }
@@ -184,6 +200,8 @@ namespace Ez {
     */
     bool menu {
         get {
+            VerifyEnabled();
+
             if (_menu_updated != frameCount) {
                 _menu_updated = FrameCount::valid ? _frameCount : 0;
 
@@ -202,6 +220,8 @@ namespace Ez {
     */
     bool paused {
         get {
+            VerifyEnabled();
+
             if (_paused_updated != frameCount) {
                 _paused_updated = FrameCount::valid ? _frameCount : 0;
 
@@ -225,6 +245,8 @@ namespace Ez {
     */
     int ping {
         get {
+            VerifyEnabled();
+
             if (_ping_updated != frameCount) {
                 _ping_updated = FrameCount::valid ? _frameCount : 0;
 
@@ -249,6 +271,8 @@ namespace Ez {
     */
     bool playground {
         get {
+            VerifyEnabled();
+
             if (_playground_updated != frameCount) {
                 _playground_updated = FrameCount::valid ? _frameCount : 0;
 
@@ -268,6 +292,8 @@ namespace Ez {
     */
     bool playgroundScript {
         get {
+            VerifyEnabled();
+
             if (_playgroundScript_updated != frameCount) {
                 _playgroundScript_updated = FrameCount::valid ? _frameCount : 0;
 
@@ -286,6 +312,8 @@ namespace Ez {
     */
     CGamePlaygroundUIConfig::EUISequence sequence {
         get {
+            VerifyEnabled();
+
             if (_sequence_updated != frameCount) {
                 _sequence_updated = FrameCount::valid ? _frameCount : 0;
 
@@ -312,6 +340,8 @@ namespace Ez {
     */
     bool viewingControlled {
         get {
+            VerifyEnabled();
+
             if (_viewingControlled_updated != frameCount) {
                 _viewingControlled_updated = FrameCount::valid ? _frameCount : 0;
 
@@ -350,6 +380,8 @@ namespace Ez {
     */
     bool driving {
         get {
+            VerifyEnabled();
+
             if (_driving_updated != frameCount) {
                 _driving_updated = FrameCount::valid ? _frameCount : 0;
 
@@ -372,6 +404,8 @@ namespace Ez {
     */
     bool mainMenu {
         get {
+            VerifyEnabled();
+
             if (_mainMenu_updated != frameCount) {
                 _mainMenu_updated = FrameCount::valid ? _frameCount : 0;
 
@@ -394,6 +428,8 @@ namespace Ez {
     */
     bool mapEditor {
         get {
+            VerifyEnabled();
+
             if (_mapEditor_updated != frameCount) {
                 _mapEditor_updated = FrameCount::valid ? _frameCount : 0;
 
@@ -415,6 +451,8 @@ namespace Ez {
     */
     bool mapEditorTesting {
         get {
+            VerifyEnabled();
+
             if (_mapEditorTesting_updated != frameCount) {
                 _mapEditorTesting_updated = FrameCount::valid ? _frameCount : 0;
 
@@ -435,6 +473,8 @@ namespace Ez {
     */
     bool playingMap {
         get {
+            VerifyEnabled();
+
             if (_playingMap_updated != frameCount) {
                 _playingMap_updated = FrameCount::valid ? _frameCount : 0;
 
@@ -456,6 +496,8 @@ namespace Ez {
     */
     bool playingMapLocal {
         get {
+            VerifyEnabled();
+
             if (_playingMapLocal_updated != frameCount) {
                 _playingMapLocal_updated = FrameCount::valid ? _frameCount : 0;
 
@@ -476,6 +518,8 @@ namespace Ez {
     */
     bool playingMapOnline {
         get {
+            VerifyEnabled();
+
             if (_playingMapOnline_updated != frameCount) {
                 _playingMapOnline_updated = FrameCount::valid ? _frameCount : 0;
 
@@ -496,6 +540,8 @@ namespace Ez {
     */
     bool replayEditorEditing {
         get {
+            VerifyEnabled();
+
             if (_replayEditorEditing_updated != frameCount) {
                 _replayEditorEditing_updated = FrameCount::valid ? _frameCount : 0;
 
@@ -516,6 +562,8 @@ namespace Ez {
     */
     bool replayEditorViewing {
         get {
+            VerifyEnabled();
+
             if (_replayEditorViewing_updated != frameCount) {
                 _replayEditorViewing_updated = FrameCount::valid ? _frameCount : 0;
 
@@ -538,6 +586,8 @@ namespace Ez {
     */
     bool skinEditor {
         get {
+            VerifyEnabled();
+
             if (_skinEditor_updated != frameCount) {
                 _skinEditor_updated = FrameCount::valid ? _frameCount : 0;
 
@@ -558,6 +608,8 @@ namespace Ez {
     */
     bool spectating {
         get {
+            VerifyEnabled();
+
             if (_spectating_updated != frameCount) {
                 _spectating_updated = FrameCount::valid ? _frameCount : 0;
 
@@ -581,6 +633,8 @@ namespace Ez {
     */
     bool viewingReplay {
         get {
+            VerifyEnabled();
+
             if (_viewingReplay_updated != frameCount) {
                 _viewingReplay_updated = FrameCount::valid ? _frameCount : 0;
 
