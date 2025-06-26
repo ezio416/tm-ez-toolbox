@@ -49,7 +49,7 @@ namespace Debug {
                 UI::TableNextColumn();
                 UI::Text("editor");
                 UI::TableNextColumn();
-                UI::Text(ColoredBool(Ez::State::editor));
+                UI::Text(ColoredBool(Ez::State::inEditor));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
@@ -67,7 +67,7 @@ namespace Debug {
                 UI::TableNextColumn();
                 UI::Text("gui player");
                 UI::TableNextColumn();
-                UI::Text(ColoredBool(Ez::State::guiPlayer));
+                UI::Text(ColoredBool(Ez::State::hasGuiPlayer));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
@@ -79,7 +79,7 @@ namespace Debug {
                 UI::TableNextColumn();
                 UI::Text("map");
                 UI::TableNextColumn();
-                UI::Text(ColoredBool(Ez::State::map));
+                UI::Text(ColoredBool(Ez::State::inMap));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
@@ -121,7 +121,7 @@ namespace Debug {
                 UI::TableNextColumn();
                 UI::Text("menu");
                 UI::TableNextColumn();
-                UI::Text(ColoredBool(Ez::State::menu));
+                UI::Text(ColoredBool(Ez::State::hasMenu));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
@@ -139,13 +139,13 @@ namespace Debug {
                 UI::TableNextColumn();
                 UI::Text("playground");
                 UI::TableNextColumn();
-                UI::Text(ColoredBool(Ez::State::playground));
+                UI::Text(ColoredBool(Ez::State::inPlayground));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("playground script");
                 UI::TableNextColumn();
-                UI::Text(ColoredBool(Ez::State::playgroundScript));
+                UI::Text(ColoredBool(Ez::State::hasPlaygroundScript));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
@@ -175,37 +175,37 @@ namespace Debug {
                 UI::TableNextColumn();
                 UI::Text("in main menu");
                 UI::TableNextColumn();
-                UI::Text(ColoredBool(Ez::State::mainMenu));
+                UI::Text(ColoredBool(Ez::State::inMainMenu));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("editing map");
                 UI::TableNextColumn();
-                UI::Text(ColoredBool(Ez::State::mapEditor));
+                UI::Text(ColoredBool(Ez::State::inMapEditor));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("testing map");
                 UI::TableNextColumn();
-                UI::Text(ColoredBool(Ez::State::mapEditorTesting));
+                UI::Text(ColoredBool(Ez::State::inMapEditorTesting));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("editing local replay");
                 UI::TableNextColumn();
-                UI::Text(ColoredBool(Ez::State::replayEditorEditing));
+                UI::Text(ColoredBool(Ez::State::inReplayEditorEditing));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("viewing local replay");
                 UI::TableNextColumn();
-                UI::Text(ColoredBool(Ez::State::replayEditorViewing));
+                UI::Text(ColoredBool(Ez::State::inReplayEditorViewing));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
                 UI::Text("editing skin");
                 UI::TableNextColumn();
-                UI::Text(ColoredBool(Ez::State::skinEditor));
+                UI::Text(ColoredBool(Ez::State::inSkinEditor));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();

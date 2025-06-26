@@ -111,8 +111,8 @@ namespace Ez {
             if (lastUid != Ez::State::mapInfo.uid) {
                 lastUid = Ez::State::mapInfo.uid;
 
-                if (!Ez::State::editor) {
-                    if (Ez::State::map) {
+                if (!Ez::State::inEditor) {
+                    if (Ez::State::inMap) {
                         OnEnteredMap();
                     } else {
                         OnExitedMap();

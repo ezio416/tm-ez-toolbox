@@ -190,35 +190,35 @@ namespace Ez::State {
         }
     }
 
-    import uint64                               get_frameCount()          from "Ez";
+    import uint64                               get_frameCount()            from "Ez";
 
-    import bool                                 get_editor()              from "Ez";
-    import float                                get_fps()                 from "Ez";
-    import string                               get_gameMode()            from "Ez";
-    import bool                                 get_guiPlayer()           from "Ez";
-    import bool                                 get_map()                 from "Ez";
-    import MapInfo@                             get_mapInfo()             from "Ez";
-    import bool                                 get_menu()                from "Ez";
-    import bool                                 get_loading()             from "Ez";
-    import bool                                 get_paused()              from "Ez";
-    import int                                  get_ping()                from "Ez";
-    import bool                                 get_playground()          from "Ez";
-    import bool                                 get_playgroundScript()    from "Ez";
-    import CGamePlaygroundUIConfig::EUISequence get_sequence()            from "Ez";
-    import bool                                 get_viewingControlled()   from "Ez";
+    import float                                get_fps()                   from "Ez";
+    import string                               get_gameMode()              from "Ez";
+    import bool                                 get_hasGuiPlayer()          from "Ez";
+    import bool                                 get_hasMenu()               from "Ez";
+    import bool                                 get_hasPlaygroundScript()   from "Ez";
+    import bool                                 get_inEditor()              from "Ez";
+    import bool                                 get_inMap()                 from "Ez";
+    import bool                                 get_inPlayground()          from "Ez";
+    import bool                                 get_loading()               from "Ez";
+    import MapInfo@                             get_mapInfo()               from "Ez";
+    import bool                                 get_paused()                from "Ez";
+    import int                                  get_ping()                  from "Ez";
+    import CGamePlaygroundUIConfig::EUISequence get_sequence()              from "Ez";
+    import bool                                 get_viewingControlled()     from "Ez";
 
-    import bool                                 get_driving()             from "Ez";
-    import bool                                 get_mainMenu()            from "Ez";
-    import bool                                 get_mapEditor()           from "Ez";
-    import bool                                 get_mapEditorTesting()    from "Ez";
-    import bool                                 get_playingMap()          from "Ez";
-    import bool                                 get_playingMapLocal()     from "Ez";
-    import bool                                 get_playingMapOnline()    from "Ez";
-    import bool                                 get_replayEditorEditing() from "Ez";
-    import bool                                 get_replayEditorViewing() from "Ez";
-    import bool                                 get_skinEditor()          from "Ez";
-    import bool                                 get_spectating()          from "Ez";
-    import bool                                 get_viewingReplay()       from "Ez";
+    import bool                                 get_driving()               from "Ez";
+    import bool                                 get_inMainMenu()            from "Ez";
+    import bool                                 get_inMapEditor()           from "Ez";
+    import bool                                 get_inMapEditorTesting()    from "Ez";
+    import bool                                 get_inReplayEditorEditing() from "Ez";
+    import bool                                 get_inReplayEditorViewing() from "Ez";
+    import bool                                 get_inSkinEditor()          from "Ez";
+    import bool                                 get_playingMap()            from "Ez";
+    import bool                                 get_playingMapLocal()       from "Ez";
+    import bool                                 get_playingMapOnline()      from "Ez";
+    import bool                                 get_spectating()            from "Ez";
+    import bool                                 get_viewingReplay()         from "Ez";
 }
 
 /*
