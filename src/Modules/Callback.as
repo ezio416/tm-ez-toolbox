@@ -58,19 +58,19 @@ namespace Ez {
     }
 
     void Register(Callback::CallbackClass@ c) {
-        Meta::Plugin@ executing = Meta::ExecutingPlugin();
-        if (executing is pluginMeta) {
+        Meta::Plugin@ plugin = Meta::ExecutingPlugin();
+        if (plugin is pluginMeta) {
             throw("ezio you idiot");
             return;
         }
 
         if (c is null) {
-            error("plugin '" + executing.ID + "' tried to register a null callback");
+            error("plugin '" + plugin.ID + "' tried to register a null callback");
             return;
         }
 
         if (c.parent is null) {
-            error("plugin '" + executing.ID + "' did not correctly set up their callback");
+            error("plugin '" + plugin.ID + "' did not correctly set up their callback");
             return;
         }
 

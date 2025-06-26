@@ -66,8 +66,39 @@ namespace Ez::Callback {
         }
     }
 
-    import void Deregister() from "Ez";
-    import void Register(CallbackClass@) from "Ez";
+    import void Deregister()               from "Ez";
+    import void Register(CallbackClass@ c) from "Ez";
+}
+
+/*
+Makes HTTP requests.
+*/
+namespace Ez::Http {
+    import Net::HttpRequest@ GetAsync(const string&in url, bool start = true, const string&in agent = "")                             from "Ez";
+    import Net::HttpRequest@ PostAsync(const string&in url, const string&in body = "", bool start = true, const string&in agent = "") from "Ez";
+    import Net::HttpRequest@ PostAsync(const string&in url, Json::Value@ body = null, bool start = true, const string&in agent = "")  from "Ez";
+
+#if DEPENDENCY_NADEOSERVICES
+    /*
+    Makes requests to Nadeo's Web Services.
+    */
+    namespace Nadeo {
+        import uint64            get_lastRequestTime()                                                                 from "Ez";
+        import bool              get_requesting()                                                                      from "Ez";
+        import uint64            get_waitTime()                                                                        from "Ez";
+        import void              set_waitTime(uint64 ms)                                                               from "Ez";
+
+        import Net::HttpRequest@ GetCoreAsync(const string&in endpoint, bool start = true)                             from "Ez";
+        import Net::HttpRequest@ GetLiveAsync(const string&in endpoint, bool start = true)                             from "Ez";
+        import Net::HttpRequest@ GetMeetAsync(const string&in endpoint, bool start = true)                             from "Ez";
+        import Net::HttpRequest@ PostCoreAsync(const string&in endpoint, const string&in body = "", bool start = true) from "Ez";
+        import Net::HttpRequest@ PostCoreAsync(const string&in endpoint, Json::Value@ body = null, bool start = true)  from "Ez";
+        import Net::HttpRequest@ PostLiveAsync(const string&in endpoint, const string&in body = "", bool start = true) from "Ez";
+        import Net::HttpRequest@ PostLiveAsync(const string&in endpoint, Json::Value@ body = null, bool start = true)  from "Ez";
+        import Net::HttpRequest@ PostMeetAsync(const string&in endpoint, const string&in body = "", bool start = true) from "Ez";
+        import Net::HttpRequest@ PostMeetAsync(const string&in endpoint, Json::Value@ body = null, bool start = true)  from "Ez";
+    }
+#endif
 }
 
 /*
