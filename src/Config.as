@@ -1,5 +1,5 @@
 // c 2025-04-08
-// m 2025-06-24
+// m 2025-06-25
 
 /*
 This module is for getting the current configuration file. This is helpful because
@@ -20,10 +20,7 @@ namespace Config {
         trace("getting config from openplanet.dev");
 
         while (true) {
-            Net::HttpRequest@ req = Net::HttpGet(url);
-            while (!req.Finished()) {
-                yield();
-            }
+            Net::HttpRequest@ req = Ez::Http::GetAsync(url);
 
             try {
                 @config = req.Json();
