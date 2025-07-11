@@ -1,16 +1,18 @@
 // c 2025-04-03
-// m 2025-06-25
+// m 2025-07-10
 
-namespace Ez {
+namespace EzGameInteract {
     void EditMap(const string&in url) {
         startnew(EditMapAsync, url);
     }
 
     void EditMapAsync(const string&in url) {
+#if TMNEXT
         if (!Permissions::OpenAdvancedMapEditor()) {
             warn("can't edit map: player doesn't have permission");
             return;
         }
+#endif
 
         if (url.Length == 0) {
             warn("can't edit map: url is blank");
@@ -27,10 +29,12 @@ namespace Ez {
     }
 
     void PlayMapAsync(const string&in url) {
+#if TMNEXT
         if (!Permissions::PlayLocalMap()) {
             warn("can't play map: player doesn't have permission");
             return;
         }
+#endif
 
         if (url.Length == 0) {
             warn("can't play map: url is blank");

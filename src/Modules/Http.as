@@ -1,11 +1,11 @@
 // c 2024-01-02
-// m 2025-06-25
+// m 2025-07-09
 
 /*
 This module is for making HTTP requests to arbitrary sites and to Nadeo's Web Services endpoints.
 */
 
-namespace Ez {
+namespace EzHttp {
     Net::HttpRequest@ GetAsync(const string&in url, bool start = true, const string&in agent = "") {
         Net::HttpRequest@ req = Net::HttpRequest();
         req.Method = Net::HttpMethod::Get;
@@ -43,14 +43,10 @@ namespace Ez {
 
         return req;
     }
-
-    Net::HttpRequest@ PostAsync(const string&in url, Json::Value@ body = null, bool start = true, const string&in agent = "") {
-        return PostAsync(url, Json::Write(body), start, agent);
-    }
 }
 
 #if DEPENDENCY_NADEOSERVICES
-namespace Ez {
+namespace EzHttp {
     const string audienceCore    = "NadeoServices";
     const string audienceLive    = "NadeoLiveServices";
     const uint64 waitTimeDefault = 1000;
@@ -168,15 +164,7 @@ namespace Ez {
         return req;
     }
 
-    Net::HttpRequest@ PostAsync(const string&in audience, const string&in url, Json::Value@ body = null, bool start = true) {
-        return PostAsync(audience, url, Json::Write(body), start);
-    }
-
     Net::HttpRequest@ PostCoreAsync(const string&in endpoint, const string&in body = "", bool start = true) {
-        return PostAsync(audienceCore, NadeoServices::BaseURLCore() + (endpoint.StartsWith("/") ? "" : "/") + endpoint, body, start);
-    }
-
-    Net::HttpRequest@ PostCoreAsync(const string&in endpoint, Json::Value@ body = null, bool start = true) {
         return PostAsync(audienceCore, NadeoServices::BaseURLCore() + (endpoint.StartsWith("/") ? "" : "/") + endpoint, body, start);
     }
 
@@ -184,15 +172,7 @@ namespace Ez {
         return PostAsync(audienceLive, NadeoServices::BaseURLLive() + (endpoint.StartsWith("/") ? "" : "/") + endpoint, body, start);
     }
 
-    Net::HttpRequest@ PostLiveAsync(const string&in endpoint, Json::Value@ body = null, bool start = true) {
-        return PostAsync(audienceLive, NadeoServices::BaseURLLive() + (endpoint.StartsWith("/") ? "" : "/") + endpoint, body, start);
-    }
-
     Net::HttpRequest@ PostMeetAsync(const string&in endpoint, const string&in body = "", bool start = true) {
-        return PostAsync(audienceLive, NadeoServices::BaseURLMeet() + (endpoint.StartsWith("/") ? "" : "/") + endpoint, body, start);
-    }
-
-    Net::HttpRequest@ PostMeetAsync(const string&in endpoint, Json::Value@ body = null, bool start = true) {
         return PostAsync(audienceLive, NadeoServices::BaseURLMeet() + (endpoint.StartsWith("/") ? "" : "/") + endpoint, body, start);
     }
 

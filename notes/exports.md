@@ -44,3 +44,4 @@
                 import void FunctionC() from "NamespaceA";
             }
             ```
+- actually, doing namespaces in the way I want will require normal exports. Not a huge deal I guess

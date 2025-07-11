@@ -1,5 +1,5 @@
 // c 2025-03-29
-// m 2025-06-25
+// m 2025-07-09
 
 const uint   MAX_UINT   = uint(-1);
 const uint64 MAX_UINT64 = uint64(-1);
@@ -7,7 +7,7 @@ const uint64 MAX_UINT64 = uint64(-1);
 /*
 Allows plugins to register callback functions that will be called under certain conditions.
 */
-namespace Ez::Callback {
+namespace EzCallback {
     /*
     class containing callback functions a plugin desires to use
     instructions:
@@ -24,87 +24,99 @@ namespace Ez::Callback {
         }
         private void set_parent(Meta::Plugin@ p) { }
 
-        protected bool onEnteredMap      = false;
-        protected bool onEnteredMapAsync = false;
-        protected bool onExitedMap       = false;
-        protected bool onExitedMapAsync  = false;
+        private bool _onEnteredMap = false;
+        bool get_onEnteredMap() { return _onEnteredMap; }
+        protected void set_onEnteredMap(bool o) { _onEnteredMap = o; }
+
+        private bool _onEnteredMapAsync = false;
+        bool get_onEnteredMapAsync() { return _onEnteredMapAsync; }
+        protected void set_onEnteredMapAsync(bool o) { _onEnteredMapAsync = o; }
+
+        private bool _onExitedMap = false;
+        bool get_onExitedMap() { return _onExitedMap; }
+        protected void set_onExitedMap(bool o) { _onExitedMap = o; }
+
+        private bool _onExitedMapAsync = false;
+        bool get_onExitedMapAsync() { return _onExitedMapAsync; }
+        protected void set_onExitedMapAsync(bool o) { _onExitedMapAsync = o; }
+
+        uint get_count() {
+            uint ret = 0;
+
+            if (_onEnteredMap) {
+                ret += 1;
+            }
+            if (onEnteredMapAsync) {
+                ret += 1;
+            }
+            if (_onExitedMap) {
+                ret += 1;
+            }
+            if (onExitedMapAsync) {
+                ret += 1;
+            }
+
+            return ret;
+        }
 
         CallbackClass() {
             @_parent = Meta::ExecutingPlugin();
         }
 
-        void OnEnteredMap() { }
-        void OnEnteredMapAsync() { }
+        void OnEnteredMap() {
+            if (onEnteredMap) {
+                throw("plugin '" + (parent !is null ? parent.ID : "") +  "' did not override callback for OnEnteredMap!");
+            }
+        }
+        void OnEnteredMapAsync() {
+            if (onEnteredMapAsync) {
+                throw("plugin '" + (parent !is null ? parent.ID : "") +  "' did not override callback for OnEnteredMapAsync!");
+            }
+        }
         void _OnEnteredMap() final {
             if (parent !is null) {
-                if (onEnteredMap) {
+                if (_onEnteredMap) {
                     trace("OnEnteredMap: plugin '" + parent.ID + "'");
                     this.OnEnteredMap();
                 }
 
-                if (onEnteredMapAsync) {
+                if (_onEnteredMapAsync) {
                     trace("OnEnteredMapAsync: plugin '" + parent.ID + "'");
                     startnew(CoroutineFunc(this.OnEnteredMapAsync));
                 }
             }
         }
 
-        void OnExitedMap() { }
-        void OnExitedMapAsync() { }
+        void OnExitedMap() {
+            if (onExitedMap) {
+                throw("plugin '" + (parent !is null ? parent.ID : "") +  "' did not override callback for OnExitedMap!");
+            }
+        }
+        void OnExitedMapAsync() {
+            if (onExitedMapAsync) {
+                throw("plugin '" + (parent !is null ? parent.ID : "") +  "' did not override callback for OnExitedMapAsync!");
+            }
+        }
         void _OnExitedMap() final {
             if (parent !is null) {
-                if (onExitedMap) {
+                if (_onExitedMap) {
                     trace("OnExitedMap: plugin '" + parent.ID + "'");
                     this.OnExitedMap();
                 }
 
-                if (onExitedMapAsync) {
+                if (_onExitedMapAsync) {
                     trace("OnExitedMapAsync: plugin '" + parent.ID + "'");
                     startnew(CoroutineFunc(this.OnExitedMapAsync));
                 }
             }
         }
     }
-
-    import void Deregister()               from "Ez";
-    import void Register(CallbackClass@ c) from "Ez";
-}
-
-/*
-Makes HTTP requests.
-*/
-namespace Ez::Http {
-    import Net::HttpRequest@ GetAsync(const string&in url, bool start = true, const string&in agent = "")                             from "Ez";
-    import Net::HttpRequest@ PostAsync(const string&in url, const string&in body = "", bool start = true, const string&in agent = "") from "Ez";
-    import Net::HttpRequest@ PostAsync(const string&in url, Json::Value@ body = null, bool start = true, const string&in agent = "")  from "Ez";
-
-#if DEPENDENCY_NADEOSERVICES
-    /*
-    Makes requests to Nadeo's Web Services.
-    */
-    namespace Nadeo {
-        import uint64            get_lastRequestTime()                                                                 from "Ez";
-        import bool              get_requesting()                                                                      from "Ez";
-        import uint64            get_waitTime()                                                                        from "Ez";
-        import void              set_waitTime(uint64 ms)                                                               from "Ez";
-
-        import Net::HttpRequest@ GetCoreAsync(const string&in endpoint, bool start = true)                             from "Ez";
-        import Net::HttpRequest@ GetLiveAsync(const string&in endpoint, bool start = true)                             from "Ez";
-        import Net::HttpRequest@ GetMeetAsync(const string&in endpoint, bool start = true)                             from "Ez";
-        import Net::HttpRequest@ PostCoreAsync(const string&in endpoint, const string&in body = "", bool start = true) from "Ez";
-        import Net::HttpRequest@ PostCoreAsync(const string&in endpoint, Json::Value@ body = null, bool start = true)  from "Ez";
-        import Net::HttpRequest@ PostLiveAsync(const string&in endpoint, const string&in body = "", bool start = true) from "Ez";
-        import Net::HttpRequest@ PostLiveAsync(const string&in endpoint, Json::Value@ body = null, bool start = true)  from "Ez";
-        import Net::HttpRequest@ PostMeetAsync(const string&in endpoint, const string&in body = "", bool start = true) from "Ez";
-        import Net::HttpRequest@ PostMeetAsync(const string&in endpoint, Json::Value@ body = null, bool start = true)  from "Ez";
-    }
-#endif
 }
 
 /*
 Stores information about the game that changes. Very efficient.
 */
-namespace Ez::State {
+namespace EzState {
     /*
     stores information on the current map
     if you keep a handle to this around, call `.Update()` every frame
@@ -176,60 +188,39 @@ namespace Ez::State {
         void Update() final {
             CGameCtnApp@ App = GetApp();
 
-            if (App.RootMap !is null) {
-                _authorTime = App.RootMap.TMObjective_AuthorTime;
-                _bronzeTime = App.RootMap.TMObjective_BronzeTime;
-                _goldTime   = App.RootMap.TMObjective_GoldTime;
-                _silverTime = App.RootMap.TMObjective_SilverTime;
-                _type       = string(App.RootMap.MapType);
-                _uid        = App.RootMap.EdChallengeId;
+            CGameCtnChallenge@ RootMap;
+#if TMNEXT || MP4
+            @RootMap = App.RootMap;
+#else
+            @RootMap = App.Challenge;
+#endif
+
+            if (RootMap !is null) {
+                _authorTime = RootMap.TMObjective_AuthorTime;
+                _bronzeTime = RootMap.TMObjective_BronzeTime;
+                _goldTime   = RootMap.TMObjective_GoldTime;
+                _silverTime = RootMap.TMObjective_SilverTime;
+                _type       = string(RootMap.MapType);
+                _uid        = RootMap.EdChallengeId;
 
             } else {
                 this.Reset();
             }
         }
     }
-
-    import uint64                               get_frameCount()            from "Ez";
-
-    import float                                get_fps()                   from "Ez";
-    import string                               get_gameMode()              from "Ez";
-    import bool                                 get_hasGuiPlayer()          from "Ez";
-    import bool                                 get_hasMenu()               from "Ez";
-    import bool                                 get_hasPlaygroundScript()   from "Ez";
-    import bool                                 get_inEditor()              from "Ez";
-    import bool                                 get_inMap()                 from "Ez";
-    import bool                                 get_inPlayground()          from "Ez";
-    import bool                                 get_loading()               from "Ez";
-    import MapInfo@                             get_mapInfo()               from "Ez";
-    import bool                                 get_paused()                from "Ez";
-    import int                                  get_ping()                  from "Ez";
-    import CGamePlaygroundUIConfig::EUISequence get_sequence()              from "Ez";
-    import bool                                 get_viewingControlled()     from "Ez";
-
-    import bool                                 get_driving()               from "Ez";
-    import bool                                 get_inMainMenu()            from "Ez";
-    import bool                                 get_inMapEditor()           from "Ez";
-    import bool                                 get_inMapEditorTesting()    from "Ez";
-    import bool                                 get_inReplayEditorEditing() from "Ez";
-    import bool                                 get_inReplayEditorViewing() from "Ez";
-    import bool                                 get_inSkinEditor()          from "Ez";
-    import bool                                 get_playingMap()            from "Ez";
-    import bool                                 get_playingMapLocal()       from "Ez";
-    import bool                                 get_playingMapOnline()      from "Ez";
-    import bool                                 get_spectating()            from "Ez";
-    import bool                                 get_viewingReplay()         from "Ez";
 }
 
 /*
 Stores information about things that do not change.
 */
-namespace Ez::Static {
+namespace EzStatic {
+#if TMNEXT
     shared enum AccessLevel {
         Starter,
         Standard,
         Club
     }
+#endif
 
     shared enum GameType {
         TmForever,
@@ -243,14 +234,4 @@ namespace Ez::Static {
         Wine,
         Linux
     }
-
-    import AccessLevel     get_accessLevel()    from "Ez";
-    import uint8           get_bits()           from "Ez";
-    import string          get_exeVersion()     from "Ez";
-    import GameType        get_gameType()       from "Ez";
-    import OperatingSystem get_os()             from "Ez";
-    import MwId            get_playerId()       from "Ez";
-    import string          get_playerLogin()    from "Ez";
-    import string          get_playerUsername() from "Ez";
-    import string          get_playerWsid()     from "Ez";
 }

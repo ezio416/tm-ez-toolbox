@@ -1,5 +1,5 @@
 // c 2025-04-04
-// m 2025-06-25
+// m 2025-07-09
 
 /*
 This module provides the current state of some things in the game. Each getter function is structured so that
@@ -8,7 +8,7 @@ during that frame will return the cached value. In the event of a game update, u
 verifies an offset, this module may run with reduced performance.
 */
 
-namespace Ez {
+namespace EzState {
     uint64 _frameCount = MAX_UINT64;
     /*
     number of frames the game has rendered
@@ -87,6 +87,7 @@ namespace Ez {
         get {
             VerifyEnabled();
 
+#if TMNEXT || MP4
             if (_hasGuiPlayer_updated != frameCount) {
                 _hasGuiPlayer_updated = FrameCount::valid ? _frameCount : 0;
 
@@ -101,6 +102,9 @@ namespace Ez {
             }
 
             return _hasGuiPlayer;
+#else
+            return false;  // idk where it is
+#endif
         }
     }
 
@@ -177,7 +181,7 @@ namespace Ez {
             if (_inMap_updated != frameCount) {
                 _inMap_updated = FrameCount::valid ? _frameCount : 0;
 
-                _inMap = GetApp().RootMap !is null;
+                _inMap = EzGame::RootMap !is null;
             }
 
             return _inMap;
@@ -215,6 +219,7 @@ namespace Ez {
         get {
             VerifyEnabled();
 
+#if TMNEXT
             if (_loading_updated != frameCount) {
                 _loading_updated = FrameCount::valid ? _frameCount : 0;
 
@@ -227,21 +232,24 @@ namespace Ez {
             }
 
             return _loading;
+#else
+            return false;  // idk where it is
+#endif
         }
     }
 
-    State::MapInfo@ _mapInfo = State::MapInfo();
+    MapInfo@ _mapInfo = MapInfo();
     uint64 _mapInfo_updated = 0;
     /*
     info on the current map
     `App.RootMap`
     */
-    State::MapInfo@ mapInfo {
+    MapInfo@ mapInfo {
         get {
             VerifyEnabled();
 
             if (_mapInfo is null) {
-                @_mapInfo = State::MapInfo();
+                @_mapInfo = EzState::MapInfo();
             }
 
             if (_mapInfo_updated != frameCount) {
@@ -263,6 +271,7 @@ namespace Ez {
         get {
             VerifyEnabled();
 
+#if TMNEXT || MP4
             if (_paused_updated != frameCount) {
                 _paused_updated = FrameCount::valid ? _frameCount : 0;
 
@@ -275,6 +284,9 @@ namespace Ez {
             }
 
             return _paused;
+#else
+            return false;  // idk where it is
+#endif
         }
     }
 
@@ -342,16 +354,13 @@ namespace Ez {
         get {
             VerifyEnabled();
 
+#if TMNEXT || MP4
             if (_viewingControlled_updated != frameCount) {
                 _viewingControlled_updated = FrameCount::valid ? _frameCount : 0;
 
                 CGameCtnApp@ App = GetApp();
 
-                if (true
-                    and inPlayground
-                    and App.CurrentPlayground.GameTerminals.Length > 0
-                    and App.CurrentPlayground.GameTerminals[0] !is null
-                ) {
+                if (hasGuiPlayer) {
                     auto GUIPlayer = cast<CSmPlayer>(App.CurrentPlayground.GameTerminals[0].GUIPlayer);
 
                     _viewingControlled = true
@@ -365,6 +374,9 @@ namespace Ez {
             }
 
             return _viewingControlled;
+#else
+            return false;
+#endif
         }
     }
 

@@ -1,5 +1,5 @@
 // c 2025-04-03
-// m 2025-06-25
+// m 2025-07-09
 
 /*
 This module provides a way for plugins to register callback functions that can be called automatically under certain
@@ -11,7 +11,7 @@ I've opted to instead do callbacks with methods in an abstract class which does 
 significantly cut down on the code I have to write.
 */
 
-namespace Ez {
+namespace EzCallback {
     dictionary@ callbacks = dictionary();
 
     void Deregister() {
@@ -37,7 +37,7 @@ namespace Ez {
         string[]@ pluginIds = callbacks.GetKeys();
         for (uint i = 0; i < pluginIds.Length; i++) {
             try {
-                cast<Callback::CallbackClass>(callbacks[pluginIds[i]])._OnEnteredMap();
+                cast<CallbackClass>(callbacks[pluginIds[i]])._OnEnteredMap();
             } catch {
                 error("error in OnEnteredMap for '" + pluginIds[i] + "': " + getExceptionInfo());
             }
@@ -50,14 +50,14 @@ namespace Ez {
         string[]@ pluginIds = callbacks.GetKeys();
         for (uint i = 0; i < pluginIds.Length; i++) {
             try {
-                cast<Callback::CallbackClass>(callbacks[pluginIds[i]])._OnExitedMap();
+                cast<CallbackClass>(callbacks[pluginIds[i]])._OnExitedMap();
             } catch {
                 error("error in OnExitedMap for '" + pluginIds[i] + "': " + getExceptionInfo());
             }
         }
     }
 
-    void Register(Callback::CallbackClass@ c) {
+    void Register(CallbackClass@ c) {
         Meta::Plugin@ plugin = Meta::ExecutingPlugin();
         if (plugin is pluginMeta) {
             throw("ezio you idiot");
@@ -69,20 +69,37 @@ namespace Ez {
             return;
         }
 
-        if (c.parent is null) {
+        if (false
+            or c.parent is null
+            or c.count == 0
+        ) {
             error("plugin '" + plugin.ID + "' did not correctly set up their callback");
             return;
         }
 
         callbacks.Set(c.parent.ID, @c);
-        trace("plugin '" + c.parent.ID + "' registered callback in EzToolbox");
+        string msg = "plugin '" + c.parent.ID + "' registered callback in EzToolbox (";
+        string[] cbs;
+        if (c.onEnteredMap) {
+            cbs.InsertLast("OnEnteredMap");
+        }
+        if (c.onEnteredMapAsync) {
+            cbs.InsertLast("OnEnteredMapAsync");
+        }
+        if (c.onExitedMap) {
+            cbs.InsertLast("OnExitedMap");
+        }
+        if (c.onExitedMapAsync) {
+            cbs.InsertLast("OnExitedMapAsync");
+        }
+        trace(msg + string::Join(cbs, ", ") + ")");
     }
 
-    void VerifyCallbacks() {
-        startnew(VerifyCallbacksAsync);
+    void Verify() {
+        startnew(VerifyAsync);
     }
 
-    void VerifyCallbacksAsync() {
+    void VerifyAsync() {
         while (true) {
             sleep(1000);
 
@@ -108,11 +125,11 @@ namespace Ez {
         while (true) {
             yield();
 
-            if (lastUid != Ez::State::mapInfo.uid) {
-                lastUid = Ez::State::mapInfo.uid;
+            if (lastUid != EzState::mapInfo.uid) {
+                lastUid = EzState::mapInfo.uid;
 
-                if (!Ez::State::inEditor) {
-                    if (Ez::State::inMap) {
+                if (!EzState::inEditor) {
+                    if (EzState::inMap) {
                         OnEnteredMap();
                     } else {
                         OnExitedMap();

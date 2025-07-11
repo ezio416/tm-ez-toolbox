@@ -1,23 +1,25 @@
 // c 2025-06-23
-// m 2025-06-25
+// m 2025-07-10
 
 /*
 This module provides information about the player/game/Openplanet/plugin etc. that does not change.
 */
 
-namespace Ez {
-    Static::AccessLevel _accessLevel;
+namespace EzStatic {
+#if TMNEXT
+    AccessLevel _accessLevel;
     /*
     the player's subscription tier
     do not use for actual permission checks, only as a reference
     */
-    Static::AccessLevel accessLevel {
+    AccessLevel accessLevel {
         get {
             VerifyEnabled();
 
             return _accessLevel;
         }
     }
+#endif
 
     /*
     number of bits in the CPU architecture (32 or 64)
@@ -50,18 +52,18 @@ namespace Ez {
     /*
     the game the player is playing
     */
-    Static::GameType gameType {
+    GameType gameType {
         get {
             VerifyEnabled();
 
 #if UNITED
-            return Static::GameType::TmForever;
-#elif MP3 || MP4
-            return Static::GameType::Tm2;
+            return GameType::TmForever;
+#elif MP4
+            return GameType::Tm2;
 #elif TURBO
-            return Static::GameType::TmTurbo;
+            return GameType::TmTurbo;
 #elif TMNEXT
-            return Static::GameType::Tm2020;
+            return GameType::Tm2020;
 #endif
         }
     }
@@ -69,16 +71,16 @@ namespace Ez {
     /*
     the player's operating system
     */
-    Static::OperatingSystem os {
+    OperatingSystem os {
         get {
             VerifyEnabled();
 
 #if WINDOWS
-            return Static::OperatingSystem::Windows;
+            return OperatingSystem::Windows;
 #elif WINDOWS_WINE
-            return Static::OperatingSystem::Wine;
+            return OperatingSystem::Wine;
 #elif LINUX
-            return Static::OperatingSystem::Linux;
+            return OperatingSystem::Linux;
 #endif
         }
     }
@@ -135,27 +137,26 @@ namespace Ez {
         }
     }
 
-    void InitStatic() {
-        startnew(InitStaticAsync);
+    void Init() {
+        startnew(InitAsync);
     }
 
-    void InitStaticAsync() {
-        auto App = cast<CTrackMania>(GetApp());
+    void InitAsync() {
+        CTrackMania@ App = EzGame::App;
 
+#if TMNEXT
         _accessLevel = Permissions::CreateClub()
-            ? Static::AccessLevel::Club
+            ? AccessLevel::Club
             : Permissions::PlayLocalMap()
-                ? Static::AccessLevel::Standard
-                : Static::AccessLevel::Starter
+                ? AccessLevel::Standard
+                : AccessLevel::Starter
         ;
+#endif
 
-        while (false
-            or App.ManiaPlanetScriptAPI is null
-            or App.ManiaPlanetScriptAPI.System is null
-        ) {
+        while (App.ManiaPlanetScriptAPI is null) {
             yield();
         }
-        _exeVersion = App.ManiaPlanetScriptAPI.System.ExeVersion;
+        _exeVersion = App.ManiaPlanetScriptAPI.ExeVersion;
 
         while (false
             or App.UserManagerScript is null
@@ -166,11 +167,20 @@ namespace Ez {
         }
         _playerId = App.UserManagerScript.Users[0].Id;
 
+#if TMNEXT
         while (App.LocalPlayerInfo is null) {
             yield();
         }
         _playerLogin = App.LocalPlayerInfo.Login;
         _playerUsername = App.LocalPlayerInfo.Name;
         _playerWsid = App.LocalPlayerInfo.WebServicesUserId;
+#else
+        CTrackManiaNetwork@ Network = EzGame::Network;
+        while (Network.PlayerInfo is null) {
+            yield();
+        }
+        _playerLogin = Network.PlayerInfo.Login;
+        _playerUsername = Network.PlayerInfo.Name;
+#endif
     }
 }

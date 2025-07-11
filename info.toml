@@ -9,5 +9,5 @@ dependencies = [ "VehicleState" ]
 optional_dependencies = [ "NadeoServices", "MLHook" ]
 export_dependencies = [ "NadeoServices", "VehicleState", "MLHook" ]
 
-module = "Ez"
+exports = [ "src/Export.as" ]
 shared_exports = [ "src/ExportShared.as" ]
