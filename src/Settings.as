@@ -1,5 +1,5 @@
 // c 2025-03-27
-// m 2025-06-25
+// m 2025-07-10
 
 [Setting category="Menu Info" name="Enabled"]
 bool S_MenuInfo = false;
@@ -10,11 +10,17 @@ uint S_MenuInfo_Padding = 5;
 [Setting category="Menu Info" name="Show icons" if="S_MenuInfo"]
 bool S_MenuInfo_Icons = true;
 
+// [Setting category="Menu Info" name="Toolbox menu" if="S_MenuInfo"]
+// bool S_MenuInfo_Menu = true;
+
 [Setting category="Menu Info" name="FPS" if="S_MenuInfo"]
 bool S_MenuInfo_FPS = true;
 
 [Setting category="Menu Info" name="Clock" if="S_MenuInfo"]
 bool S_MenuInfo_Clock = true;
+
+[Setting category="Menu Info" name="Date" if="S_MenuInfo"]
+bool S_MenuInfo_Date = true;
 
 
 [Setting category="Debug" hidden]
