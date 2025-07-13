@@ -10,4 +10,11 @@ optional_dependencies = [ "NadeoServices", "MLHook" ]
 export_dependencies = [ "NadeoServices", "VehicleState", "MLHook" ]
 
 exports = [ "src/Export.as" ]
-shared_exports = [ "src/ExportShared.as" ]
+shared_exports = [
+    "src/Shared/Callback.as",
+    "src/Shared/Constants.as",
+    "src/Shared/Dev.as",
+    "src/Shared/Json.as",
+    "src/Shared/State.as",
+    "src/Shared/Static.as",
+]

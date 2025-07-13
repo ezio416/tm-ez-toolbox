@@ -10,19 +10,6 @@ namespace EzCallback {
 }
 
 /*
-Uses the Dev:: API.
-*/
-namespace EzDev {
-#if MANIA64
-    import uint64 CheckPointer(const uint64 ptr) from "EzToolbox";
-    import uint64 GetNodPointer(CMwNod@ nod)     from "EzToolbox";
-#else
-    import uint CheckPointer(const uint ptr)     from "EzToolbox";
-    import uint GetNodPointer(CMwNod@ nod)       from "EzToolbox";
-#endif
-}
-
-/*
 Gets handles to game objects and interacts with the game directly.
 */
 namespace EzGame {
