@@ -90,11 +90,14 @@ namespace Debug {
                 RenderRow("bits",                 tostring(EzStatic::bits));
                 RenderRow("exe version",          EzStatic::exeVersion);
                 RenderRow("game type",            tostring(EzStatic::gameType));
+                RenderRow("init",                 ColoredBool(EzStatic::init));
                 RenderRow("operating system",     tostring(EzStatic::os));
                 RenderRow("player id",            tostring(EzStatic::playerId.Value) + " (" + EzStatic::playerId.GetName() + ")");
                 RenderRow("player login",         EzStatic::playerLogin);
                 RenderRow("player username",      EzStatic::playerUsername);
+#if TMNEXT
                 RenderRow("player wsid",          EzStatic::playerWsid);
+#endif
 
                 UI::TableNextRow();
                 UI::TableNextColumn();

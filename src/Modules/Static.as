@@ -137,6 +137,7 @@ namespace EzStatic {
         }
     }
 
+#if TMNEXT
     string _playerWsid;
     /*
     the player's web services ID
@@ -149,6 +150,7 @@ namespace EzStatic {
             return _playerWsid;
         }
     }
+#endif
 
     void Init() {
         startnew(InitAsync);
@@ -192,9 +194,11 @@ namespace EzStatic {
         while (false
             or Network.PlayerInfo is null
             or Network.PlayerInfo.Login.Length == 0
+            or Network.PlayerInfo.Login.Length == 36
             or Network.PlayerInfo.Login == "00000000"
             or Network.PlayerInfo.Name.Length == 0
             or Network.PlayerInfo.Name == "DefaultUser"
+            or Network.PlayerInfo.Name == "Unnamed"
         ) {
             yield();
         }
