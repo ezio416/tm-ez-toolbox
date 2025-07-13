@@ -332,6 +332,10 @@ namespace Debug {
             }
 
             if (UI::BeginTabItem("Raw Offsets")) {
+#if MANIA64
+                S_Debug_64bit = UI::Checkbox("Use 64-bit values (includes pointers)", S_Debug_64bit);
+#endif
+
                 if (UI::BeginTable("##table-debug-viewport-offsets", 2, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
                     UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(vec3(), 0.5f));
 
@@ -342,11 +346,7 @@ namespace Debug {
 #endif
                     while (clipper.Step()) {
                         for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i += 1) {
-#if MANIA64
                             const uint16 o = i * (S_Debug_64bit ? 0x8 : 0x4);
-#else
-                            const uint16 o = i * 0x4;
-#endif
 
                             UI::TableNextRow();
 
@@ -354,11 +354,7 @@ namespace Debug {
                             UI::Text("+0x" + Text::Format("%X", o));
 
                             UI::TableNextColumn();
-                            if (false
-#if MANIA64
-                                or S_Debug_64bit
-#endif
-                            ) {
+                            if (S_Debug_64bit) {
                                 const uint64 value = Dev::GetOffsetUint64(Viewport, o);
                                 try {
                                     Dev::SafeReadUInt8(value);
@@ -414,7 +410,10 @@ namespace Debug {
             UI::Text(member.Name);
 
             UI::TableNextColumn();
-            if (member.Offset != 0x0 and member.Offset != uint16(-1)) {
+            if (true
+                and member.Offset > 0x0
+                and member.Offset < MAX_UINT16
+            ) {
                 UI::Text("+0x" + Text::Format("%X", member.Offset));
             }
         }

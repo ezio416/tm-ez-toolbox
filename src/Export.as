@@ -72,7 +72,7 @@ namespace EzHttp {
 Stores information about the game that changes. Very efficient.
 */
 namespace EzState {
-    import uint64                               get_frameCount()            from "EzToolbox";
+    import uint                                 get_frameCount()            from "EzToolbox";
 
     import float                                get_fps()                   from "EzToolbox";
     import string                               get_gameMode()              from "EzToolbox";

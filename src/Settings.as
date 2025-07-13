@@ -1,5 +1,5 @@
 // c 2025-03-27
-// m 2025-07-10
+// m 2025-07-12
 
 [Setting category="Menu Info" name="Enabled"]
 bool S_MenuInfo = false;
@@ -34,8 +34,8 @@ bool S_Debug_HideWithOP = true;
 
 #if MANIA64
 [Setting category="Debug" hidden]
-bool S_Debug_64bit = false;
 #endif
+bool S_Debug_64bit = false;
 
 [SettingsTab name="Debug" icon="Bug" order=1]
 void SettingsTab_Debug() {

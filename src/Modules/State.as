@@ -1,5 +1,5 @@
 // c 2025-04-04
-// m 2025-07-09
+// m 2025-07-12
 
 /*
 This module provides the current state of some things in the game. Each getter function is structured so that
@@ -9,31 +9,52 @@ verifies an offset, this module may run with reduced performance.
 */
 
 namespace EzState {
-    uint64 _frameCount = MAX_UINT64;
+    uint _frameCount = MAX_UINT32;
     /*
     number of frames the game has rendered
     used for caching values
     */
-    uint64 frameCount {
+    uint frameCount {
         get {
             VerifyEnabled();
 
-            return FrameCount::valid
-                ? (_frameCount = FrameCount::Get())
-                : (_frameCount = MAX_UINT64)
+            _frameCount = FrameCount::valid
+                ? FrameCount::Get()
+                : MAX_UINT32
             ;
+
+            return _frameCount;
         }
     }
 
-    /*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    base properties
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+    bool _driving = false;
+    uint _driving_updated = 0;
+    /*
+    whether the player has control of the car
+    */
+    bool driving {
+        get {
+            VerifyEnabled();
+
+            if (_driving_updated != frameCount) {
+                _driving_updated = FrameCount::valid ? _frameCount : 0;
+
+                _driving = true
+                    and inPlayground
+                    and sequence == CGamePlaygroundUIConfig::EUISequence::Playing
+                    and viewingControlled
+                    and !viewingReplay
+                ;
+            }
+
+            return _driving;
+        }
+    }
 
     float _fps = 0.0f;
-    uint64 _fps_updated = 0;
+    uint _fps_updated = 0;
     /*
     the current average framerate
-    `App.Viewport.AverageFps`
     */
     float fps {
         get {
@@ -52,10 +73,9 @@ namespace EzState {
     }
 
     string _gameMode;
-    uint64 _gameMode_updated = 0;
+    uint _gameMode_updated = 0;
     /*
     the current game mode
-    `App.Network.ServerInfo.CurGameModeStr`
     */
     string gameMode {
         get {
@@ -78,10 +98,9 @@ namespace EzState {
     }
 
     bool _hasGuiPlayer = false;
-    uint64 _hasGuiPlayer_updated = 0;
+    uint _hasGuiPlayer_updated = 0;
     /*
     whether there exists a valid GUIPlayer
-    `App.CurrentPlayground.GameTerminals[0].GUIPlayer`
     */
     bool hasGuiPlayer {
         get {
@@ -102,17 +121,16 @@ namespace EzState {
             }
 
             return _hasGuiPlayer;
-#else
+#elif TURBO
             return false;  // idk where it is
 #endif
         }
     }
 
     bool _hasMenu = false;
-    uint64 _hasMenu_updated = 0;
+    uint _hasMenu_updated = 0;
     /*
     whether the game's menus are shown (not UI layers)
-    `App.ActiveMenus`
     */
     bool hasMenu {
         get {
@@ -129,10 +147,9 @@ namespace EzState {
     }
 
     bool _hasPlaygroundScript = false;
-    uint64 _hasPlaygroundScript_updated = 0;
+    uint _hasPlaygroundScript_updated = 0;
     /*
     whether there exists a valid playground script
-    `App.PlaygroundScript`
     */
     bool hasPlaygroundScript {
         get {
@@ -149,10 +166,9 @@ namespace EzState {
     }
 
     bool _inEditor = false;
-    uint64 _inEditor_updated = 0;
+    uint _inEditor_updated = 0;
     /*
     whether we're in an editor
-    `App.Editor`
     */
     bool inEditor {
         get {
@@ -168,11 +184,34 @@ namespace EzState {
         }
     }
 
+    bool _inMainMenu = false;
+    uint _inMainMenu_updated = 0;
+    /*
+    whether we're at the main menu
+    */
+    bool inMainMenu {
+        get {
+            VerifyEnabled();
+
+            if (_inMainMenu_updated != frameCount) {
+                _inMainMenu_updated = FrameCount::valid ? _frameCount : 0;
+
+                _inMainMenu = true
+                    and hasMenu
+                    and !hasPlaygroundScript
+                    and !inEditor
+                    and !inMap
+                ;
+            }
+
+            return _inMainMenu;
+        }
+    }
+
     bool _inMap = false;
-    uint64 _inMap_updated = 0;
+    uint _inMap_updated = 0;
     /*
     whether we're in a map
-    `App.RootMap`
     */
     bool inMap {
         get {
@@ -188,11 +227,51 @@ namespace EzState {
         }
     }
 
+    bool _inMapEditor = false;
+    uint _inMapEditor_updated = 0;
+    /*
+    whether we're in the map editor
+    */
+    bool inMapEditor {
+        get {
+            VerifyEnabled();
+
+            if (_inMapEditor_updated != frameCount) {
+                _inMapEditor_updated = FrameCount::valid ? _frameCount : 0;
+
+                _inMapEditor = cast<CGameCtnEditorFree>(GetApp().Editor) !is null;
+            }
+
+            return _inMapEditor;
+        }
+    }
+
+    bool _inMapEditorTesting = false;
+    uint _inMapEditorTesting_updated = 0;
+    /*
+    whether we're testing/validating a map in the editor
+    */
+    bool inMapEditorTesting {
+        get {
+            VerifyEnabled();
+
+            if (_inMapEditorTesting_updated != frameCount) {
+                _inMapEditorTesting_updated = FrameCount::valid ? _frameCount : 0;
+
+                _inMapEditorTesting = true
+                    and inMapEditor
+                    and inPlayground
+                ;
+            }
+
+            return _inMapEditorTesting;
+        }
+    }
+
     bool _inPlayground = false;
-    uint64 _inPlayground_updated = 0;
+    uint _inPlayground_updated = 0;
     /*
     whether we're in a drivable map
-    `App.CurrentPlayground`
     */
     bool inPlayground {
         get {
@@ -209,11 +288,79 @@ namespace EzState {
         }
     }
 
+    bool _inReplayEditorEditing = false;
+    uint _inReplayEditorEditing_updated = 0;
+    /*
+    whether we're editing a replay
+    */
+    bool inReplayEditorEditing {  // wrong, could be mediatracker?
+        get {
+            VerifyEnabled();
+
+            if (_inReplayEditorEditing_updated != frameCount) {
+                _inReplayEditorEditing_updated = FrameCount::valid ? _frameCount : 0;
+
+                _inReplayEditorEditing = true
+                    and !hasPlaygroundScript
+                    and inEditor
+                ;
+            }
+
+            return _inReplayEditorEditing;
+        }
+    }
+
+    bool _inReplayEditorViewing = false;
+    uint _inReplayEditorViewing_updated = 0;
+    /*
+    whether we're viewing a local replay file
+    */
+    bool inReplayEditorViewing {  // wrong, could be mediatracker?
+        get {
+            VerifyEnabled();
+
+            if (_inReplayEditorViewing_updated != frameCount) {
+                _inReplayEditorViewing_updated = FrameCount::valid ? _frameCount : 0;
+
+                _inReplayEditorViewing = true
+                    and !inEditor
+                    and inMap
+                    and !inPlayground
+                    and !loading
+                ;
+            }
+
+            return _inReplayEditorViewing;
+        }
+    }
+
+    bool _inSkinEditor = false;
+    uint _inSkinEditor_updated = 0;
+    /*
+    whether we're editing a skin in the garage
+    */
+    bool inSkinEditor {
+        get {
+            VerifyEnabled();
+
+#if TMNEXT
+            if (_inSkinEditor_updated != frameCount) {
+                _inSkinEditor_updated = FrameCount::valid ? _frameCount : 0;
+
+                _inSkinEditor = cast<CGameEditorSkin>(GetApp().Editor) !is null;
+            }
+
+            return _inSkinEditor;
+#elif MP4 || TURBO
+            return false;
+#endif
+        }
+    }
+
     bool _loading = false;
-    uint64 _loading_updated = 0;
+    uint _loading_updated = 0;
     /*
     whether the game is loading in or out of a map or editor
-    `App.LoadProgress.State`
     */
     bool loading {
         get {
@@ -232,17 +379,16 @@ namespace EzState {
             }
 
             return _loading;
-#else
+#elif MP4 || TURBO
             return false;  // idk where it is
 #endif
         }
     }
 
     MapInfo@ _mapInfo = MapInfo();
-    uint64 _mapInfo_updated = 0;
+    uint _mapInfo_updated = 0;
     /*
     info on the current map
-    `App.RootMap`
     */
     MapInfo@ mapInfo {
         get {
@@ -262,10 +408,9 @@ namespace EzState {
     }
 
     bool _paused = false;
-    uint64 _paused_updated = 0;
+    uint _paused_updated = 0;
     /*
     whether the pause menu is shown
-    `App.Network.PlaygroundClientScriptAPI.IsInGameMenuDisplayed`
     */
     bool paused {
         get {
@@ -284,17 +429,20 @@ namespace EzState {
             }
 
             return _paused;
-#else
-            return false;  // idk where it is
+#elif TURBO
+            try {
+                return GetApp().CurrentPlayground.Interface.ManialinkPage.Childs[27].IsFocused;  // I hate this
+            } catch {
+                return false;
+            }
 #endif
         }
     }
 
     int _ping = 0;
-    uint64 _ping_updated = 0;
+    uint _ping_updated = 0;
     /*
     the ping (in ms) if we're connected to a server
-    `App.Network.LatestGamePing`
     */
     int ping {
         get {
@@ -316,11 +464,77 @@ namespace EzState {
         }
     }
 
+    bool _playingMap = false;
+    uint _playingMap_updated = 0;
+    /*
+    whether we're playing a map
+    */
+    bool playingMap {
+        get {
+            VerifyEnabled();
+
+            if (_playingMap_updated != frameCount) {
+                _playingMap_updated = FrameCount::valid ? _frameCount : 0;
+
+                _playingMap = true
+                    and !inEditor
+                    and inMap
+                    and inPlayground
+                ;
+            }
+
+            return _playingMap;
+        }
+    }
+
+    bool _playingMapLocal = false;
+    uint _playingMapLocal_updated = 0;
+    /*
+    whether we're playing a map locally (solo)
+    */
+    bool playingMapLocal {
+        get {
+            VerifyEnabled();
+
+            if (_playingMapLocal_updated != frameCount) {
+                _playingMapLocal_updated = FrameCount::valid ? _frameCount : 0;
+
+                _playingMapLocal = true
+                    and hasPlaygroundScript
+                    and playingMap
+                ;
+            }
+
+            return _playingMapLocal;
+        }
+    }
+
+    bool _playingMapOnline = false;
+    uint _playingMapOnline_updated = 0;
+    /*
+    whether we're playing a map online (server)
+    */
+    bool playingMapOnline {
+        get {
+            VerifyEnabled();
+
+            if (_playingMapOnline_updated != frameCount) {
+                _playingMapOnline_updated = FrameCount::valid ? _frameCount : 0;
+
+                _playingMapOnline = true
+                    and !hasPlaygroundScript
+                    and playingMap
+                ;
+            }
+
+            return _playingMapOnline;
+        }
+    }
+
     CGamePlaygroundUIConfig::EUISequence _sequence = CGamePlaygroundUIConfig::EUISequence::None;
-    uint64 _sequence_updated = 0;
+    uint _sequence_updated = 0;
     /*
     the current UI sequence
-    `App.CurrentPlayground.UIConfigs[0].UISequence`
     */
     CGamePlaygroundUIConfig::EUISequence sequence {
         get {
@@ -345,8 +559,33 @@ namespace EzState {
         }
     }
 
+    bool _spectating = false;
+    uint _spectating_updated = 0;
+    /*
+    whether we're spectating another player or the environment (not cam 7)
+    */
+    bool spectating {
+        get {
+            VerifyEnabled();
+
+            if (_spectating_updated != frameCount) {
+                _spectating_updated = FrameCount::valid ? _frameCount : 0;
+
+                _spectating = true
+                    and !loading
+                    and playingMap
+                    and !playingMapLocal
+                    and !viewingControlled
+                    and !viewingReplay
+                ;
+            }
+
+            return _spectating;
+        }
+    }
+
     bool _viewingControlled = false;
-    uint64 _viewingControlled_updated = 0;
+    uint _viewingControlled_updated = 0;
     /*
     whether we're viewing the player
     */
@@ -374,272 +613,14 @@ namespace EzState {
             }
 
             return _viewingControlled;
-#else
-            return false;
+#elif TURBO
+            return true;  // just assume we aren't spectating? idk figure out later
 #endif
         }
     }
 
-    /*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    logic properties
-    derived from base properties
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
-
-    bool _driving = false;
-    uint64 _driving_updated = 0;
-    /*
-    whether the player has control of the car
-    */
-    bool driving {
-        get {
-            VerifyEnabled();
-
-            if (_driving_updated != frameCount) {
-                _driving_updated = FrameCount::valid ? _frameCount : 0;
-
-                _driving = true
-                    and inPlayground
-                    and sequence == CGamePlaygroundUIConfig::EUISequence::Playing
-                    and viewingControlled
-                    and !viewingReplay
-                ;
-            }
-
-            return _driving;
-        }
-    }
-
-    bool _inMainMenu = false;
-    uint64 _inMainMenu_updated = 0;
-    /*
-    whether we're at the main menu
-    */
-    bool inMainMenu {
-        get {
-            VerifyEnabled();
-
-            if (_inMainMenu_updated != frameCount) {
-                _inMainMenu_updated = FrameCount::valid ? _frameCount : 0;
-
-                _inMainMenu = true
-                    and hasMenu
-                    and !hasPlaygroundScript
-                    and !inEditor
-                    and !inMap
-                ;
-            }
-
-            return _inMainMenu;
-        }
-    }
-
-    bool _inMapEditor = false;
-    uint64 _inMapEditor_updated = 0;
-    /*
-    whether we're in the map editor
-    */
-    bool inMapEditor {
-        get {
-            VerifyEnabled();
-
-            if (_inMapEditor_updated != frameCount) {
-                _inMapEditor_updated = FrameCount::valid ? _frameCount : 0;
-
-                _inMapEditor = true
-                    and hasPlaygroundScript
-                    and inEditor
-                    and inMap
-                ;
-            }
-
-            return _inMapEditor;
-        }
-    }
-
-    bool _inMapEditorTesting = false;
-    uint64 _inMapEditorTesting_updated = 0;
-    /*
-    whether we're testing/validating a map in the editor
-    */
-    bool inMapEditorTesting {
-        get {
-            VerifyEnabled();
-
-            if (_inMapEditorTesting_updated != frameCount) {
-                _inMapEditorTesting_updated = FrameCount::valid ? _frameCount : 0;
-
-                _inMapEditorTesting = true
-                    and inMapEditor
-                    and inPlayground
-                ;
-            }
-
-            return _inMapEditorTesting;
-        }
-    }
-
-    bool _inReplayEditorEditing = false;
-    uint64 _inReplayEditorEditing_updated = 0;
-    /*
-    whether we're editing a replay
-    */
-    bool inReplayEditorEditing {
-        get {
-            VerifyEnabled();
-
-            if (_inReplayEditorEditing_updated != frameCount) {
-                _inReplayEditorEditing_updated = FrameCount::valid ? _frameCount : 0;
-
-                _inReplayEditorEditing = true
-                    and !hasPlaygroundScript
-                    and inEditor
-                ;
-            }
-
-            return _inReplayEditorEditing;
-        }
-    }
-
-    bool _inReplayEditorViewing = false;
-    uint64 _inReplayEditorViewing_updated = 0;
-    /*
-    whether we're viewing a local replay file
-    */
-    bool inReplayEditorViewing {
-        get {
-            VerifyEnabled();
-
-            if (_inReplayEditorViewing_updated != frameCount) {
-                _inReplayEditorViewing_updated = FrameCount::valid ? _frameCount : 0;
-
-                _inReplayEditorViewing = true
-                    and !inEditor
-                    and inMap
-                    and !inPlayground
-                    and !loading
-                ;
-            }
-
-            return _inReplayEditorViewing;
-        }
-    }
-
-    bool _inSkinEditor = false;
-    uint64 _inSkinEditor_updated = 0;
-    /*
-    whether we're editing a skin in the garage
-    */
-    bool inSkinEditor {
-        get {
-            VerifyEnabled();
-
-            if (_inSkinEditor_updated != frameCount) {
-                _inSkinEditor_updated = FrameCount::valid ? _frameCount : 0;
-
-                _inSkinEditor = true
-                    and inEditor
-                    and !inMap
-                ;
-            }
-
-            return _inSkinEditor;
-        }
-    }
-
-    bool _playingMap = false;
-    uint64 _playingMap_updated = 0;
-    /*
-    whether we're playing a map
-    */
-    bool playingMap {
-        get {
-            VerifyEnabled();
-
-            if (_playingMap_updated != frameCount) {
-                _playingMap_updated = FrameCount::valid ? _frameCount : 0;
-
-                _playingMap = true
-                    and !inEditor
-                    and inMap
-                    and inPlayground
-                ;
-            }
-
-            return _playingMap;
-        }
-    }
-
-    bool _playingMapLocal = false;
-    uint64 _playingMapLocal_updated = 0;
-    /*
-    whether we're playing a map locally (solo)
-    */
-    bool playingMapLocal {
-        get {
-            VerifyEnabled();
-
-            if (_playingMapLocal_updated != frameCount) {
-                _playingMapLocal_updated = FrameCount::valid ? _frameCount : 0;
-
-                _playingMapLocal = true
-                    and hasPlaygroundScript
-                    and playingMap
-                ;
-            }
-
-            return _playingMapLocal;
-        }
-    }
-
-    bool _playingMapOnline = false;
-    uint64 _playingMapOnline_updated = 0;
-    /*
-    whether we're playing a map online (server)
-    */
-    bool playingMapOnline {
-        get {
-            VerifyEnabled();
-
-            if (_playingMapOnline_updated != frameCount) {
-                _playingMapOnline_updated = FrameCount::valid ? _frameCount : 0;
-
-                _playingMapOnline = true
-                    and !hasPlaygroundScript
-                    and playingMap
-                ;
-            }
-
-            return _playingMapOnline;
-        }
-    }
-
-    bool _spectating = false;
-    uint64 _spectating_updated = 0;
-    /*
-    whether we're spectating another player or the environment (not cam 7)
-    */
-    bool spectating {
-        get {
-            VerifyEnabled();
-
-            if (_spectating_updated != frameCount) {
-                _spectating_updated = FrameCount::valid ? _frameCount : 0;
-
-                _spectating = true
-                    and !loading
-                    and playingMap
-                    and !playingMapLocal
-                    and !viewingControlled
-                    and !viewingReplay
-                ;
-            }
-
-            return _spectating;
-        }
-    }
-
     bool _viewingReplay = false;
-    uint64 _viewingReplay_updated = 0;
+    uint _viewingReplay_updated = 0;
     /*
     whether we're viewing a replay from the leaderboard
     */
@@ -663,8 +644,10 @@ namespace EzState {
     }
 
     void ResetState() {
-        _frameCount = MAX_UINT64;
+        _frameCount = MAX_UINT32;
 
+        _driving                       = false;
+        _driving_updated               = 0;
         _fps                           = 0.0f;
         _fps_updated                   = 0;
         _gameMode;
@@ -677,10 +660,22 @@ namespace EzState {
         _hasPlaygroundScript_updated   = 0;
         _inEditor                      = false;
         _inEditor_updated              = 0;
+        _inMainMenu                    = false;
+        _inMainMenu_updated            = 0;
         _inMap                         = false;
         _inMap_updated                 = 0;
+        _inMapEditor                   = false;
+        _inMapEditor_updated           = 0;
+        _inMapEditorTesting            = false;
+        _inMapEditorTesting_updated    = 0;
         _inPlayground                  = false;
         _inPlayground_updated          = 0;
+        _inReplayEditorEditing         = false;
+        _inReplayEditorEditing_updated = 0;
+        _inReplayEditorViewing         = false;
+        _inReplayEditorViewing_updated = 0;
+        _inSkinEditor                  = false;
+        _inSkinEditor_updated          = 0;
         _loading                       = false;
         _loading_updated               = 0;
         _mapInfo.Reset();
@@ -689,33 +684,18 @@ namespace EzState {
         _paused_updated                = 0;
         _ping                          = 0;
         _ping_updated                  = 0;
-        _sequence                      = CGamePlaygroundUIConfig::EUISequence::None;
-        _sequence_updated              = 0;
-        _viewingControlled             = false;
-        _viewingControlled_updated     = 0;
-
-        _driving                       = false;
-        _driving_updated               = 0;
-        _inMainMenu                    = false;
-        _inMainMenu_updated            = 0;
-        _inMapEditor                   = false;
-        _inMapEditor_updated           = 0;
-        _inMapEditorTesting            = false;
-        _inMapEditorTesting_updated    = 0;
-        _inReplayEditorEditing         = false;
-        _inReplayEditorEditing_updated = 0;
-        _inReplayEditorViewing         = false;
-        _inReplayEditorViewing_updated = 0;
-        _inSkinEditor                  = false;
-        _inSkinEditor_updated          = 0;
         _playingMap                    = false;
         _playingMap_updated            = 0;
         _playingMapLocal               = false;
         _playingMapLocal_updated       = 0;
         _playingMapOnline              = false;
         _playingMapOnline_updated      = 0;
+        _sequence                      = CGamePlaygroundUIConfig::EUISequence::None;
+        _sequence_updated              = 0;
         _spectating                    = false;
         _spectating_updated            = 0;
+        _viewingControlled             = false;
+        _viewingControlled_updated     = 0;
         _viewingReplay                 = false;
         _viewingReplay_updated         = 0;
     }

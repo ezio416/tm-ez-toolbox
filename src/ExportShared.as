@@ -1,6 +1,20 @@
 // c 2025-03-29
 // m 2025-07-12
+
+const int8   MAX_INT8   = (1 << 7) - 1;
+const int16  MAX_INT16  = (1 << 15) - 1;
+const int    MAX_INT32  = (1 << 31) - 1;
+const int8   MIN_INT8   = -MAX_INT8 - 1;
+const int16  MIN_INT16  = -MAX_INT16 - 1;
+const int    MIN_INT32  = -MAX_INT32 - 1;
+const uint8  MAX_UINT8  = uint8(-1);
+const uint16 MAX_UINT16 = uint16(-1);
+const uint   MAX_UINT32 = uint(-1);
+#if MANIA64
+const int64  MAX_INT64  = (int64(1) << 63) - 1;
+const int64  MIN_INT64  = MAX_INT64 + 1;
 const uint64 MAX_UINT64 = uint64(-1);
+#endif
 
 /*
 Allows plugins to register callback functions that will be called under certain conditions.
@@ -120,45 +134,45 @@ namespace EzState {
     if you keep a handle to this around, call `.Update()` every frame
     */
     shared class MapInfo {
-        private uint _authorTime = MAX_UINT;
+        private uint _authorTime = MAX_UINT32;
         uint get_authorTime() final {
             return _authorTime;
         }
         string get_authorTimeFormatted() final {
-            return _authorTime != MAX_UINT
+            return _authorTime != MAX_UINT32
                 ? Time::Format(_authorTime)
                 : "-:--.---"
             ;
         }
 
-        private uint _bronzeTime = MAX_UINT;
+        private uint _bronzeTime = MAX_UINT32;
         uint get_bronzeTime() final {
             return _bronzeTime;
         }
         string get_bronzeTimeFormatted() final {
-            return _bronzeTime != MAX_UINT
+            return _bronzeTime != MAX_UINT32
                 ? Time::Format(_bronzeTime)
                 : "-:--.---"
             ;
         }
 
-        private uint _goldTime = MAX_UINT;
+        private uint _goldTime = MAX_UINT32;
         uint get_goldTime() final {
             return _goldTime;
         }
         string get_goldTimeFormatted() final {
-            return _goldTime != MAX_UINT
+            return _goldTime != MAX_UINT32
                 ? Time::Format(_goldTime)
                 : "-:--.---"
             ;
         }
 
-        private uint _silverTime = MAX_UINT;
+        private uint _silverTime = MAX_UINT32;
         uint get_silverTime() final {
             return _silverTime;
         }
         string get_silverTimeFormatted() final {
-            return _silverTime != MAX_UINT
+            return _silverTime != MAX_UINT32
                 ? Time::Format(_silverTime)
                 : "-:--.---"
             ;
@@ -175,10 +189,10 @@ namespace EzState {
         }
 
         void Reset() final {
-            _authorTime = MAX_UINT;
-            _bronzeTime = MAX_UINT;
-            _goldTime   = MAX_UINT;
-            _silverTime = MAX_UINT;
+            _authorTime = MAX_UINT32;
+            _bronzeTime = MAX_UINT32;
+            _goldTime   = MAX_UINT32;
+            _silverTime = MAX_UINT32;
             _type       = "";
             _uid        = "";
         }
