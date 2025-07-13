@@ -8,6 +8,9 @@ during that frame will return the cached value. In the event of a game update, u
 verifies an offset, this module may run with reduced performance.
 */
 
+/*
+Stores information about the game that changes. Very efficient.
+*/
 namespace EzState {
     uint _frameCount = MAX_UINT32;
     /*

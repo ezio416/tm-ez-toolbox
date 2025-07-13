@@ -10,9 +10,9 @@ namespace EzCallback {
     instructions:
     - inherit this class
     - override any .On\<MethodName>() methods
-    - in the constructor, call super() and set the respective .on\<MethodName> bools true for any overridden methods
-    - pass an instance of your class to Ez::Callback::Register()
-    async methods are marked as such - all others are not yieldable
+    - in the constructor, call super() and set the respective .on\<MethodName> values true for any overridden methods
+    - pass an instance of your class to EzCallback::Register()
+    asynchronous methods are marked as such - all others are not yieldable
     */
     shared abstract class Callback {
         private Meta::Plugin@ _parent;

@@ -11,6 +11,9 @@ I've opted to instead do callbacks with methods in an abstract class which does 
 significantly cut down on the code I have to write.
 */
 
+/*
+Allows plugins to register callback functions that will be called under certain conditions.
+*/
 namespace EzCallback {
     dictionary@ callbacks = dictionary();
 

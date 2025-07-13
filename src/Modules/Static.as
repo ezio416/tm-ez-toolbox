@@ -5,6 +5,9 @@
 This module provides information about the player/game/Openplanet/plugin etc. that does not change.
 */
 
+/*
+Stores information about things that do not change.
+*/
 namespace EzStatic {
 #if TMNEXT
     AccessLevel _accessLevel;

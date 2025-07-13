@@ -1,6 +1,11 @@
 // c 2025-03-29
 // m 2025-07-13
 
+/*
+This module is not namespaced for convenience. If a dependent plugin wishes
+to define these variables, they should be the same values anyway.
+*/
+
 const int8   MAX_INT8   = (1 << 7) - 1;
 const int16  MAX_INT16  = (1 << 15) - 1;
 const int    MAX_INT32  = (1 << 31) - 1;
