@@ -1,5 +1,5 @@
 // c 2025-04-03
-// m 2025-07-10
+// m 2025-07-12
 
 namespace Debug {
     void Render() {
@@ -14,7 +14,7 @@ namespace Debug {
         if (UI::Begin(
             pluginTitle + "\\$888 (debug)###eztoolbox-debug",
             S_Debug,
-            UI::WindowFlags::None
+            UI::WindowFlags::NoFocusOnAppearing
         )) {
             RenderContents();
         }
@@ -22,282 +22,104 @@ namespace Debug {
     }
 
     void RenderContents() {
+        const float scale = UI::GetScale();
+
         UI::BeginTabBar("#tabbar-debug");
 
         if (UI::BeginTabItem("Debug")) {
+            UI::AlignTextToFramePadding();
             UI::Text("frames: " + EzState::frameCount);
             UI::SameLine();
-            UI::Text("valid: " + ColoredBool(FrameCount::valid));
-
-            UI::Separator();
+            UI::Text((FrameCount::valid ? "\\$0F0" : "\\$F00in") + "valid");
 
             if (UI::BeginTable("##table-debug", 2, UI::TableFlags::RowBg)) {
                 UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(vec3(), 0.5f));
 
                 // UI::TableSetupScrollFreeze(0, 1);
                 UI::TableSetupColumn("name", UI::TableColumnFlags::WidthFixed);
-                UI::TableSetupColumn("value", UI::TableColumnFlags::WidthFixed);
+                UI::TableSetupColumn("value", UI::TableColumnFlags::WidthStretch);
                 // UI::TableHeadersRow();
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
-                UI::Text("\\$0CFbase");
+                UI::SeparatorText("\\$0CFSTATE");
                 UI::TableNextColumn();
-                UI::Text("\\$0CF===================================");
+                UI::SeparatorText("");
+
+                RenderRow("driving",              ColoredBool(EzState::driving));
+                RenderRow("fps",                  Text::Format("%.1f", EzState::fps));
+                RenderRow("game mode",            EzState::gameMode);
+                RenderRow("gui player",           ColoredBool(EzState::hasGuiPlayer));
+                RenderRow("playground script",    ColoredBool(EzState::hasPlaygroundScript));
+                RenderRow("editor",               ColoredBool(EzState::inEditor));
+                RenderRow("in main menu",         ColoredBool(EzState::inMainMenu));
+                RenderRow("map",                  ColoredBool(EzState::inMap));
+                RenderRow("  type",               EzState::mapInfo.type);
+                RenderRow("  uid",                EzState::mapInfo.uid);
+                RenderRow("  author time",        EzState::mapInfo.authorTimeFormatted);
+                RenderRow("  gold time",          EzState::mapInfo.goldTimeFormatted);
+                RenderRow("  silver time",        EzState::mapInfo.silverTimeFormatted);
+                RenderRow("  bronze time",        EzState::mapInfo.bronzeTimeFormatted);
+                RenderRow("editing map",          ColoredBool(EzState::inMapEditor));
+                RenderRow("testing map",          ColoredBool(EzState::inMapEditorTesting));
+                RenderRow("playground",           ColoredBool(EzState::inPlayground));
+                RenderRow("editing local replay", ColoredBool(EzState::inReplayEditorEditing));
+                RenderRow("viewing local replay", ColoredBool(EzState::inReplayEditorViewing));
+                RenderRow("editing skin",         ColoredBool(EzState::inSkinEditor));
+                RenderRow("loading",              ColoredBool(EzState::loading));
+                RenderRow("menu",                 ColoredBool(EzState::hasMenu));
+                RenderRow("paused",               ColoredBool(EzState::paused));
+                RenderRow("ping",                 tostring(EzState::ping));
+                RenderRow("playing map",          ColoredBool(EzState::playingMap));
+                RenderRow("playing map locally",  ColoredBool(EzState::playingMapLocal));
+                RenderRow("playing map online",   ColoredBool(EzState::playingMapOnline));
+                RenderRow("sequence",             tostring(EzState::sequence));
+                RenderRow("spectating",           ColoredBool(EzState::spectating));
+                RenderRow("viewing controlled",   ColoredBool(EzState::viewingControlled));
+                RenderRow("viewing replay",       ColoredBool(EzState::viewingReplay));
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
-                UI::Text("editor");
+                UI::SeparatorText("\\$0CFSTATIC");
                 UI::TableNextColumn();
-                UI::Text(ColoredBool(EzState::inEditor));
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("fps");
-                UI::TableNextColumn();
-                UI::Text(Text::Format("%.1f", EzState::fps));
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("game mode");
-                UI::TableNextColumn();
-                UI::Text(EzState::gameMode);
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("gui player");
-                UI::TableNextColumn();
-                UI::Text(ColoredBool(EzState::hasGuiPlayer));
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("loading");
-                UI::TableNextColumn();
-                UI::Text(ColoredBool(EzState::loading));
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("map");
-                UI::TableNextColumn();
-                UI::Text(ColoredBool(EzState::inMap));
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("  type");
-                UI::TableNextColumn();
-                UI::Text(EzState::mapInfo.type);
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("  uid");
-                UI::TableNextColumn();
-                UI::Text(EzState::mapInfo.uid);
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("  author time");
-                UI::TableNextColumn();
-                UI::Text(EzState::mapInfo.authorTimeFormatted);
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("  gold time");
-                UI::TableNextColumn();
-                UI::Text(EzState::mapInfo.goldTimeFormatted);
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("  silver time");
-                UI::TableNextColumn();
-                UI::Text(EzState::mapInfo.silverTimeFormatted);
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("  bronze time");
-                UI::TableNextColumn();
-                UI::Text(EzState::mapInfo.bronzeTimeFormatted);
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("menu");
-                UI::TableNextColumn();
-                UI::Text(ColoredBool(EzState::hasMenu));
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("paused");
-                UI::TableNextColumn();
-                UI::Text(ColoredBool(EzState::paused));
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("ping");
-                UI::TableNextColumn();
-                UI::Text(tostring(EzState::ping));
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("playground");
-                UI::TableNextColumn();
-                UI::Text(ColoredBool(EzState::inPlayground));
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("playground script");
-                UI::TableNextColumn();
-                UI::Text(ColoredBool(EzState::hasPlaygroundScript));
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("sequence");
-                UI::TableNextColumn();
-                UI::Text(tostring(EzState::sequence));
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("viewing controlled");
-                UI::TableNextColumn();
-                UI::Text(ColoredBool(EzState::viewingControlled));
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("\\$0CFlogic");
-                UI::TableNextColumn();
-                UI::Text("\\$0CF===================================");
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("driving");
-                UI::TableNextColumn();
-                UI::Text(ColoredBool(EzState::driving));
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("in main menu");
-                UI::TableNextColumn();
-                UI::Text(ColoredBool(EzState::inMainMenu));
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("editing map");
-                UI::TableNextColumn();
-                UI::Text(ColoredBool(EzState::inMapEditor));
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("testing map");
-                UI::TableNextColumn();
-                UI::Text(ColoredBool(EzState::inMapEditorTesting));
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("editing local replay");
-                UI::TableNextColumn();
-                UI::Text(ColoredBool(EzState::inReplayEditorEditing));
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("viewing local replay");
-                UI::TableNextColumn();
-                UI::Text(ColoredBool(EzState::inReplayEditorViewing));
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("editing skin");
-                UI::TableNextColumn();
-                UI::Text(ColoredBool(EzState::inSkinEditor));
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("playing map");
-                UI::TableNextColumn();
-                UI::Text(ColoredBool(EzState::playingMap));
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("playing map locally");
-                UI::TableNextColumn();
-                UI::Text(ColoredBool(EzState::playingMapLocal));
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("playing map online");
-                UI::TableNextColumn();
-                UI::Text(ColoredBool(EzState::playingMapOnline));
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("spectating");
-                UI::TableNextColumn();
-                UI::Text(ColoredBool(EzState::spectating));
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("viewing replay");
-                UI::TableNextColumn();
-                UI::Text(ColoredBool(EzState::viewingReplay));
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("\\$0CFstatic");
-                UI::TableNextColumn();
-                UI::Text("\\$0CF===================================");
+                UI::SeparatorText("");
 
 #if TMNEXT
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("access level");
-                UI::TableNextColumn();
-                UI::Text(tostring(EzStatic::accessLevel));
+                RenderRow("access level",         tostring(EzStatic::accessLevel));
 #endif
+                RenderRow("bits",                 tostring(EzStatic::bits));
+                RenderRow("exe version",          EzStatic::exeVersion);
+                RenderRow("game type",            tostring(EzStatic::gameType));
+                RenderRow("operating system",     tostring(EzStatic::os));
+                RenderRow("player id",            tostring(EzStatic::playerId.Value) + " (" + EzStatic::playerId.GetName() + ")");
+                RenderRow("player login",         EzStatic::playerLogin);
+                RenderRow("player username",      EzStatic::playerUsername);
+                RenderRow("player wsid",          EzStatic::playerWsid);
 
                 UI::TableNextRow();
                 UI::TableNextColumn();
-                UI::Text("bits");
+                UI::SeparatorText("\\$0CFCONSTANTS");
                 UI::TableNextColumn();
-                UI::Text(tostring(EzStatic::bits));
+                UI::SeparatorText("");
 
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("exe version");
-                UI::TableNextColumn();
-                UI::Text(EzStatic::exeVersion);
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("game type");
-                UI::TableNextColumn();
-                UI::Text(tostring(EzStatic::gameType));
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("operating system");
-                UI::TableNextColumn();
-                UI::Text(tostring(EzStatic::os));
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("player id");
-                UI::TableNextColumn();
-                UI::Text(tostring(EzStatic::playerId.Value) + " (" + EzStatic::playerId.GetName() + ")");
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("player login");
-                UI::TableNextColumn();
-                UI::Text(EzStatic::playerLogin);
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("player username");
-                UI::TableNextColumn();
-                UI::Text(EzStatic::playerUsername);
-
-                UI::TableNextRow();
-                UI::TableNextColumn();
-                UI::Text("player wsid");
-                UI::TableNextColumn();
-                UI::Text(EzStatic::playerWsid);
+                RenderRow("MAX_INT8",   tostring(MAX_INT8)   + " | \\$0FF" + Text::Format("0x%X", MAX_INT8));
+                RenderRow("MAX_INT16",  tostring(MAX_INT16)  + " | \\$0FF" + Text::Format("0x%X", MAX_INT16));
+                RenderRow("MAX_INT32",  tostring(MAX_INT32)  + " | \\$0FF" + Text::Format("0x%X", MAX_INT32));
+#if MANIA64
+                RenderRow("MAX_INT64",  tostring(MAX_INT64)  + " | \\$0FF" + Text::FormatPointer(MAX_INT64));
+#endif
+                RenderRow("MIN_INT8",   tostring(MIN_INT8)   + " | \\$0FF" + Text::Format("0x%X", MIN_INT8));
+                RenderRow("MIN_INT16",  tostring(MIN_INT16)  + " | \\$0FF" + Text::Format("0x%X", MIN_INT16));
+                RenderRow("MIN_INT32",  tostring(MIN_INT32)  + " | \\$0FF" + Text::Format("0x%X", MIN_INT32));
+#if MANIA64
+                RenderRow("MIN_INT64",  tostring(MIN_INT64)  + " | \\$0FF" + Text::FormatPointer(uint64(MIN_INT64)));
+#endif
+                RenderRow("MAX_UINT8",  tostring(MAX_UINT8)  + " | \\$0FF" + Text::Format("0x%X", MAX_UINT8));
+                RenderRow("MAX_UINT16", tostring(MAX_UINT16) + " | \\$0FF" + Text::Format("0x%X", MAX_UINT16));
+                RenderRow("MAX_UINT32", tostring(MAX_UINT32) + " | \\$0FF" + Text::Format("0x%X", MAX_UINT32));
+#if MANIA64
+                RenderRow("MAX_UINT64", tostring(MAX_UINT64) + " | \\$0FF" + Text::FormatPointer(MAX_UINT64));
+#endif
 
                 UI::PopStyleColor();
                 UI::EndTable();
@@ -318,7 +140,7 @@ namespace Debug {
                         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(vec3(), 0.5f));
 
                         UI::TableSetupColumn("name",   UI::TableColumnFlags::WidthStretch);
-                        UI::TableSetupColumn("offset", UI::TableColumnFlags::WidthFixed, UI::GetScale() * 80.0f);
+                        UI::TableSetupColumn("offset", UI::TableColumnFlags::WidthFixed, scale * 80.0f);
 
                         RenderReflectionRows(classInfo);
 
@@ -419,5 +241,13 @@ namespace Debug {
         }
 
         RenderReflectionRows(classInfo.BaseType);
+    }
+
+    void RenderRow(const string&in name, const string&in value) {
+        UI::TableNextRow();
+        UI::TableNextColumn();
+        UI::Text(name);
+        UI::TableNextColumn();
+        UI::Text(value);
     }
 }
