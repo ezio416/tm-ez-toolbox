@@ -10,29 +10,6 @@ namespace EzCallback {
 }
 
 /*
-Gets handles to game objects and interacts with the game directly.
-*/
-namespace EzGame {
-    import CTrackManiaNetwork@           get_Network()          from "EzToolbox";
-    import CGameCtnChallenge@            get_RootMap()          from "EzToolbox";
-    import CTrackManiaNetworkServerInfo@ get_ServerInfo()       from "EzToolbox";
-    import CDx11Viewport@                get_Viewport()         from "EzToolbox";
-#if TMNEXT
-    import CSmArenaClient@               get_Playground()       from "EzToolbox";
-    import CSmArenaRulesMode@            get_PlaygroundScript() from "EzToolbox";
-#elif MP4 || TURBO
-    import CGamePlayground@              get_Playground()       from "EzToolbox";
-    import CTrackManiaRaceRules@         get_PlaygroundScript() from "EzToolbox";
-#endif
-
-    import void EditMap(const string&in url)      from "EzToolbox";
-    import void EditMapAsync(const string&in url) from "EzToolbox";
-    import void PlayMap(const string&in url)      from "EzToolbox";
-    import void PlayMapAsync(const string&in url) from "EzToolbox";
-    import void ReturnToMainMenu()                from "EzToolbox";
-}
-
-/*
 Makes HTTP requests.
 */
 namespace EzHttp {

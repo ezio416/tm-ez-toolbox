@@ -1,19 +1,16 @@
 // c 2025-06-25
-// m 2025-07-12
+// m 2025-07-13
 
 /*
-This module is for getting handles to game objects as well as interacting with the game directly.
+Gets handles to game objects and interacts with the game directly.
 The main purpose is to provide a consistent API across different games.
 */
-
 namespace EzGame {
-    CTrackManiaNetwork@ get_Network() {
-        VerifyEnabled();
+    shared CTrackManiaNetwork@ get_Network() {
         return cast<CTrackManiaNetwork>(GetApp().Network);
     }
 
-    CGameCtnChallenge@ get_RootMap() {
-        VerifyEnabled();
+    shared CGameCtnChallenge@ get_RootMap() {
 #if TMNEXT || MP4
         return GetApp().RootMap;
 #elif TURBO
@@ -21,46 +18,40 @@ namespace EzGame {
 #endif
     }
 
-    CTrackManiaNetworkServerInfo@ get_ServerInfo() {
-        VerifyEnabled();
+    shared CTrackManiaNetworkServerInfo@ get_ServerInfo() {
         return cast<CTrackManiaNetworkServerInfo>(Network.ServerInfo);
     }
 
-    CDx11Viewport@ get_Viewport() {
-        VerifyEnabled();
+    shared CDx11Viewport@ get_Viewport() {
         return cast<CDx11Viewport>(GetApp().Viewport);
     }
 
 #if TMNEXT
-    CSmArenaClient@ get_Playground() {
-        VerifyEnabled();
+    shared CSmArenaClient@ get_Playground() {
         return cast<CSmArenaClient>(GetApp().CurrentPlayground);
     }
 
-    CSmArenaRulesMode@ get_PlaygroundScript() {
-        VerifyEnabled();
+    shared CSmArenaRulesMode@ get_PlaygroundScript() {
         return cast<CSmArenaRulesMode>(GetApp().PlaygroundScript);
     }
 
 #elif MP4 || TURBO
-    CGamePlayground@ get_Playground() {  // CTrackManiaRaceNew, CTrackManiaRace1P, CSmArenaClient, ...
-        VerifyEnabled();
+    shared CGamePlayground@ get_Playground() {  // CTrackManiaRaceNew, CTrackManiaRace1P, CSmArenaClient, ...
         return GetApp().CurrentPlayground;
     }
 
-    CTrackManiaRaceRules@ get_PlaygroundScript() {  // todo: account for shootmania
-        VerifyEnabled();
+    shared CTrackManiaRaceRules@ get_PlaygroundScript() {  // todo: account for shootmania
         return cast<CTrackManiaRaceRules>(GetApp().PlaygroundScript);
     }
 #endif
 }
 
 namespace EzGame {
-    void EditMap(const string&in url) {
+    shared void EditMap(const string&in url) {
         startnew(EditMapAsync, url);
     }
 
-    void EditMapAsync(const string&in url) {
+    shared void EditMapAsync(const string&in url) {
 #if TMNEXT
         if (!Permissions::OpenAdvancedMapEditor()) {
             warn("can't edit map: player doesn't have permission");
@@ -86,11 +77,11 @@ namespace EzGame {
         WaitReadyAsync();
     }
 
-    void PlayMap(const string&in url) {
+    shared void PlayMap(const string&in url) {
         startnew(PlayMapAsync, url);
     }
 
-    void PlayMapAsync(const string&in url) {
+    shared void PlayMapAsync(const string&in url) {
 #if TMNEXT
         if (!Permissions::PlayLocalMap()) {
             warn("can't play map: player doesn't have permission");
@@ -116,7 +107,7 @@ namespace EzGame {
         WaitReadyAsync();
     }
 
-    void ReturnToMainMenu() {
+    shared void ReturnToMainMenu() {
         auto App = cast<CTrackMania>(GetApp());
 
 #if TMNEXT || MP4
@@ -130,7 +121,7 @@ namespace EzGame {
         App.BackToMainMenu();
     }
 
-    void WaitReadyAsync() {
+    shared void WaitReadyAsync() {
 #if TMNEXT || MP4
         auto App = cast<CTrackMania>(GetApp());
         while (!App.ManiaTitleControlScriptAPI.IsReady) {
