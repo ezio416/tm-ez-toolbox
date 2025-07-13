@@ -1,5 +1,5 @@
 // c 2025-06-23
-// m 2025-07-12
+// m 2025-07-13
 
 /*
 This module provides information about the player/game/Openplanet/plugin etc. that does not change.
@@ -68,6 +68,16 @@ namespace EzStatic {
 #elif TMNEXT
             return GameType::Tm2020;
 #endif
+        }
+    }
+
+    bool _init = false;
+    /*
+    whether this module has been initialized
+    */
+    bool init {
+        get {
+            return _init;
         }
     }
 
@@ -177,13 +187,21 @@ namespace EzStatic {
         _playerLogin = App.LocalPlayerInfo.Login;
         _playerUsername = App.LocalPlayerInfo.Name;
         _playerWsid = App.LocalPlayerInfo.WebServicesUserId;
-#else
+#elif MP4 || TURBO
         CTrackManiaNetwork@ Network = EzGame::Network;
-        while (Network.PlayerInfo is null) {
+        while (false
+            or Network.PlayerInfo is null
+            or Network.PlayerInfo.Login.Length == 0
+            or Network.PlayerInfo.Login == "00000000"
+            or Network.PlayerInfo.Name.Length == 0
+            or Network.PlayerInfo.Name == "DefaultUser"
+        ) {
             yield();
         }
         _playerLogin = Network.PlayerInfo.Login;
         _playerUsername = Network.PlayerInfo.Name;
 #endif
+
+        _init = true;
     }
 }
