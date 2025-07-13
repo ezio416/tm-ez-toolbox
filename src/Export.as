@@ -9,14 +9,11 @@ namespace EzCallback {
     import void Register(Callback@ c) from "EzToolbox";
 }
 
+#if DEPENDENCY_NADEOSERVICES
 /*
 Makes HTTP requests.
 */
 namespace EzHttp {
-    import Net::HttpRequest@ GetAsync(const string&in url, bool start = true, const string&in agent = "")                             from "EzToolbox";
-    import Net::HttpRequest@ PostAsync(const string&in url, const string&in body = "", bool start = true, const string&in agent = "") from "EzToolbox";
-
-#if DEPENDENCY_NADEOSERVICES
     /*
     Makes requests to Nadeo's Web Services.
     */
@@ -33,8 +30,8 @@ namespace EzHttp {
         import Net::HttpRequest@ PostLiveAsync(const string&in endpoint, const string&in body = "", bool start = true) from "EzToolbox";
         import Net::HttpRequest@ PostMeetAsync(const string&in endpoint, const string&in body = "", bool start = true) from "EzToolbox";
     }
-#endif
 }
+#endif
 
 /*
 Stores information about the game that changes. Very efficient.

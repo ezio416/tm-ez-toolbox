@@ -15,6 +15,7 @@ shared_exports = [
     "src/Shared/Constants.as",
     "src/Shared/Dev.as",
     "src/Shared/Game.as",
+    "src/Shared/Http.as",
     "src/Shared/Json.as",
     "src/Shared/State.as",
     "src/Shared/Static.as",
