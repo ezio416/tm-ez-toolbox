@@ -1,5 +1,5 @@
 // c 2025-03-29
-// m 2025-07-09
+// m 2025-07-12
 
 const string  pluginColor = "\\$0A0";
 const string  pluginIcon  = Icons::Wrench;
@@ -25,6 +25,16 @@ void Main() {
 
 void Render() {
     Debug::Render();
+}
+
+void RenderMenu() {
+    if (UI::BeginMenu(pluginTitle)) {
+        if (UI::MenuItem(Icons::Bug + " Debug Window", "", S_Debug)) {
+            S_Debug = !S_Debug;
+        }
+
+        UI::EndMenu();
+    }
 }
 
 void RenderMenuMain() {
