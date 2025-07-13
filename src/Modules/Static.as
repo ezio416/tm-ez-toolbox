@@ -1,5 +1,5 @@
 // c 2025-06-23
-// m 2025-07-10
+// m 2025-07-12
 
 /*
 This module provides information about the player/game/Openplanet/plugin etc. that does not change.
@@ -142,7 +142,7 @@ namespace EzStatic {
     }
 
     void InitAsync() {
-        CTrackMania@ App = EzGame::App;
+        auto App = cast<CTrackMania>(GetApp());
 
 #if TMNEXT
         _accessLevel = Permissions::CreateClub()
