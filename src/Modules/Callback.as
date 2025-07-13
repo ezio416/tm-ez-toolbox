@@ -1,5 +1,5 @@
 // c 2025-04-03
-// m 2025-07-09
+// m 2025-07-12
 
 /*
 This module provides a way for plugins to register callback functions that can be called automatically under certain
@@ -37,7 +37,7 @@ namespace EzCallback {
         string[]@ pluginIds = callbacks.GetKeys();
         for (uint i = 0; i < pluginIds.Length; i++) {
             try {
-                cast<CallbackClass>(callbacks[pluginIds[i]])._OnEnteredMap();
+                cast<Callback>(callbacks[pluginIds[i]])._OnEnteredMap();
             } catch {
                 error("error in OnEnteredMap for '" + pluginIds[i] + "': " + getExceptionInfo());
             }
@@ -50,14 +50,14 @@ namespace EzCallback {
         string[]@ pluginIds = callbacks.GetKeys();
         for (uint i = 0; i < pluginIds.Length; i++) {
             try {
-                cast<CallbackClass>(callbacks[pluginIds[i]])._OnExitedMap();
+                cast<Callback>(callbacks[pluginIds[i]])._OnExitedMap();
             } catch {
                 error("error in OnExitedMap for '" + pluginIds[i] + "': " + getExceptionInfo());
             }
         }
     }
 
-    void Register(CallbackClass@ c) {
+    void Register(Callback@ c) {
         Meta::Plugin@ plugin = Meta::ExecutingPlugin();
         if (plugin is pluginMeta) {
             throw("ezio you idiot");

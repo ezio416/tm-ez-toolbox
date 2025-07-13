@@ -1,7 +1,5 @@
 // c 2025-03-29
-// m 2025-07-09
-
-const uint   MAX_UINT   = uint(-1);
+// m 2025-07-12
 const uint64 MAX_UINT64 = uint64(-1);
 
 /*
@@ -17,7 +15,7 @@ namespace EzCallback {
     - pass an instance of your class to Ez::Callback::Register()
     async methods are marked as such - all others are not yieldable
     */
-    shared abstract class CallbackClass {
+    shared abstract class Callback {
         private Meta::Plugin@ _parent;
         Meta::Plugin@ get_parent() const final {
             return _parent;
@@ -59,7 +57,7 @@ namespace EzCallback {
             return ret;
         }
 
-        CallbackClass() {
+        Callback() {
             @_parent = Meta::ExecutingPlugin();
         }
 

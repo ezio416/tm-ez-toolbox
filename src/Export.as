@@ -1,12 +1,25 @@
 // c 2025-07-09
-// m 2025-07-09
+// m 2025-07-13
 
 /*
 Allows plugins to register callback functions that will be called under certain conditions.
 */
 namespace EzCallback {
-    import void Deregister()               from "EzToolbox";
-    import void Register(CallbackClass@ c) from "EzToolbox";
+    import void Deregister()          from "EzToolbox";
+    import void Register(Callback@ c) from "EzToolbox";
+}
+
+/*
+Uses the Dev:: API.
+*/
+namespace EzDev {
+#if MANIA64
+    import uint64 CheckPointer(const uint64 ptr) from "EzToolbox";
+    import uint64 GetNodPointer(CMwNod@ nod)     from "EzToolbox";
+#else
+    import uint CheckPointer(const uint ptr)     from "EzToolbox";
+    import uint GetNodPointer(CMwNod@ nod)       from "EzToolbox";
+#endif
 }
 
 /*
