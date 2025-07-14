@@ -1,5 +1,5 @@
 // c 2025-04-04
-// m 2025-07-12
+// m 2025-07-13
 
 /*
 This module provides the current state of some things in the game. Each getter function is structured so that
@@ -284,7 +284,11 @@ namespace EzState {
                 _inPlayground_updated = FrameCount::valid ? _frameCount : 0;
 
                 // is a CGamePlaygroundBasic for a few frames on map load so a cast is required
+#if TMNEXT
                 _inPlayground = cast<CSmArenaClient>(GetApp().CurrentPlayground) !is null;
+#elif MP4 || TURBO
+                _inPlayground = GetApp().CurrentPlayground !is null;
+#endif
             }
 
             return _inPlayground;
@@ -653,7 +657,7 @@ namespace EzState {
         _driving_updated               = 0;
         _fps                           = 0.0f;
         _fps_updated                   = 0;
-        _gameMode;
+        _gameMode                      = "";
         _gameMode_updated              = 0;
         _hasGuiPlayer                  = false;
         _hasGuiPlayer_updated          = 0;
