@@ -1,5 +1,5 @@
 // c 2025-07-09
-// m 2025-07-13
+// m 2025-07-20
 
 /*
 Allows plugins to register callback functions that will be called under certain conditions.
@@ -33,54 +33,37 @@ namespace EzHttp {
 }
 #endif
 
+#if TMNEXT
 /*
-Stores information about the game that changes. Very efficient.
+Checks UI layers and caches indices to help performance in dependent plugins.
+*/
+namespace EzLayers {
+    /*
+    Gets layers and indices from the menu.
+    */
+    namespace Menu {
+        import int               GetIndex(const string&in layerName) from "EzToolbox";
+        import const dictionary@ GetIndices()                        from "EzToolbox";
+        import CGameUILayer@     GetLayer(const uint index)          from "EzToolbox";
+        import CGameUILayer@     GetLayer(const string&in layerName) from "EzToolbox";
+    }
+
+    /*
+    Gets layers and indices from the current playground.
+    */
+    namespace Playground {
+        import int               GetIndex(const string&in layerName) from "EzToolbox";
+        import const dictionary@ GetIndices()                        from "EzToolbox";
+        import CGameUILayer@     GetLayer(const uint index)          from "EzToolbox";
+        import CGameUILayer@     GetLayer(const string&in layerName) from "EzToolbox";
+    }
+}
+#endif
+
+/*
+Stores information about the game that changes. Although most things in this module are shared,
+it is recommended that you do not use them in shared code in case of future plugin updates.
 */
 namespace EzState {
-    import uint                                 get_frameCount()            from "EzToolbox";
-
-    import float                                get_fps()                   from "EzToolbox";
-    import string                               get_gameMode()              from "EzToolbox";
-    import bool                                 get_hasGuiPlayer()          from "EzToolbox";
-    import bool                                 get_hasMenu()               from "EzToolbox";
-    import bool                                 get_hasPlaygroundScript()   from "EzToolbox";
-    import bool                                 get_inEditor()              from "EzToolbox";
-    import bool                                 get_inMap()                 from "EzToolbox";
-    import bool                                 get_inPlayground()          from "EzToolbox";
-    import bool                                 get_loading()               from "EzToolbox";
-    import MapInfo@                             get_mapInfo()               from "EzToolbox";
-    import bool                                 get_paused()                from "EzToolbox";
-    import int                                  get_ping()                  from "EzToolbox";
-    import CGamePlaygroundUIConfig::EUISequence get_sequence()              from "EzToolbox";
-    import bool                                 get_viewingControlled()     from "EzToolbox";
-
-    import bool                                 get_driving()               from "EzToolbox";
-    import bool                                 get_inMainMenu()            from "EzToolbox";
-    import bool                                 get_inMapEditor()           from "EzToolbox";
-    import bool                                 get_inMapEditorTesting()    from "EzToolbox";
-    import bool                                 get_inReplayEditorEditing() from "EzToolbox";
-    import bool                                 get_inReplayEditorViewing() from "EzToolbox";
-    import bool                                 get_inSkinEditor()          from "EzToolbox";
-    import bool                                 get_playingMap()            from "EzToolbox";
-    import bool                                 get_playingMapLocal()       from "EzToolbox";
-    import bool                                 get_playingMapOnline()      from "EzToolbox";
-    import bool                                 get_spectating()            from "EzToolbox";
-    import bool                                 get_viewingReplay()         from "EzToolbox";
-}
-
-/*
-Stores information about things that do not change.
-*/
-namespace EzStatic {
-#if TMNEXT
-    import AccessLevel     get_accessLevel()    from "EzToolbox";
-#endif
-    import uint8           get_bits()           from "EzToolbox";
-    import string          get_exeVersion()     from "EzToolbox";
-    import GameType        get_gameType()       from "EzToolbox";
-    import OperatingSystem get_os()             from "EzToolbox";
-    import MwId            get_playerId()       from "EzToolbox";
-    import string          get_playerLogin()    from "EzToolbox";
-    import string          get_playerUsername() from "EzToolbox";
-    import string          get_playerWsid()     from "EzToolbox";
+    import MapInfo@ get_mapInfo() from "EzToolbox";
 }

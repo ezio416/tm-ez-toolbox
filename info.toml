@@ -17,6 +17,5 @@ shared_exports = [
     "src/Shared/Game.as",
     "src/Shared/Http.as",
     "src/Shared/Json.as",
-    "src/Shared/State.as",
-    "src/Shared/Static.as",
+    "src/Shared/State.as"
 ]

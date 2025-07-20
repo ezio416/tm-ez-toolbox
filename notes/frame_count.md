@@ -13,3 +13,5 @@
         - valid for `2019-11-19_18_50`
     - TmForever
         - unknown
+
+I've learned that even using the viewport's frame counter, my logic is somehow inherently flawed and values are still behind by a frame. This is depressing.
