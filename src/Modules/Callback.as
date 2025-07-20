@@ -1,5 +1,5 @@
 // c 2025-04-03
-// m 2025-07-12
+// m 2025-07-14
 
 /*
 This module provides a way for plugins to register callback functions that can be called automatically under certain
@@ -22,14 +22,20 @@ namespace EzCallback {
     }
 
     void Deregister(const string&in pluginId) {
-        if (pluginId != pluginMeta.ID and callbacks.Exists(pluginId)) {
+        if (true
+            and pluginId != pluginMeta.ID
+            and callbacks.Exists(pluginId)
+        ) {
             callbacks.Delete(pluginId);
-            trace("deregistered plugin '" + pluginId + "' in EzToolbox");
+            trace("deregistered callback in EzToolbox");
         }
     }
 
     void Deregister(Meta::Plugin@ plugin) {
-        if (plugin !is null and plugin !is pluginMeta) {
+        if (true
+            and plugin !is null
+            and plugin !is pluginMeta
+        ) {
             Deregister(plugin.ID);
         }
     }
@@ -43,6 +49,7 @@ namespace EzCallback {
                 cast<Callback>(callbacks[pluginIds[i]])._OnEnteredMap();
             } catch {
                 error("error in OnEnteredMap for '" + pluginIds[i] + "': " + getExceptionInfo());
+                PrintActiveContextStack(true);
             }
         }
     }
@@ -56,6 +63,7 @@ namespace EzCallback {
                 cast<Callback>(callbacks[pluginIds[i]])._OnExitedMap();
             } catch {
                 error("error in OnExitedMap for '" + pluginIds[i] + "': " + getExceptionInfo());
+                PrintActiveContextStack(true);
             }
         }
     }
@@ -68,7 +76,7 @@ namespace EzCallback {
         }
 
         if (c is null) {
-            error("plugin '" + plugin.ID + "' tried to register a null callback");
+            error("tried to register a null callback for EzToolbox");
             return;
         }
 
@@ -76,12 +84,12 @@ namespace EzCallback {
             or c.parent is null
             or c.count == 0
         ) {
-            error("plugin '" + plugin.ID + "' did not correctly set up their callback");
+            error("did not correctly set up callback for EzToolbox");
             return;
         }
 
         callbacks.Set(c.parent.ID, @c);
-        string msg = "plugin '" + c.parent.ID + "' registered callback in EzToolbox (";
+        string msg = "registered callback in EzToolbox (";
         string[] cbs;
         if (c.onEnteredMap) {
             cbs.InsertLast("OnEnteredMap");
@@ -121,15 +129,15 @@ namespace EzCallback {
     }
 
     void WatchForMapChangeAsync() {
-        trace("starting WatchForMapChangeAsync");
-
+        string currentUid;
         string lastUid;
 
         while (true) {
             yield();
 
-            if (lastUid != EzState::mapInfo.uid) {
-                lastUid = EzState::mapInfo.uid;
+            currentUid = EzState::mapInfo.uid;
+            if (lastUid != currentUid) {
+                lastUid = currentUid;
 
                 if (!EzState::inEditor) {
                     if (EzState::inMap) {
