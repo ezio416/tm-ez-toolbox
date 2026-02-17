@@ -1,6 +1,3 @@
-// c 2023-06-03
-// m 2023-10-18
-
 #if TMNEXT
 namespace WhereAmI {
     [Setting category="WhereAmI" name="Enabled"]

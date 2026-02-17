@@ -1,6 +1,3 @@
-// c 2023-06-04
-// m 2023-10-18
-
 namespace MenuInfo {
     [Setting category="MenuInfo" name="Enabled"]
     bool MI_show = true;
