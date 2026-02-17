@@ -46,6 +46,7 @@ namespace EzHttp {
         return PostAsync(url, Json::Write(body), start, agent);
     }
 
+#if TMNEXT
     namespace Nadeo {
         bool requesting = false;
 
@@ -151,4 +152,5 @@ namespace EzHttp {
             }
         }
     }
+#endif
 }

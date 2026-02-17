@@ -16,9 +16,11 @@ bool S_HideWithGame = true;
 bool S_HideWithOP = false;
 
 void Main() {
+#if TMNEXT
     if (!Permissions::PlayLocalMap()) {
         warn("Starter Access detected, functionality is limited");
     }
+#endif
 }
 
 void Render() {
