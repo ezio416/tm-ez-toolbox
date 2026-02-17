@@ -1,5 +1,5 @@
 // c 2025-06-24
-// m 2025-07-10
+// m 2026-01-29
 
 /*
 This module is a legacy feature from v0. It shows various information in the top-right of Openplanet's main menu bar.
@@ -42,10 +42,10 @@ namespace MenuInfo {
             text += Time::FormatString("%F");
         }
 
-        float width = Draw::MeasureString(text).x;
+        float width = UI::MeasureString(text).x;
 
         // if (S_MenuInfo_Menu) {
-        //     width += Draw::MeasureString(padding + pluginTitle).x + UI::GetScale() * 10.0f;
+        //     width += UI::MeasureString(padding + pluginTitle).x + UI::GetScale() * 10.0f;
         // }
 
         const vec2 pre = UI::GetCursorPos();

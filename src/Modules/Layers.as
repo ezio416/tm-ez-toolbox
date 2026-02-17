@@ -62,14 +62,17 @@ namespace EzLayers {
         uint       layerCount = 0;
 
         int GetIndex(const string&in layerName) {
+            VerifyEnabled();
             return indices.Exists(layerName) ? int(indices[layerName]) : -1;
         }
 
         const dictionary@ GetIndices() {
+            VerifyEnabled();
             return indices;
         }
 
         CGameUILayer@ GetLayer(const uint index) {
+            VerifyEnabled();
             try {
                 return cast<CTrackMania>(GetApp()).MenuManager.MenuCustom_CurrentManiaApp.UILayers[index];
             } catch {
@@ -78,12 +81,9 @@ namespace EzLayers {
         }
 
         CGameUILayer@ GetLayer(const string&in layerName) {
+            VerifyEnabled();
             const int index = GetIndex(layerName);
-            if (index > -1) {
-                return GetLayer(index);
-            } else {
-                return null;
-            }
+            return index > -1 ? GetLayer(index) : null;
         }
 
         void LoopAsync() {
@@ -119,14 +119,17 @@ namespace EzLayers {
         uint       layerCount = 0;
 
         int GetIndex(const string&in layerName) {
+            VerifyEnabled();
             return indices.Exists(layerName) ? int(indices[layerName]) : -1;
         }
 
         const dictionary@ GetIndices() {
+            VerifyEnabled();
             return indices;
         }
 
         CGameUILayer@ GetLayer(const uint index) {
+            VerifyEnabled();
             try {
                 return GetApp().Network.ClientManiaAppPlayground.UILayers[index];
             } catch {
@@ -135,12 +138,9 @@ namespace EzLayers {
         }
 
         CGameUILayer@ GetLayer(const string&in layerName) {
+            VerifyEnabled();
             const int index = GetIndex(layerName);
-            if (index > -1) {
-                return GetLayer(index);
-            } else {
-                return null;
-            }
+            return index > -1 ? GetLayer(index) : null;
         }
 
         void LoopAsync() {
